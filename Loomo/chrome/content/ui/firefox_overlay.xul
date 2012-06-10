@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://filebrowser/skin/fileview/fileview_item_rules.css" type="text/css"?>
+<?xml-stylesheet href="chrome://filebrowser/skin/computer_button.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://filebrowser/locale/filebrowser.dtd">
+
+<overlay id="filebrowser_overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<script src="chrome://fibro/content/scripts/filebrowser_startup.js"/>
+	<!--<script src="chrome://filebrowser/content/scripts/computer_button.js"/>-->
+	
+	<!--<window id="main-window">
+		<commandset id="filebrowserCommands">
+			<command id="cmd_openFileOpMonitor" oncommand="Filebrowser.openFileOpMonitor();"/>
+		</commandset>
+	</window>
+	
+	<menubar id="main-menubar">
+		<menu id="filebrowser-menu" label="Filebrowser" insertafter="tools-menu">
+			<menupopup id="menu_FilebrowserPopup">
+				<menuitem label="Open File Operation Monitor"
+						  id="menuitem_openFileOpMonitor"
+						  command="cmd_openFileOpMonitor" />
+			</menupopup>
+		</menu>
+	</menubar>
+	
+	<toolbarpalette id="BrowserToolbarPalette">
+		<toolbarbutton 	id="fibro_computer_button"
+						label="Open up list of volumes"
+						oncommand="FibroComputerButton.openMenu();"
+						class="toolbarbutton-1">
+			<menupopup id="fibro_computer_menu" />
+		</toolbarbutton>
+	</toolbarpalette>-->
+
+</overlay>

@@ -1,0 +1,29 @@
+//======================================================================================//
+//======================================================================================//
+//																						//
+//										Filebrowser										//
+//																						//
+// This is the base module of the Filebrowser, which can be used from the JS side		//
+//======================================================================================//
+//======================================================================================//
+
+var EXPORTED_SYMBOLS = ["Fibro"];
+
+Components.utils.import("chrome://fibro/content/modules/Services.jsm");
+Components.utils.import("chrome://fibro/content/modules/MozXPCOM.jsm");
+
+//======================================================================================//
+// Filebrowser																			//
+//======================================================================================//
+var Fibro = 
+{
+		quitApp: function quitApp(/* in boolean */aForceQuit)
+		{
+			// eAttemptQuit will try to close each XUL window, but the XUL window can cancel the quit
+			// process if there is unsaved data. eForceQuit will quit no matter what.
+			var quitSeverity = aForceQuit ? Ci.nsIAppStartup.eForceQuit : Ci.nsIAppStartup.eAttemptQuit;
+			Services.appStartup.quit(quitSeverity);
+		},
+
+
+};

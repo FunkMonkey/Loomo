@@ -1,0 +1,9 @@
+content 	fibro					chrome/content/
+skin    	fibro classic/1.0		chrome/skin/classic/
+locale		fibro en-US				chrome/locale/en-US/
+
+overlay		chrome://browser/content/browser.xul chrome://fibro/content/ui/firefox_overlay.xul
+
+component {789409b9-2e3b-4682-a5d1-71ca80a76456} components/nsXFileProtocolHandler.js
+contract @mozilla.org/network/protocol;1?name=xfile {789409b9-2e3b-4682-a5d1-71ca80a76456}
+
