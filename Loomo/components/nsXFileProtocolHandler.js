@@ -10,8 +10,8 @@
 
 // Includes
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
-Components.utils.import("chrome://fibro/content/modules/Services.jsm");
-Components.utils.import("chrome://fibro/content/modules/MozXPCOM.jsm");
+Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
+Components.utils.import("chrome://fibro/content/modules/Utils/MozXPCOM.jsm");
 Components.utils.import("chrome://fibro/content/modules/Fibro.jsm");
 
 /* Temporary until Bug XXX was fixed */
