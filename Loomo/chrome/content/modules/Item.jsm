@@ -2,9 +2,16 @@ var EXPORTED_SYMBOLS = ["Item"];
 
 Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
 
-//======================================================================================//
-// Item	(abstract)																		//
-//======================================================================================//
+/**
+ * Represents an item (base class for files, etc.)
+ *
+ * @property {nsIURI}          URI                      URI that the item represents
+ * @property {string}          alternativeDisplayName   Alternative name for displaying
+ * @property {Object<string>}  alternativeIconURIs      Alternative icons for displaying
+ *
+ * @constructor
+ * @param   {nsIURI|string}   URIorSpec   URI or URIspec this item represents
+ */
 function Item(URIorSpec)
 {
 	this.URI = null;
@@ -12,13 +19,13 @@ function Item(URIorSpec)
 	this.alternativeIconURIs = {};
 	
 	if(URIorSpec === undefined)
-		throw new Error("needs exactly one parameter that can be a nsIURI or a string representing a URI spec!");
+		throw new Error("Constructor needs exactly one parameter that can be a nsIURI or a string representing a URI spec!");
 	
 	if(typeof(URIorSpec) === "string")
 	{
 		this.URI = Services.io.newURI(URIorSpec, null, null);
 	}
-	else if(URIorSpec instanceof Ci.nsIURI)
+	else if(URIorSpec instanceof Components.interfaces.nsIURI)
 	{
 		this.URI = URIorSpec;
 	}
