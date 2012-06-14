@@ -49,7 +49,7 @@ Item.prototype = {
 		 */
 		getAlternativeIconURIString: function getAlternativeIconURIString(size)
 		{
-			return null;
+			return "";
 		},
 		
 		/**

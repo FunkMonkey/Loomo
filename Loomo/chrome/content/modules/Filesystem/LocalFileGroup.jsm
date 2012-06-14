@@ -2,6 +2,7 @@ var EXPORTED_SYMBOLS = ["LocalFileGroup"];
 
 var Ci = Components.interfaces;
 
+Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/Extension.jsm");
 Components.utils.import("chrome://fibro/content/modules/Group.jsm");
 Components.utils.import("chrome://fibro/content/modules/Item.jsm");
@@ -62,8 +63,6 @@ LocalFileGroup.prototype = {
 	
 	_loadFiles: function _loadFiles(/* long */ aFlags)
 	{
-		//Cu.import("chrome://fibro/content/scripts/modules/Fibro.jsm");
-		
 		// TODO: throw exception if it is not a directory
 		
 		// not working anyway!!!
@@ -75,7 +74,7 @@ LocalFileGroup.prototype = {
 		}*/
 		
 		// create the filegroup items from the directory entries
-		var files = this.directory.file.directoryEntries;
+		var files = this.directory.xpcomFile.directoryEntries;
 		
 		while (files.hasMoreElements())
 		{

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://filebrowser/skin/fileview/file_not_found.css" type="text/css"?>
+<!DOCTYPE window PUBLIC "-//MOZILLA//DTD XUL V1.0//EN" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+<window id="error_page_file_not_found_window"
+        title="File not found"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        >
+
+	<script src="chrome://filebrowser/content/scripts/ProtocolHandlers/error_page_file_not_found.js" />
+	
+	<html:link id="favicon" rel="shortcut icon" type="image/png" href="chrome://global/skin/icons/warning-16.png" />
+	
+	<box id="file_not_found" flex="1">
+		<box id="errorPageContainer">
+			<box id="errorTitle">
+				<label id="errorTitleText" value="Could not open directory or file!" />
+			</box>
+			<box id="errorLongContent">
+				<box id="errorPath">
+					<label id="errorPathText" value="" />
+				</box>
+				<box id="errorShortDesc">
+					<label id="errorShortDescText" value="The directory you are trying to access does not exist!" />
+				</box>
+				<box id="errorLongDesc">
+
+				</box>
+			</box>
+		</box>
+	</box>
+
+</window>

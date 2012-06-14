@@ -1,8 +1,9 @@
 var EXPORTED_SYMBOLS = ["LocalFile"];
 
 Components.utils.import("chrome://fibro/content/modules/Utils/Extension.jsm");
-Components.utils.import("chrome://fibro/content/modules/File.jsm");
+Components.utils.import("chrome://fibro/content/modules/Filesystem/File.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
+Components.utils.import("chrome://fibro/content/modules/ItemRegistry.jsm");
 
 Ci = Components.interfaces;
 
@@ -51,7 +52,7 @@ LocalFile.prototype = {
 	 */
 	getURIFromXPCOMFile: function getURIFromXPCOMFile(file)
 	{
-		var tmpSpec = LocalFile.prototype.getURISpecFromFile(file);
+		var tmpSpec = LocalFile.prototype.getURISpecFromXPCOMFile(file);
 		
 		return Services.XFileProtocolHandler.newURI(tmpSpec, null, null);
 	},
@@ -65,7 +66,7 @@ LocalFile.prototype = {
 	 */
 	getXPCOMFileFromURI: function getXPCOMFileFromURI(URI)
 	{		
-		return LocalFile.prototype.getFileFromURISpec(URI.spec);
+		return LocalFile.prototype.getXPCOMFileFromURISpec(URI.spec);
 	},
 	
 	/**
@@ -88,3 +89,5 @@ LocalFile.prototype = {
 };
 
 Extension.inherit(LocalFile, File);
+
+ItemRegistry.registerItemConstructor("xfile", LocalFile);

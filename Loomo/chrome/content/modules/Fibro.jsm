@@ -10,6 +10,7 @@
 var EXPORTED_SYMBOLS = ["Fibro"];
 
 Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
+
 Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/MozXPCOM.jsm");
 
@@ -39,3 +40,7 @@ var Fibro =
 
 
 };
+
+// setting up
+Components.utils.import("chrome://fibro/content/modules/Filesystem/LocalFile.jsm")
+

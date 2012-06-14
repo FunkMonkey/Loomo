@@ -1,0 +1,80 @@
+﻿
+simple_list
+{
+	background-color: #FFF;
+}
+
+simple_list_column
+{
+	padding-top: 1px;
+	overflow: auto;
+	width: 20em;
+}
+
+simple_list_item
+{
+	padding-bottom: 1px;
+}
+
+simple_list_item label
+{
+	border: 1px solid transparent;
+	padding-left: 2px;
+	padding-right: 2px;
+	margin: 0px;
+	border-radius: 3px;
+}
+
+simple_list_item label:hover
+{
+	border: 1px solid Highlight;
+	padding-left: 2px;
+	padding-right: 2px;
+	margin: 0;
+	border-radius: 3px;
+}
+
+simple_list_item image
+{
+	width: 18px;
+	height: 16px;
+	margin: 0;
+	padding-right: 1px;
+	padding-left: 1px;
+}
+
+simple_list_item:hover image
+{
+	margin: 0;
+	padding-right: 1px;
+}
+
+simple_list simple_list_item textbox[anonid="rename_field"]
+{
+}
+
+simple_list simple_list_item[selected="true"]
+{
+	/*background-color: #FFF;*/
+}
+
+simple_list simple_list_item[selected="true"] label
+{
+	background-color: Highlight;
+	color: #FFF;
+}
+
+simple_list simple_list_item[isCut="true"] image
+{
+	opacity:0.5;
+}
+
+simple_list simple_list_item[isCut="true"] box
+{
+    background-image: url(chrome://itembrowser/skin/itemview/cut_16.png);
+    background-repeat: no-repeat;
+}
+
+
+
+

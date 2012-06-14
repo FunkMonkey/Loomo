@@ -22,7 +22,7 @@ const CCtor = Components.Constructor;
 
 // Includes
 Components.utils.import("resource://gre/modules/Services.jsm");
-Components.utils.import("chrome://fibro/content/modules/MozXPCOM.jsm");
+Components.utils.import("chrome://fibro/content/modules/Utils/MozXPCOM.jsm");
 
 // more Services
 Services.appStartup = Cc[MOZ.CON.nsAppStartup].getService(Ci.nsIAppStartup);

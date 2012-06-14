@@ -7,19 +7,16 @@
 //======================================================================================//
 //======================================================================================//
 
-var Cu = Components.utils;
 
 // Includes
 //Cu.import("resource://filebrowser/Filebrowser.jsm");
 //Cu.import("resource://filebrowser/Utilities/MozServices.jsm");
 //Cu.import("resource://filebrowser/AccessCountRule.jsm");
-Cu.import("chrome://fibro/content/scripts/modules/Logging.jsm");
-Cu.import("chrome://fibro/content/scripts/modules/Timer.jsm");
 
-Cu.import("chrome://fibro/content/scripts/modules/Fibro.jsm");
-Cu.import("chrome://fibro/content/scripts/modules/Group.jsm");
+Components.utils.import("chrome://fibro/content/modules/Fibro.jsm");
+Components.utils.import("chrome://fibro/content/modules/ItemRegistry.jsm");
 
-Cu.import("chrome://fibro/content/scripts/modules/LocalFileGroup.jsm");
+Components.utils.import("chrome://fibro/content/modules/Filesystem/LocalFileGroup.jsm");
 
 //——————————————————————————————————————————————————————————————————————————————————————
 /// Sets the favicon using the given FileGroupItem
@@ -45,7 +42,7 @@ function initFileView()
 	
 	// create a filegroup and load it
 	//var loadTimer = new Timer("loadGroup");
-	var group = new LocalFileGroup(item, {includeHidden: true}); // TODO: make independent from LocalFileGroup
+	var group = new LocalFileGroup(item, {includeHidden: true}); // TODO: make independent from LocalFileGroup, item.getChildren()
 	//loadTimer.stop();
 	
 	//var viewTimer = new Timer("loadView");
@@ -67,7 +64,7 @@ function initFileView()
 // setup the onload-handler
 window.addEventListener("load", function(e) { initFileView(); }, false); 
 
-var item = Fibro.createItemFromURISpec(window.location.href);
+var item = ItemRegistry.createItemFromURISpec(window.location.href);
 
 // set the title
 document.title = item.getDisplayName();

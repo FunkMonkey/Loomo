@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE bindings PUBLIC "-//MOZILLA//DTD XBL V1.0//EN" "http://www.mozilla.org/xbl">
+
+<bindings
+    xmlns="http://www.mozilla.org/xbl"
+    xmlns:xbl="http://www.mozilla.org/xbl"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	
+	<binding id="simple_list">
+		<content>
+			<xul:scrollbox flex="1" >
+				
+				<xul:simple_list_column anonid="column" flex="1" >
+				</xul:simple_list_column>
+				
+			</xul:scrollbox>
+		</content>
+		
+		<implementation>
+			<constructor>
+				if(typeof(SimpleList) === "undefined")
+					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleList.jsm");
+					
+				SimpleList.call(this);
+			</constructor>
+			
+		</implementation>
+		
+	</binding>
+	
+	<binding id="simple_list_item">
+		<content>
+			<xul:vbox>
+				<xul:spacer flex="1" />
+				<xul:image anonid="icon" />
+				<xul:spacer flex="1" />
+			</xul:vbox>
+			<xul:label anonid="label" />
+			<xul:textbox anonid="rename_field" hidden="true" />
+			<xul:box anonid="spacer" flex="1" />
+		</content>
+		
+		<implementation>
+			<constructor>
+				if(typeof(SimpleListItem) === "undefined")
+					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleListItem.jsm");
+					
+				SimpleListItem.call(this);
+			</constructor>
+			
+		</implementation>
+		
+	</binding>
+	
+	<binding id="simple_list_column">
+		<content>
+			<children/>
+		</content>
+		
+		<implementation>
+			<constructor>
+				if(typeof(SimpleListColumn) === "undefined")
+					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleListColumn.jsm");
+					
+				SimpleListColumn.call(this);
+			</constructor>
+			
+		</implementation>
+		
+	</binding>
+
+</bindings>

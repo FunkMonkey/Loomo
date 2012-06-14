@@ -1,0 +1,23 @@
+itemview_container
+{
+	-moz-binding: url('chrome://fibro/content/bindings/itemview/Container.xbl#itemview_container');
+}
+
+simple_list
+{
+	-moz-binding: url('chrome://fibro/content/bindings/itemview/SimpleList.xbl#simple_list');
+	-moz-user-focus: normal;
+}
+
+simple_list_column
+{
+	-moz-binding: url('chrome://fibro/content/bindings/itemview/SimpleList.xbl#simple_list_column');
+	-moz-box-orient: vertical;
+}
+
+simple_list_item
+{
+	-moz-binding: url('chrome://fibro/content/bindings/itemview/SimpleList.xbl#simple_list_item');
+	-moz-box-orient: horizontal;
+	-moz-user-focus: normal;
+}

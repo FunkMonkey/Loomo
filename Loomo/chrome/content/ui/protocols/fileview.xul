@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE window PUBLIC "-//MOZILLA//DTD XUL V1.0//EN" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://fibro/content/bindings/bindings.css" type="text/css"?>
+
+<!-- TODO: make independent from list -->
+<?xml-stylesheet href="chrome://fibro/skin/itemview/simple_list.css" type="text/css"?>
+<!--<?xml-stylesheet href="chrome://fibro/skin/fileview/fileview_item_rules.css" type="text/css"?>-->
+
+<window id="fileview_window"
+        title="a"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        >
+	
+	<html:link id="favicon" rel="shortcut icon" type="image/png" href="" style="display: block;" />
+	<!--<script src="chrome://browser/content/utilityOverlay.js" />-->
+
+	<script src="chrome://fibro/content/scripts/protocols/fileview.js" />
+	
+	
+	<itemview_container id="fileview_container" flex="1">
+		<simple_list id="itemview_simple" flex="1" />
+	</itemview_container>
+
+</window>

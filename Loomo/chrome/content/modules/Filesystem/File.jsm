@@ -1,7 +1,8 @@
 var EXPORTED_SYMBOLS = ["File"];
 
-Components.utils.import("chrome://fibro/content/scripts/modules/Utils.jsm");
-Components.utils.import("chrome://fibro/content/scripts/modules/Item.jsm");
+Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
+Components.utils.import("chrome://fibro/content/modules/Utils/Extension.jsm");
+Components.utils.import("chrome://fibro/content/modules/Item.jsm");
 
 Ci = Components.interfaces;
 
@@ -50,7 +51,7 @@ File.prototype = {
 		this._xpcomFile = val;
 	},
 	
-	
+	// TODO: remove
 	/**
 	 * Checks if the file will be opened in the fileview
 	 * 
@@ -98,7 +99,7 @@ File.prototype = {
 	 */
 	getIconURIString: function getIconURIString(size)
 	{
-		var alternativeIcon = this.getAlternativeIconURIString(size)
+		var alternativeIcon = this.getAlternativeIconURIString(size);
 		if(alternativeIcon !== "")
 		{
 			return alternativeIcon;
@@ -111,25 +112,34 @@ File.prototype = {
 			else
 				return "chrome://global/skin/icons/warning-16.png"; // TODO check if favicon from Places, before showing warning-picture
 			
-			// folders can have user-set icons, so grab it from the URI
-			if(this.xpcomFile.isDirectory())
-			{
-				return iconURIunique;
-			}
-			else
-			{
-				var ext = this.xpcomFile.leafName;
-				ext = ext.substring(ext.lastIndexOf(".") + 1);
-				
-				// some file types have user-set icons, so grab it from the URI			
-				if(ext === "exe" || ext === "lnk" || ext === "ico")
+			// TODO: try to get rid of the exceptions
+			try{
+				// folders can have user-set icons, so grab it from the URI
+				if(this.xpcomFile.isDirectory())
 				{
 					return iconURIunique;
 				}
-				
-				// for everything else, grab it from the file extension
-				return "moz-icon://." + ext + "?size=" + size;
+				else
+				{
+					var ext = this.xpcomFile.leafName;
+					ext = ext.substring(ext.lastIndexOf(".") + 1);
+					
+					// some file types have user-set icons, so grab it from the URI			
+					if(ext === "exe" || ext === "lnk" || ext === "ico")
+					{
+						return iconURIunique;
+					}
+					
+					// for everything else, grab it from the file extension
+					return "moz-icon://." + ext + "?size=" + size;
+				}
 			}
+			catch(e)
+			{
+				return "chrome://global/skin/icons/warning-16.png";
+			}
+			
+			
 		}
 	},
 	
@@ -163,5 +173,6 @@ File.prototype = {
 	},
 };
 
-
 Extension.inherit(File, Item);
+
+

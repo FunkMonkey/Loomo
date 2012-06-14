@@ -4,7 +4,7 @@
 <!DOCTYPE overlay SYSTEM "chrome://filebrowser/locale/filebrowser.dtd">
 
 <overlay id="filebrowser_overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<script src="chrome://fibro/content/scripts/filebrowser_startup.js"/>
+	<script src="chrome://fibro/content/scripts/filebrowser_startup.js"></script>
 	<!--<script src="chrome://filebrowser/content/scripts/computer_button.js"/>-->
 	
 	<!--<window id="main-window">

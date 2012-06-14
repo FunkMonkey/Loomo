@@ -13,6 +13,9 @@ Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/MozXPCOM.jsm");
 Components.utils.import("chrome://fibro/content/modules/Fibro.jsm");
+Components.utils.import("chrome://fibro/content/modules/ItemRegistry.jsm");
+
+Components.utils.import("chrome://fibro/content/modules/utils/log.jsm");
 
 /* Temporary until Bug XXX was fixed */
 const C = Components;
@@ -102,26 +105,29 @@ nsXFileProtocolHandler.prototype =
 	/* nsIChannel */ newChannel: function(/* in nsIURI */ aURI)
 	{
 		// get the file that corresponds to the URI
-		/*var file = Fibro.LocalFile.prototype.getFileFromURI(aURI);
+		var file = ItemRegistry.createItemFromURI(aURI);
 		
 		// if file exists, show fileview ...
 		var URIspec = "";
-		if(file.exists())
+		if(file.xpcomFile.exists())
+		{
 			URIspec = "chrome://fibro/content/ui/protocols/fileview.xul";
+		}
 		// ... otherwise show errorpage
 		else
+		{
 			URIspec = "chrome://fibro/content/ui/protocols/error_page_file_not_found.xul";
+		}
 	
 		// create a URI from the string and create a channel based on that URI
 		var ext_uri = Services.io.newURI(URIspec, null, null);
 		var ext_channel = Services.io.newChannelFromURI(ext_uri);
+		return ext_channel;
 		
-		return ext_channel;*/
-		
-		var ext_uri = Services.io.newURI("about:config", null, null);
+		/*var ext_uri = Services.io.newURI("about:config", null, null);
 		var ext_channel = Services.io.newChannelFromURI(ext_uri);
 		
-		return ext_channel;
+		return ext_channel;*/
 	}
 
 }
