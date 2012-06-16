@@ -18,6 +18,8 @@ Components.utils.import("chrome://fibro/content/modules/ItemRegistry.jsm");
 
 Components.utils.import("chrome://fibro/content/modules/Filesystem/LocalFileGroup.jsm");
 
+Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
+
 //——————————————————————————————————————————————————————————————————————————————————————
 /// Sets the favicon using the given FileGroupItem
 ///
@@ -30,6 +32,13 @@ function setFavicon(item)
 	var newFavicon = favicon.cloneNode(true);
 	newFavicon.setAttribute('href', item.getIconURIString(16));
 	favicon.parentNode.replaceChild(newFavicon,favicon);
+}
+
+
+function openURICallback(urispec, event)
+{
+	var win = Services.wm.getMostRecentWindow('navigator:browser');
+	win.openUILinkIn(urispec, win.whereToOpenLink(event));
 }
 
 //——————————————————————————————————————————————————————————————————————————————————————
@@ -47,7 +56,8 @@ function initFileView()
 	
 	//var viewTimer = new Timer("loadView");
 	var view = document.getElementById("itemview_simple");
-	view.loadFromItemGroup(group);
+	view.impl.openURICallback = openURICallback;
+	view.impl.loadFromItemGroup(group);
 	//viewTimer.stop();
 	
 	/*var filegroup = Filebrowser.fileGroupManager.createFileGroup(item);

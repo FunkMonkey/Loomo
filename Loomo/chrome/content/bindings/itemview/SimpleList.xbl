@@ -22,7 +22,7 @@
 				if(typeof(SimpleList) === "undefined")
 					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleList.jsm");
 					
-				SimpleList.call(this);
+				this.impl = new SimpleList(this);
 			</constructor>
 			
 		</implementation>
@@ -46,7 +46,7 @@
 				if(typeof(SimpleListItem) === "undefined")
 					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleListItem.jsm");
 					
-				SimpleListItem.call(this);
+				this.impl = new SimpleListItem(this);
 			</constructor>
 			
 		</implementation>
@@ -63,7 +63,7 @@
 				if(typeof(SimpleListColumn) === "undefined")
 					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleListColumn.jsm");
 					
-				SimpleListColumn.call(this);
+				this.impl = new SimpleListColumn(this);
 			</constructor>
 			
 		</implementation>

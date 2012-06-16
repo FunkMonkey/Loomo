@@ -7,15 +7,15 @@ Components.utils.import("chrome://fibro/content/bindings/itemview/ListBase.jsm")
  * Column for a simple list view
  *
  * @constructor
+ * @param   {element}   node   The connected DOM element
  */
-SimpleListColumn = function SimpleListColumn()
+SimpleListColumn = function SimpleListColumn(node)
 {
-	XBLUtils.inherit(this, SimpleListColumn);
-	
+	this.node = node;
 	this._list = null;
 	
-	this.addEventListener("click", this.onClick.bind(this), false);
-	this.addEventListener("dblclick", this.onDblClick.bind(this), false);
+	this.node.addEventListener("click", this.onClick.bind(this), false);
+	this.node.addEventListener("dblclick", this.onDblClick.bind(this), false);
 	
 };
 
@@ -33,12 +33,12 @@ SimpleListColumn.prototype = {
 			return this._list;
 		
 		// otherwise look for the control
-		var parent = this.parentNode;
+		var parent = this.node.parentNode;
 		while (parent)
 		{
-			if (parent instanceof ListBase)
+			if (parent.impl && parent.impl instanceof ListBase)
 			{
-				this._list = parent;
+				this._list = parent.impl;
 				return this._list;
 			}
 			parent = parent.parentNode;

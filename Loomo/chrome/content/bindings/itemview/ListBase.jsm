@@ -13,9 +13,11 @@ Components.utils.import("chrome://fibro/content/modules/Item.jsm");
  * @property {Function}        openURICallback Called when item is opened
  *
  * @constructor
+ * @param   {element}   node   The connected DOM element
  */
-ListBase = function ListBase()
+ListBase = function ListBase(node)
 {
+	this.node = node;
 	this.itemGroup = null;
 	this.items = [];
 	this.selectedItems = [];
@@ -45,24 +47,24 @@ ListBase.prototype = {
 	 */
 	addItemToSelection: function addItemToSelection(item)
 	{
-		domItem = this.getDOMItem(item);
-		if(!domItem)
+		listItem = this.getListItem(item);
+		if(!listItem)
 			throw new Error("Passed item does not belong to this view or maybe even unsupported argument (take care when passing URI's as strings)");
 		
-		this.addDOMItemToSelection(domItem);
+		this.addListItemToSelection(listItem);
 	},
 	
 	/**
 	 * Adds the given item to the selection
 	 * 
-	 * @param   {ListItemBase}   domItem   Item to add
+	 * @param   {ListItemBase}   listItem   Item to add
 	 */
-	addDOMItemToSelection: function _addDOMItemToSelection(domItem)
+	addListItemToSelection: function _addListItemToSelection(listItem)
 	{
-		if(!domItem.isSelected)
+		if(!listItem.isSelected)
 		{
-			domItem._isSelected = true;
-			this.selectedItems.push(domItem);
+			listItem._isSelected = true;
+			this.selectedItems.push(listItem);
 		}
 		else
 			throw new Error("Tried to add already selected item to selection");
@@ -75,28 +77,28 @@ ListBase.prototype = {
 	 */
 	removeItemFromSelection: function removeItemFromSelection(item)
 	{
-		domItem = this.getDOMItem(item);
-		if(!domItem)
+		listItem = this.getListItem(item);
+		if(!listItem)
 			throw new Error("Passed item does not belong to this view or maybe even unsupported argument (take care when passing URI's as strings)");
 		
-		this.removeDOMItemFromSelection(domItem);
+		this.removeListItemFromSelection(listItem);
 	},
 	
 	/**
 	 * Removes the given item from the selection
 	 * 
-	 * @param   {ListItemBase}   domItem   Item to remove
+	 * @param   {ListItemBase}   listItem   Item to remove
 	 */
-	removeDOMItemFromSelection: function removeDOMItemFromSelection(domItem)
+	removeListItemFromSelection: function removeListItemFromSelection(listItem)
 	{
-		if(domItem.isSelected)
+		if(listItem.isSelected)
 		{
 			for (var i = 0; i < this.selectedItems.length; ++i)
 			{
-				if(this.selectedItems[i] == domItem)
+				if(this.selectedItems[i] === listItem)
 				{
 					this.selectedItems.splice(i, 1);
-					domItem._isSelected = false;
+					listItem._isSelected = false;
 					return;
 				}
 			}
@@ -115,24 +117,24 @@ ListBase.prototype = {
 	 */
 	toggleItemSelection: function toggleItemSelection(item)
 	{
-		domItem = this.getDOMItem(item);
-		if(!domItem)
+		listItem = this.getListItem(item);
+		if(!listItem)
 			throw new Error("Passed item does not belong to this view or maybe even unsupported argument (take care when passing URI's as strings)");
 		
-		this.toggleDOMItemSelection(domItem);
+		this.toggleListItemSelection(listItem);
 	},
 	
 	/**
 	 * Toggles the selection of the given item
 	 * 
-	 * @param   {ListItemBase}   item   Item to toggle selection
+	 * @param   {ListItemBase}   listItem   Item to toggle selection
 	 */
-	toggleDOMItemSelection: function _toggleDOMItemSelection(domItem)
+	toggleListItemSelection: function _toggleListItemSelection(listItem)
 	{
-		if(domItem.isSelected)
-			this.removeDOMItemFromSelection(domItem);
+		if(listItem.isSelected)
+			this.removeListItemFromSelection(listItem);
 		else
-			this.addDOMItemToSelection(domItem);
+			this.addListItemToSelection(listItem);
 	},
 	
 	/**
@@ -154,42 +156,42 @@ ListBase.prototype = {
 	 * 
 	 * @returns {ListItemBase}   Found node or null
 	 */
-	getDOMItemIn: function getDOMItemIn(itemOrURIorSpecIn, array)
+	getListItemIn: function getListItemIn(itemOrURIorSpecIn, array)
 	{
 		if(itemOrURIorSpecIn instanceof ListItemBase)
 		{
 			for(var i = 0, len = array.length; i < len; ++i)
 			{
-				var domItem = array[i];
-				if(domItem === itemOrURIorSpecIn || domItem.item === itemOrURIorSpecIn.item || domItem.item.URI.spec === itemOrURIorSpecIn.item.URI.spec)
-					return domItem;
+				var listItem = array[i];
+				if(listItem === itemOrURIorSpecIn || listItem.item === itemOrURIorSpecIn.item || listItem.item.URI.spec === itemOrURIorSpecIn.item.URI.spec)
+					return listItem;
 			}
 		}
 		else if(itemOrURIorSpecIn instanceof Item)
 		{
 			for(var i = 0, len = array.length; i < len; ++i)
 			{
-				var domItem = array[i];
-				if(domItem.item === itemOrURIorSpecIn || domItem.item.URI.spec === itemOrURIorSpecIn.URI.spec)
-					return domItem;
+				var listItem = array[i];
+				if(listItem.item === itemOrURIorSpecIn || listItem.item.URI.spec === itemOrURIorSpecIn.URI.spec)
+					return listItem;
 			}
 		}
 		else if(itemOrURIorSpecIn instanceof Components.interfaces.nsIURI)
 		{
 			for(var i = 0, len = array.length; i < len; ++i)
 			{
-				var domItem = array[i];
-				if(domItem.item.URI.spec === itemOrURIorSpecIn.spec)
-					return domItem;
+				var listItem = array[i];
+				if(listItem.item.URI.spec === itemOrURIorSpecIn.spec)
+					return listItem;
 			}
 		}
 		else if(typeof(itemOrURIorSpecIn) === "string")
 		{
 			for(var i = 0, len = array.length; i < len; ++i)
 			{
-				var domItem = array[i];
-				if(domItem.item.URI.spec === itemOrURIorSpecIn)
-					return domItem;
+				var listItem = array[i];
+				if(listItem.item.URI.spec === itemOrURIorSpecIn)
+					return listItem;
 			}
 		}
 			
@@ -204,9 +206,9 @@ ListBase.prototype = {
 	 * 
 	 * @returns {ListItemBase}   Found node or null
 	 */
-	getDOMItem: function getDOMItem(itemOrURIorSpecIn)
+	getListItem: function getListItem(itemOrURIorSpecIn)
 	{
-		return this.getDOMItemIn(itemOrURIorSpecIn, this.items);
+		return this.getListItemIn(itemOrURIorSpecIn, this.items);
 	},
 	
 	/**
@@ -216,9 +218,9 @@ ListBase.prototype = {
 	 * 
 	 * @returns {ListItemBase}   Found node or null
 	 */
-	getDOMItemInSelection: function getDOMItemInSelection(itemOrURIorSpecIn)
+	getListItemInSelection: function getListItemInSelection(itemOrURIorSpecIn)
 	{
-		return this.getDOMItemIn(itemOrURIorSpecIn, this.selectedItems);
+		return this.getListItemIn(itemOrURIorSpecIn, this.selectedItems);
 	},
 	
 	/**
@@ -227,7 +229,7 @@ ListBase.prototype = {
 	 * @param   {ListItemBase}   item    Item to open
 	 * @param   {event}          event   Event
 	 */
-	openDOMItem: function openDOMItem(item, event)
+	openListItem: function openListItem(item, event)
 	{
 		var urispec = item.item.open();
 		if(urispec)

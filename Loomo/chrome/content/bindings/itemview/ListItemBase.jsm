@@ -12,9 +12,11 @@ var ListBase = null;
  * @property {ListBase}   list    List this node belongs to
  *
  * @constructor
+ * @param   {element}   node   The connected DOM element
  */
-ListItemBase = function ListItemBase()
+ListItemBase = function ListItemBase(node)
 {
+	this.node = node;
 	this.item = null;
 	this._list = null;
 };
@@ -32,12 +34,12 @@ ListItemBase.prototype = {
 			return this._list;
 		
 		// otherwise look for the control
-		var parent = this.parentNode;
+		var parent = this.node.parentNode;
 		while (parent)
 		{
-			if (parent instanceof ListBase)
+			if (parent.impl && parent.impl instanceof ListBase)
 			{
-				this._list = parent;
+				this._list = parent.impl;
 				return this._list;
 			}
 			parent = parent.parentNode;
@@ -48,20 +50,20 @@ ListItemBase.prototype = {
 
 	get isSelected()
 	{
-		return this.hasAttribute("isSelected");
+		return this.node.hasAttribute("isSelected");
 	},
 	
 	get _isSelected()
 	{
-		return this.hasAttribute("isSelected");
+		return this.node.hasAttribute("isSelected");
 	},
 	
 	set _isSelected(value)
 	{
 		if (value)
-			this.setAttribute("isSelected", "");
+			this.node.setAttribute("isSelected", "");
 		else
-			this.removeAttribute("isSelected");
+			this.node.removeAttribute("isSelected");
 	},
 	
 };

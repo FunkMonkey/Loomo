@@ -8,11 +8,11 @@ Components.utils.import("chrome://fibro/content/bindings/itemview/ListBase.jsm")
  * A simple list view
  *
  * @constructor
+ * @param   {element}   node   The connected DOM element
  */
-SimpleList = function SimpleList()
+SimpleList = function SimpleList(node)
 {
-	XBLUtils.inherit(this, SimpleList);
-	ListBase.call(this);
+	ListBase.call(this, node);
 };
 
 // TODO: document
@@ -23,11 +23,11 @@ SimpleList.prototype = {
 
 	_appendItem: function _appendItem(item, list)
 	{
-		var cell = this.ownerDocument.createElement("simple_list_item");
+		var cell = this.node.ownerDocument.createElement("simple_list_item");
 		list.appendChild(cell);
 		this.items.push(cell);
 		
-		cell.setItem(item);
+		cell.impl.setItem(item);
 		
 		return cell; 
 	},
@@ -35,12 +35,10 @@ SimpleList.prototype = {
 
 	_loadItems: function _loadItems()
 	{
-		Components.utils.import("chrome://fibro/content/modules/utils/log.jsm");
-		
 		// AccessCount
 		
 		//var list = this.ownerDocument.getAnonymousNodes(this)[0].childNodes[0];
-		var list = XBLUtils.getAnonNode(this, "column");
+		var list = XBLUtils.getAnonNode(this.node, "column");
 		
 		// TODO: clear the list at the beginning or something like that
 		for(var i = 0, len = this.itemGroup.length; i < len; ++i)
@@ -50,9 +48,9 @@ SimpleList.prototype = {
 	},
 	
 
-	_selectDOMItemRange: function _selectDOMItemRange(startDOMItem, endDOMItem)
+	_selectListItemRange: function _selectListItemRange(startListItem, endListItem)
 	{
-		if(!startDOMItem && !endDOMItem)
+		if(!startListItem && !endListItem)
 			this.clearSelection();
 			
 			// Don't forget visibility!!!

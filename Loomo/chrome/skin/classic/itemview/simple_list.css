@@ -53,12 +53,12 @@ simple_list simple_list_item textbox[anonid="rename_field"]
 {
 }
 
-simple_list simple_list_item[selected="true"]
+simple_list simple_list_item[isSelected]
 {
 	/*background-color: #FFF;*/
 }
 
-simple_list simple_list_item[selected="true"] label
+simple_list simple_list_item[isSelected] label
 {
 	background-color: Highlight;
 	color: #FFF;

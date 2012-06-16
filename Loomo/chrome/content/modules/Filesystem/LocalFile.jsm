@@ -29,6 +29,18 @@ function LocalFile(uriOrFile)
 LocalFile.prototype = {
 
 	constructor: LocalFile,
+	
+	/**
+	 * Creates a local file from the given XPCOM file
+	 * 
+	 * @param   {nsIFile}   file   The file
+	 * 
+	 * @returns {LocalFile}   Created local file
+	 */
+	createFromXPCOMFile: function getURISpecFromXPCOMFile(file)
+	{
+		return new LocalFile(file);
+	},
 
 	/**
 	 * Returns the "xfile" URI spec given by a nsIFile

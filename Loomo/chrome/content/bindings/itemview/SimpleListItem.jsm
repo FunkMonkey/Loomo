@@ -9,15 +9,15 @@ Components.utils.import("chrome://fibro/content/bindings/itemview/ListItemBase.j
  * Item for a simple list view
  *
  * @constructor
+ * @param   {element}   node   The connected DOM element
  */
-SimpleListItem = function SimpleListItem()
+SimpleListItem = function SimpleListItem(node)
 {
-	XBLUtils.inherit(this, SimpleListItem);
-	ListItemBase.call(this);
+	ListItemBase.call(this, node);
 	
-	this._DOMIcon = XBLUtils.getAnonNode(this, "icon");
-	this._DOMLabel = XBLUtils.getAnonNode(this, "label");
-	this._DOMSpacer = XBLUtils.getAnonNode(this, "spacer");
+	this._DOMIcon = XBLUtils.getAnonNode(this.node, "icon");
+	this._DOMLabel = XBLUtils.getAnonNode(this.node, "label");
+	this._DOMSpacer = XBLUtils.getAnonNode(this.node, "spacer");
 	
 	this._DOMIcon.addEventListener("click", this.onClick.bind(this), false);
 	this._DOMIcon.addEventListener("dblclick", this.onDoubleClick.bind(this), false);
@@ -28,7 +28,7 @@ SimpleListItem = function SimpleListItem()
 	this._DOMSpacer.addEventListener("dblclick", this.onSpacerDblClick.bind(this), false);
 	
 	this.scrollListener = this.onParentScroll.bind(this);
-	this.parentNode.addEventListener("scroll", this.scrollListener, false);
+	this.node.parentNode.addEventListener("scroll", this.scrollListener, false);
 };
 
 SimpleListItem.prototype = {
@@ -43,8 +43,8 @@ SimpleListItem.prototype = {
 		this.item = item;	
 		
 		// set some attributes
-		this.setAttribute("class", "itemview_item");
-		this.setAttribute("urispec", this.item.URI.spec);
+		this.node.setAttribute("class", "itemview_item");
+		this.node.setAttribute("urispec", this.item.URI.spec);
 		
 		this.iconURI = this.item.getIconURIString(16);
 		
@@ -61,7 +61,7 @@ SimpleListItem.prototype = {
 		if(!this.iconSetup && this.isVisibleInScroll())
 		{
 			this._DOMIcon.setAttribute("src", this.iconURI);
-			this.parentNode.removeEventListener("scroll", this.scrollListener, false);
+			this.node.parentNode.removeEventListener("scroll", this.scrollListener, false);
 			this.iconSetup = true;
 		}
 	},
@@ -82,7 +82,7 @@ SimpleListItem.prototype = {
 			
 			if (event.ctrlKey || event.metaKey)
 			{
-				this.list.toggleDOMItemSelection(this);
+				this.list.toggleListItemSelection(this);
 				//control.currentItem = this;
 			}
 			else if (event.shiftKey)
@@ -95,7 +95,7 @@ SimpleListItem.prototype = {
 				if(!this.isSelected)
 				{
 					this.list.clearSelection();
-					this.list.addDOMItemToSelection(this);
+					this.list.addListItemToSelection(this);
 				}
 			}
 			//control._userSelecting = false;
@@ -117,7 +117,7 @@ SimpleListItem.prototype = {
 	isVisibleInScroll: function isVisibleInScroll()
 	{
 		//logI("offset: " + this.boxObject.y + " " + this.parentNode.scrollTop + " " + this.parentNode.scrollHeight + " " + this.parentNode.boxObject.height);
-		return (this.boxObject.y > this.parentNode.scrollTop && (this.boxObject.y < (this.parentNode.scrollTop + this.parentNode.boxObject.height)));
+		return (this.node.boxObject.y > this.node.parentNode.scrollTop && (this.node.boxObject.y < (this.node.parentNode.scrollTop + this.node.parentNode.boxObject.height)));
 	},
 	
 	//——————————————————————————————————————————————————————————————————————————————————————
@@ -125,7 +125,7 @@ SimpleListItem.prototype = {
 	//——————————————————————————————————————————————————————————————————————————————————————
 	onDoubleClick: function onDoubleClick(event)
 	{
-		this.open(event);
+		this.list.openListItem(this, event);
 	},
 	
 	//——————————————————————————————————————————————————————————————————————————————————————
@@ -141,7 +141,7 @@ SimpleListItem.prototype = {
 	//——————————————————————————————————————————————————————————————————————————————————————
 	onSpacerDblClick: function onSpacerDblClick(event)
 	{
-		this.openGroupParent(event);
+		this.list.openGroupParent(event);
 	},
 	
 };
