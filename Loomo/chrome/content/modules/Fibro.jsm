@@ -14,6 +14,9 @@ Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/MozXPCOM.jsm");
 
+// Test
+Components.utils.import("chrome://fibro/content/modules/Filesystem/FileOperations.jsm")
+
 //======================================================================================//
 // Filebrowser																			//
 //======================================================================================//
