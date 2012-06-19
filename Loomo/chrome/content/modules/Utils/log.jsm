@@ -53,6 +53,61 @@ var LogUtils = {
 		log(str);
 	},
 	
+	logAllProperties: function logAllProperties(object)
+	{
+		var chain = [];
+		
+		/*if(options.ownPropsOnly)
+		{
+			chain.push(from);
+		}
+		else*/
+		{
+			// creating the inheritence chain
+			var currObj = object;
+			while(currObj)
+			{
+				chain.push(currObj);
+				
+				// go down further in the inheritence chain
+				// don't copy Object.prototype
+				var proto = Object.getPrototypeOf(currObj);
+				
+				// dirty hack, cannot check for Object.prototype sometimes (f. ex. in different js contexts)
+				// thus checking for a member
+				currObj = proto.hasOwnProperty("hasOwnProperty") ? null : proto; 
+			}
+		}
+		
+		var allProps = {};
+		
+		// go through the inheritence chain
+		for(var i = 0; i < chain.length; ++i)
+		{
+			var propNames = Object.getOwnPropertyNames(chain[i]);
+			
+			// copy all property descriptors over to "to"
+			for(var j = 0; j < propNames.length; ++j)
+			{
+				// don't copy, if prop has already been borrowed from up in the chain
+				if(allProps[propNames[j]])
+					continue;
+				
+				allProps[propNames[j]] = true;
+			}
+		}
+		
+		var str = "";
+		for(var propName in allProps)
+		{
+			var sub = (object[propName].toString == null) ? "[Object]" : ""+ object[propName];
+			
+			str += propName + ": " + sub + "\n";
+		}
+		
+		log(str);
+	},
+	
 	/**
 	 * Logs the stack of a given error
 	 *    - if no error is given, it will log the stack of the call to logStack
