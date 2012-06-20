@@ -222,7 +222,7 @@ IFileOperationVtbl.define(
 	  { "RenameItem": ctypes.voidptr_t },
 	  { "RenameItems": ctypes.voidptr_t },
 	  { "MoveItem": ctypes.voidptr_t },
-	  { "RenameItems": ctypes.voidptr_t },
+	  { "MoveItems": ctypes.voidptr_t },
 	  {
         "CopyItem": ctypes.FunctionType(ctypes.stdcall_abi,
                                        HRESULT,
