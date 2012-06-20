@@ -209,6 +209,20 @@ IFileOperationVtbl.define(
                                          IFileOperation.ptr
                                        ]).ptr
       },
+	  
+	  { "Advise": ctypes.voidptr_t },
+	  { "Unadvise": ctypes.voidptr_t },
+	  { "SetOperationFlags": ctypes.voidptr_t },
+	  { "SetProgressMessage": ctypes.voidptr_t },
+	  { "SetProgressDialog": ctypes.voidptr_t },
+	  { "SetProperties": ctypes.voidptr_t },
+	  { "SetOwnerWindow": ctypes.voidptr_t },
+	  { "ApplyPropertiesToItem": ctypes.voidptr_t },
+	  { "ApplyPropertiesToItems": ctypes.voidptr_t },
+	  { "RenameItem": ctypes.voidptr_t },
+	  { "RenameItems": ctypes.voidptr_t },
+	  { "MoveItem": ctypes.voidptr_t },
+	  { "RenameItems": ctypes.voidptr_t },
 	  {
         "CopyItem": ctypes.FunctionType(ctypes.stdcall_abi,
                                        HRESULT,
@@ -219,10 +233,16 @@ IFileOperationVtbl.define(
 										 ctypes.voidptr_t
                                        ]).ptr
       },
+	  { "CopyItems": ctypes.voidptr_t },
+	  { "DeleteItem": ctypes.voidptr_t },
+	  { "DeleteItems": ctypes.voidptr_t },
+	  { "NewItem": ctypes.voidptr_t },
 	  {
         "PerformOperations": ctypes.FunctionType(ctypes.stdcall_abi,
                                        HRESULT).ptr
       },
+	  { "GetAnyOperationsAborted": ctypes.voidptr_t },  
+	  
 	]);
 
 
