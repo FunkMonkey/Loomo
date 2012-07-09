@@ -1,11 +1,13 @@
-var EXPORTED_SYMBOLS = ["IFileOperationModule"];
+var loadedByWorker = (typeof importScripts === "function");
 
-Components.utils.import("resource://gre/modules/ctypes.jsm");
-Components.utils.import("chrome://fibro/content/modules/Utils/COM/COM.jsm");
-Components.utils.import("chrome://fibro/content/modules/Utils/COM/IShellItem.jsm");
-
-Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
-
+if(!loadedByWorker)
+{
+	var EXPORTED_SYMBOLS = ["IFileOperationModule"];
+	
+	Components.utils.import("resource://gre/modules/ctypes.jsm");
+	Components.utils.import("chrome://fibro/content/modules/Utils/COM/COM.jsm");
+	Components.utils.import("chrome://fibro/content/modules/Utils/COM/IShellItem.jsm");
+}
 
 var IFileOperationModule = {
 	
@@ -147,10 +149,8 @@ var IFileOperationModule = {
 		hr = COM.shell32.SHCreateItemFromParsingName(destination, null, IShellItemModule.IID_IShellItem.address(), dest.address());
 		COM.checkHRESULT(hr, "SHCreateItemFromParsingName (destination)");
 		
-		log(sourceFilename + " " + destination)
-		
 		var fileOp = fileOpPtr.contents.lpVtbl.contents;
-		hr = fileOp.CopyItem(fileOpPtr, fileToCopy, dest, "fsdff", null);
+		hr = fileOp.CopyItem(fileOpPtr, fileToCopy, dest, (newName == null) ? null : newName, null);
 		COM.checkHRESULT(hr, "CopyItem");
 		
 		hr = fileOp.PerformOperations(fileOpPtr);

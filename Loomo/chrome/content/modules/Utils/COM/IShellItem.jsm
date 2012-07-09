@@ -1,7 +1,12 @@
-var EXPORTED_SYMBOLS = ["IShellItemModule"];
+var loadedByWorker = (typeof importScripts === "function");
 
-Components.utils.import("resource://gre/modules/ctypes.jsm");
-Components.utils.import("chrome://fibro/content/modules/Utils/COM/COM.jsm");
+if(!loadedByWorker)
+{
+	var EXPORTED_SYMBOLS = ["IShellItemModule"];
+	
+	Components.utils.import("resource://gre/modules/ctypes.jsm");
+	Components.utils.import("chrome://fibro/content/modules/Utils/COM/COM.jsm");
+}
 
 var IShellItemModule = {
 	
@@ -57,7 +62,7 @@ var IShellItemModule = {
 		
 		this.IID_IShellItem = new COM.GUID();
 		var hr = COM.CLSIDFromString("{43826d1e-e718-42ee-bc55-a1e261c37bfe}", this.IID_IShellItem.address());
-		COM.checkHRESULT(hr, "CLSIDFromString (IID_IShellItem)");
+		COM.checkHRESULT(hr);
 		
 		this.IShellItem = IShellItem;
 		this.IShellItemPtr = IShellItemPtr;

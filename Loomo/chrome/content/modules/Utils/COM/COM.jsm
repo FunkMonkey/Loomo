@@ -1,6 +1,12 @@
-var EXPORTED_SYMBOLS = ["COM"];
+var loadedByWorker = (typeof importScripts === "function");
 
-Components.utils.import("resource://gre/modules/ctypes.jsm");
+if(!loadedByWorker)
+{
+	var EXPORTED_SYMBOLS = ["COM"];
+
+	Components.utils.import("resource://gre/modules/ctypes.jsm");
+	//Components.utils.import("chrome://fibro/content/modules/Utils/Extension.jsm");
+}
 
 
 var jscharPtr = new ctypes.PointerType(ctypes.jschar);
@@ -60,9 +66,10 @@ var COM = {
 		return number.toString(16).toUpperCase();
 	},
 	
-	checkHRESULT: function checkHRESULT(hr, funcName) {
+	checkHRESULT: function checkHRESULT(hr) {
 		if(hr != this.S_OK) {
-			throw "HRESULT " + hr + " (0x" + this.decimalToHexString(parseInt(hr.toString())) + ")" + " returned from function " + funcName;
+			//throw new Error("TESTERR");
+			throw new COM.COMError(hr);
 		}
 	},
 	
@@ -148,8 +155,21 @@ var COM = {
 			}
 		}
 	}, 
+};
+
+COM.COMError = function COMError(hr)
+{
+	// Well, we don't subclass, cause for some reason that fucks up the callstack
+	var name = "COMError " + hr + " (0x" + COM.decimalToHexString(parseInt(hr.toString())) + ")";
 	
+	var err = new Error(name);
 	
+	err.isCOMError = true;
+	err.name = name;
+	err.message = name + " Well, go and google!!!";
 	
-	
+	return err;
 }
+
+//Extension.inherit(COM.COMError, Error)
+
