@@ -1,5 +1,7 @@
 #Loomo
 
+*INFO:* Development is currently mostly paused until Mozilla's new faster asynchronous file IO, OS.File, is implemented to a certain degree. Currently waiting for OS.File to be usable from main-thread (using IO workers) tracked by the bugs [729057](https://bugzilla.mozilla.org/show_bug.cgi?id=729057) and [777711](https://bugzilla.mozilla.org/show_bug.cgi?id=777711). Shouldn't be too long though ...
+
 Loomo is a filebrowser extension for Mozilla Firefox.
 
 ![Loomo screenshot](https://raw.github.com/wiki/FunkMonkey/Loomo/images/loomo.jpg)
