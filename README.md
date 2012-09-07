@@ -2,7 +2,7 @@
 
 Loomo is a filebrowser extension for Mozilla Firefox.
 
-[[https://raw.github.com/wiki/FunkMonkey/Loomo/images/loomo.jpg]]
+![Loomo screenshot](https://raw.github.com/wiki/FunkMonkey/Loomo/images/loomo.jpg)
 
 It implements the `xfile` protocol, with which it is possible to browse the local filesystem from within the Firefox tabs. 
 
@@ -16,4 +16,4 @@ There is a very old version of Loomo, [Loomo Classic](Loomo/wiki/Loomo-Classic),
 
 Here is what it looked like:
 
-[[https://raw.github.com/wiki/FunkMonkey/Loomo/images/loomo_classic.jpg]]
+![Loomo Classic screenshot](https://raw.github.com/wiki/FunkMonkey/Loomo/images/loomo_classic.jpg)
