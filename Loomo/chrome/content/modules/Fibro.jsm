@@ -15,12 +15,12 @@ Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/MozXPCOM.jsm");
 
 // Test
-Components.utils.import("chrome://fibro/content/modules/Filesystem/FileOperations.jsm")
+Components.utils.import("chrome://fibro/content/modules/Filesystem/FileOperations.jsm");
 
 //======================================================================================//
 // Filebrowser																			//
 //======================================================================================//
-var Fibro = 
+var Fibro =
 {
 	quitApp: function quitApp(/* in boolean */aForceQuit)
 	{
@@ -38,12 +38,12 @@ var Fibro =
 	log: function log(message)
 	{
 		log(message);
-	}, 
+	},
 		
 
 
 };
 
 // setting up
-Components.utils.import("chrome://fibro/content/modules/Filesystem/LocalFile.jsm")
+Components.utils.import("chrome://fibro/content/modules/Filesystem/LocalFile.jsm");
 

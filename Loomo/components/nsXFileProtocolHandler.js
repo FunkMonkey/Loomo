@@ -20,7 +20,6 @@ Components.utils.import("chrome://fibro/content/modules/utils/log.jsm");
 /* Temporary until Bug XXX was fixed */
 const C = Components;
 const Ci = Components.interfaces;
-
 const nsXFileProtocolHandler_CID_STR			= "{789409b9-2e3b-4682-a5d1-71ca80a76456}";			
 const nsXFileProtocolHandler_CID				= C.ID(nsXFileProtocolHandler_CID_STR);				
 const nsXFileProtocolHandler_CON_ID				= "@mozilla.org/network/protocol;1?name=xfile";	

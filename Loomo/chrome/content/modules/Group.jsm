@@ -38,7 +38,7 @@ function Group(itemOrURIOrSpec)
 	else
 		throw new Error("Unsupported parameter. Please pass an Item or nsIURI or a string representing a URI spec!");
 	
-};
+}
 
 Group.prototype = {
 	constructor: Group

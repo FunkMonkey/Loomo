@@ -32,7 +32,7 @@ function File(uriOrFile)
 		Item.call(this, uriOrFile);
 		//this.file = this.getXPCOMFileFromURI(this.URI) // polymorphic;
 	}
-};
+}
 
 File.prototype = {
 	
@@ -41,7 +41,7 @@ File.prototype = {
 	get xpcomFile()
 	{
 		if(!this._xpcomFile)
-			this._xpcomFile = this.getXPCOMFileFromURI(this.URI) // polymorphic;
+			this._xpcomFile = this.getXPCOMFileFromURI(this.URI); // polymorphic;
 			
 		return this._xpcomFile;
 	},
@@ -124,7 +124,7 @@ File.prototype = {
 					var ext = this.xpcomFile.leafName;
 					ext = ext.substring(ext.lastIndexOf(".") + 1);
 					
-					// some file types have user-set icons, so grab it from the URI			
+					// some file types have user-set icons, so grab it from the URI
 					if(ext === "exe" || ext === "lnk" || ext === "ico")
 					{
 						return iconURIunique;
@@ -150,7 +150,7 @@ File.prototype = {
 	 */
 	getDisplayName: function getDisplayName()
 	{
-		if(this.alternativeDisplayName != "")
+		if(this.alternativeDisplayName !== "")
 			return this.alternativeDisplayName;
 		else
 			return this.xpcomFile.leafName;

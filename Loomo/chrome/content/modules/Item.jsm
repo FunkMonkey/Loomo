@@ -33,7 +33,7 @@ function Item(URIorSpec)
 	{
 		throw new Error("unsupported parameter. Please pass a nsIURI or a string representing a URI spec!");
 	}
-};
+}
 
 
 Item.prototype = {
