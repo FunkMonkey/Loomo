@@ -14,7 +14,8 @@ Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
  */
 function Item(URIorSpec)
 {
-	this.URI = null;
+	this.URIspec = "";
+	this._URI = null;
 	this.alternativeDisplayName = "";
 	this.alternativeIconURIs = {};
 	
@@ -23,11 +24,12 @@ function Item(URIorSpec)
 	
 	if(typeof(URIorSpec) === "string")
 	{
-		this.URI = Services.io.newURI(URIorSpec, null, null);
+		this.URIspec = URIorSpec;
 	}
 	else if(URIorSpec instanceof Components.interfaces.nsIURI)
 	{
-		this.URI = URIorSpec;
+		this._URI = URIorSpec;
+		this.URIspec = this._URI.spec;
 	}
 	else
 	{
@@ -39,6 +41,15 @@ function Item(URIorSpec)
 Item.prototype = {
 	
 		constructor: Item,
+
+		get URI()
+		{
+			if(!this.URI)
+				this._URI = Services.io.newURI(this.URIspec, null, null);
+				
+			return this._URI;
+		},
+		
 
 		/**
 		 * Returns the alternative URI for the icon

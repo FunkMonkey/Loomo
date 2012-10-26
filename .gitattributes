@@ -9,15 +9,18 @@
 *.js text
 *.jsm text
 *.manifest text
+*.md text
 *.properties text
 *.rdf text
 *.xhtml text
+*.xbl text
 *.xul text
 
 # Declare files that will always have CRLF line endings on checkout.
 
 
 # Denote all files that are truly binary and should not be modified.
+*.bmp binary
 *.gif binary
 *.jpg binary
 *.png binary
