@@ -37,6 +37,7 @@ var ItemRegistry = {
 	
 	/* Item, File, etc. */ createItemFromURISpec: function createItemFromURISpec(URIspec)
 	{
+		// TODO: extract scheme on our own
 		return this.createItemFromURI(Services.io.newURI(URIspec, null, null));
 	},
 	

@@ -4,6 +4,8 @@ Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/Extension.jsm");
 Components.utils.import("chrome://fibro/content/modules/Item.jsm");
 
+Components.utils.import("resource://gre/modules/commonjs/promise/core.js");
+
 Ci = Components.interfaces;
 
 /**
@@ -16,21 +18,12 @@ Ci = Components.interfaces;
  */
 function File(uriOrFile)
 {
-	this._xpcomFile = null;
-	
-	if(uriOrFile === undefined)
-		throw new Error("Constructor needs exactly one parameter that can be a nsIFile or nsIURI or a string representing a URI spec!");
-	
-	if(uriOrFile instanceof Ci.nsIFile)
-	{
-		var URI = this.getURIFromXPCOMFile(uriOrFile); // polymorphic
-		Item.call(this, URI);
-		this._xpcomFile = uriOrFile;
-	}
-	else
-	{
+	// the param should only be undefined if another Constructor already handles it
+	if(uriOrFile === undefined) {
+		if(this.constructor === File)
+			throw new Error("Constructor needs exactly one parameter that can be a nsIFile, a nsIURI or a string representing a URI spec!");
+	} else {
 		Item.call(this, uriOrFile);
-		//this.file = this.getXPCOMFileFromURI(this.URI) // polymorphic;
 	}
 }
 
@@ -38,33 +31,20 @@ File.prototype = {
 	
 	constructor: File,
 	
-	get xpcomFile()
-	{
-		if(!this._xpcomFile)
-			this._xpcomFile = this.getXPCOMFileFromURI(this.URI); // polymorphic;
-			
-		return this._xpcomFile;
-	},
-	
-	set xpcomFile(val)
-	{
-		this._xpcomFile = val;
-	},
-	
 	// TODO: remove
 	/**
 	 * Checks if the file will be opened in the fileview
 	 * 
 	 * @returns {boolean}   true if the file is a directory
 	 */
-	isOpeningInView: function isOpeningInView()
-	{
-		// TODO: if not directory, check firefox applications, so it might be shown in firefox
-		if(this.xpcomFile.isDirectory())
-			return true;
-		else
-			return false;
-	},
+	// isOpeningInView: function isOpeningInView()
+	// {
+	// 	// TODO: if not directory, check firefox applications, so it might be shown in firefox
+	// 	if(this.xpcomFile.isDirectory())
+	// 		return true;
+	// 	else
+	// 		return false;
+	// },
 	
 	/**
 	 * Opens the given file
@@ -76,17 +56,22 @@ File.prototype = {
 	{
 		// TODO: find a way to provide a working directory for executables
 		// TODO: implement launching of unix-files
+		// 
+		var deferred = Promise.defer();
+
+		var self = this;
+
+		this.isDirectory().then(function(res){
+				if(res) {
+					deferred.resolve(self.URIspec);
+				} else {
+					deferred.reject(new Error ("File launching not implemented"));
+				}
+			}, function(e){
+				deferred.reject(e);
+			});
 		
-		if(this.xpcomFile.isDirectory())
-		{
-			return this.URI.spec;
-		}
-		else
-		{
-			this.xpcomFile.launch();
-			return "";
-		}
-		
+		return deferred.promise;
 	},
 	
 	
@@ -99,6 +84,8 @@ File.prototype = {
 	 */
 	getIconURIString: function getIconURIString(size)
 	{
+		var deferred = Promise.defer();
+
 		var alternativeIcon = this.getAlternativeIconURIString(size);
 		if(alternativeIcon !== "")
 		{
@@ -106,41 +93,45 @@ File.prototype = {
 		}
 		else
 		{
-			var iconURIunique = "";
-			if(this.xpcomFile.exists())
-				iconURIunique = "moz-icon:" + this.URI.spec.substring(1) + "?size=" + size; // TODO: make independent from xfile
-			else
-				return "chrome://global/skin/icons/warning-16.png"; // TODO check if favicon from Places, before showing warning-picture
-			
-			// TODO: try to get rid of the exceptions
-			try{
-				// folders can have user-set icons, so grab it from the URI
-				if(this.xpcomFile.isDirectory())
-				{
-					return iconURIunique;
-				}
-				else
-				{
-					var ext = this.xpcomFile.leafName;
-					ext = ext.substring(ext.lastIndexOf(".") + 1);
+
+			var self = this;
+			self.exists().then(function(res){
+
+					// existing files
+					if(res) {
+						var iconURIunique = "moz-icon:" + self.URIspec.substring(1) + "?size=" + size; // TODO: make independent from xfile
+						self.isDirectory().then(function(res){
+								
+								// folders can have user-set icons, so grab it from the URI
+								if(res) {
+									deferred.resolve(iconURIunique);
+								} else {
+									var ext = self.basename;
+									ext = ext.substring(ext.lastIndexOf(".") + 1);
+									
+									// some file types have user-set icons, so grab it from the URI
+									if(ext === "exe" || ext === "lnk" || ext === "ico") {
+										deferred.resolve(iconURIunique);
+									}
+									
+									// for everything else, grab it from the file extension
+									deferred.resolve("moz-icon://." + ext + "?size=" + size);
+								}
+							}, function(e){
+								deferred.resolve("chrome://global/skin/icons/warning-16.png");
+							});
 					
-					// some file types have user-set icons, so grab it from the URI
-					if(ext === "exe" || ext === "lnk" || ext === "ico")
-					{
-						return iconURIunique;
+					// file does not exist
+					} else {
+						deferred.resolve("chrome://global/skin/icons/warning-16.png");
 					}
-					
-					// for everything else, grab it from the file extension
-					return "moz-icon://." + ext + "?size=" + size;
-				}
-			}
-			catch(e)
-			{
-				return "chrome://global/skin/icons/warning-16.png";
-			}
-			
-			
+
+				}, function(e){
+					deferred.resolve("chrome://global/skin/icons/warning-16.png");
+				});
 		}
+
+		return deferred.promise;
 	},
 	
 	/**
@@ -153,24 +144,10 @@ File.prototype = {
 		if(this.alternativeDisplayName !== "")
 			return this.alternativeDisplayName;
 		else
-			return this.xpcomFile.leafName;
+			return this.basename;
 	},
 	
-	/**
-	 * Returns the parent file
-	 * 
-	 * @returns {File}   Parent file
-	 */
-	get parent()
-	{
-		var parent = this.xpcomFile.parent;
-		if(parent != null)
-		{
-			return this.createFromXPCOMFile(parent);
-		}
-		else
-			return null;
-	},
+	
 };
 
 Extension.inherit(File, Item);

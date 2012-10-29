@@ -107,20 +107,32 @@ nsXFileProtocolHandler.prototype =
 		var file = ItemRegistry.createItemFromURI(aURI);
 		
 		// if file exists, show fileview ...
+		// 
+		
 		var URIspec = "";
-		if(file.xpcomFile.exists())
-		{
-			URIspec = "chrome://fibro/content/ui/protocols/fileview.xul";
-		}
-		// ... otherwise show errorpage
-		else
-		{
+
+		try {
+			// TODO: check for file existence
+			//if(file.xpcomFile.exists())
+			{
+				URIspec = "chrome://fibro/content/ui/protocols/fileview.xul";
+			}
+			// ... otherwise show errorpage
+			// else
+			// {
+			// 	URIspec = "chrome://fibro/content/ui/protocols/error_page_file_not_found.xul";
+			// }
+
+		} catch(e) {
 			URIspec = "chrome://fibro/content/ui/protocols/error_page_file_not_found.xul";
+			Fibro.log(e);
 		}
-	
+		 
 		// create a URI from the string and create a channel based on that URI
 		var ext_uri = Services.io.newURI(URIspec, null, null);
 		var ext_channel = Services.io.newChannelFromURI(ext_uri);
+		
+
 		return ext_channel;
 		
 		/*var ext_uri = Services.io.newURI("about:config", null, null);
@@ -129,7 +141,7 @@ nsXFileProtocolHandler.prototype =
 		return ext_channel;*/
 	}
 
-}
+};
 
 //——————————————————————————————————————————————————————————————————————————————————————
 // XPCOM Registration

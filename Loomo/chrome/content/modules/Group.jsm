@@ -23,7 +23,7 @@ function Group(itemOrURIOrSpec)
 	{
 		this.contextItem = itemOrURIOrSpec;
 	}
-	else if(itemOrURIOrSpec instanceof Components.interfaces.nsIURI)
+	/*else if(itemOrURIOrSpec instanceof Components.interfaces.nsIURI)
 	{
 		// TODO: use Fibro item registry
 		Cu.import("chrome://fibro/content/scripts/modules/Fibro.jsm");
@@ -34,7 +34,7 @@ function Group(itemOrURIOrSpec)
 		// TODO: use Fibro item registry
 		Cu.import("chrome://fibro/content/scripts/modules/Fibro.jsm");
 		this.contextItem = Fibro.createItemFromURISpec(itemOrURIOrSpec);	
-	}
+	}*/
 	else
 		throw new Error("Unsupported parameter. Please pass an Item or nsIURI or a string representing a URI spec!");
 	

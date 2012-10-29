@@ -7,6 +7,7 @@ Components.utils.import("chrome://fibro/content/modules/Utils/Extension.jsm");
 Components.utils.import("chrome://fibro/content/modules/Group.jsm");
 Components.utils.import("chrome://fibro/content/modules/Item.jsm");
 Components.utils.import("chrome://fibro/content/modules/Filesystem/LocalFile.jsm");
+Components.utils.import("resource://gre/modules/osfile.jsm");
 
 /**
  * Represents a group of local files
@@ -18,30 +19,26 @@ Components.utils.import("chrome://fibro/content/modules/Filesystem/LocalFile.jsm
  * @param   {LocalFile|nsIURI|string}   itemOrURIOrSpec   LocalFile, URI or URIspec this group will be created from
  * @param   {Object}                    [options]         Options for creating group
  */
-function LocalFileGroup(itemOrURIOrSpec, options)
+function LocalFileGroup(localFileOrSomething, options)
 {
 	// TODO: move some of this to FileGroup.jsm
 	
 	this.setOptions(options);
 	
-	if(itemOrURIOrSpec === undefined)
-		throw new Error("Constructor needs at least one parameter that can be a File, nsIFile, nsIURI or a string representing a URI spec!");
-	
-	if(itemOrURIOrSpec instanceof Item && !(itemOrURIOrSpec instanceof LocalFile))
-		throw new Error("Unsupported parameter. The argument passed is an Item, but not a File!");
-	
-	if(itemOrURIOrSpec instanceof Ci.nsILocalFile)
-	{
-		Group.call(this, LocalFile.prototype.createFromXPCOMFile(itemOrURIOrSpec));
+	if(localFileOrSomething === undefined) {
+		throw new Error("Constructor needs at least one parameter that has to be a LocalFile!");
+	} else if (localFileOrSomething instanceof LocalFile) {
+		Group.call(this, localFileOrSomething);
+	} else {
+		Group.call(this, new LocalFile(localFileOrSomething));
 	}
-	else
-	{
-		Group.call(this, itemOrURIOrSpec); // TODO, we should check for URI or string
-	}
-	
+
 	this.directory = this.contextItem;
-	
-	this._loadFiles();
+}
+
+LocalFileGroup.create = function create(localFile, options){
+	var fileGroup = new LocalFileGroup(localFile, options);
+	return fileGroup._loadFiles(options);
 };
 
 LocalFileGroup.prototype = {
@@ -63,32 +60,26 @@ LocalFileGroup.prototype = {
 	
 	_loadFiles: function _loadFiles(/* long */ aFlags)
 	{
-		// TODO: throw exception if it is not a directory
-		
-		// not working anyway!!!
-		/*if(filegroup.directory.file.isSymlink())
-		{
-			var tmpFile  = new MOZ.LocalFile();
-			tmpFile.initWithPath(groupDir.targetPath);
-			filegroup.directory.file = tmpFile;
-		}*/
-		
-		// create the filegroup items from the directory entries
-		var files = this.directory.xpcomFile.directoryEntries;
-		
-		while (files.hasMoreElements())
-		{
-			var xpcomFile = files.getNext().QueryInterface(Ci.nsIFile);
-			if(!this.options.includeHidden && xpcomFile.isHidden())
-				continue;
-			/*if(((Ci.nsIFileGroupFromDir.ONLY_DIRS & aFlags) == Ci.nsIFileGroupFromDir.ONLY_DIRS) && groupItemFile.isFile())
-				continue;*/
-			
-			var file = new LocalFile(xpcomFile);
-			this.push(file);
-		}
+
+		var self = this;
+
+		var iterator = new OS.File.DirectoryIterator(this.directory.path);
+		var promise = iterator.forEach(function iter(entry, index) {
+				self.push(new LocalFile(entry));
+			});
+
+		return promise.then(function onSuccess() {
+		   iterator.close();
+		   return self;
+		}, function onError(e) {
+		   iterator.close();
+		   log(e.constructor.name);
+		   throw e; // Propagate error
+		});
 	},
 	
 };
 
 Extension.inherit(LocalFileGroup, Group);
+
+setLocalFileGroup(LocalFileGroup);

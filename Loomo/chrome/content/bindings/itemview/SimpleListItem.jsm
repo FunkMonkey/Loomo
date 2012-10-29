@@ -44,9 +44,7 @@ SimpleListItem.prototype = {
 		
 		// set some attributes
 		this.node.setAttribute("class", "itemview_item");
-		this.node.setAttribute("urispec", this.item.URI.spec);
-		
-		this.iconURI = this.item.getIconURIString(16);
+		this.node.setAttribute("urispec", this.item.URIspec);
 		
 		this.setupIcon();
 		
@@ -60,9 +58,13 @@ SimpleListItem.prototype = {
 	{
 		if(!this.iconSetup && this.isVisibleInScroll())
 		{
-			this._DOMIcon.setAttribute("src", this.iconURI);
-			this.node.parentNode.removeEventListener("scroll", this.scrollListener, false);
-			this.iconSetup = true;
+			var self = this;
+			this.item.getIconURIString(16).then(function(res){
+				self.iconURI = res;
+				self._DOMIcon.setAttribute("src", self.iconURI);
+				self.node.parentNode.removeEventListener("scroll", self.scrollListener, false);
+				self.iconSetup = true;
+			});
 		}
 	},
 	

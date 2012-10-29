@@ -1,5 +1,6 @@
 var EXPORTED_SYMBOLS = ["Item"];
 
+Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
 
 /**
@@ -19,20 +20,16 @@ function Item(URIorSpec)
 	this.alternativeDisplayName = "";
 	this.alternativeIconURIs = {};
 	
-	if(URIorSpec === undefined)
-		throw new Error("Constructor needs exactly one parameter that can be a nsIURI or a string representing a URI spec!");
-	
-	if(typeof(URIorSpec) === "string")
-	{
+	// the param should only be undefined if another Constructor already handles it
+	if(URIorSpec === undefined) {
+		if(this.constructor === Item)
+			throw new Error("Constructor needs exactly one parameter that can be a nsIURI or a string representing a URI spec!");
+	} else if(typeof(URIorSpec) === "string") {
 		this.URIspec = URIorSpec;
-	}
-	else if(URIorSpec instanceof Components.interfaces.nsIURI)
-	{
+	} else if(URIorSpec instanceof Components.interfaces.nsIURI) {
 		this._URI = URIorSpec;
 		this.URIspec = this._URI.spec;
-	}
-	else
-	{
+	} else {
 		throw new Error("unsupported parameter. Please pass a nsIURI or a string representing a URI spec!");
 	}
 }
@@ -44,7 +41,7 @@ Item.prototype = {
 
 		get URI()
 		{
-			if(!this.URI)
+			if(!this._URI)
 				this._URI = Services.io.newURI(this.URIspec, null, null);
 				
 			return this._URI;

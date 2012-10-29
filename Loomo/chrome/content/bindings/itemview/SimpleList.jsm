@@ -1,5 +1,6 @@
 var EXPORTED_SYMBOLS = ["SimpleList"];
 
+Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/Extension.jsm");
 Components.utils.import("chrome://fibro/content/modules/Utils/XBLUtils.jsm");
 Components.utils.import("chrome://fibro/content/bindings/itemview/ListBase.jsm");
@@ -26,8 +27,8 @@ SimpleList.prototype = {
 		var cell = this.node.ownerDocument.createElement("simple_list_item");
 		list.appendChild(cell);
 		this.items.push(cell);
-		
 		cell.impl.setItem(item);
+		
 		
 		return cell; 
 	},

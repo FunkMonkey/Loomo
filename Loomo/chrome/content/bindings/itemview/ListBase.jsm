@@ -245,7 +245,7 @@ ListBase.prototype = {
 	{
 		var parent = this.itemGroup.contextItem.parent;
 		if(parent)
-			this.openURICallback(parent.URI.spec, event);
+			this.openURICallback(parent.URIspec, event);
 	},
 };
 
