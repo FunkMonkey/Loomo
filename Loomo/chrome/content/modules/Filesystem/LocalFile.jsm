@@ -74,7 +74,7 @@ LocalFile.xfileURLToPath = function xfileURLToPath(urlSpec){
 	if(OS.Constants.Win) {
 		return urlSpec.substr(9).replace(/\//g, "\\");
 	} else {
-		return urlSpec.substr(9);
+		return urlSpec.substr(8);
 	}
 };
 
