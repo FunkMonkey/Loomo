@@ -231,9 +231,13 @@ ListBase.prototype = {
 	 */
 	openListItem: function openListItem(item, event)
 	{
-		var urispec = item.item.open();
-		if(urispec)
-			this.openURICallback(urispec, event);
+		var self = this;
+		item.item.open().then(function(res){
+				if(res !== ".")
+					self.openURICallback(res, event);
+			}, function(e){
+				log(e);
+			});
 	}, 
 	
 	/**

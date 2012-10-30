@@ -56,7 +56,7 @@ nsXFileProtocolHandler.prototype =
 
 	scheme:			nsXFileProtocolHandler_URI_PREFIX,
 	defaultPort:	-1,
-	protocolFlags:	Ci.nsIProtocolHandler.URI_NORELATIVE | Ci.nsIProtocolHandler.URI_NOAUTH,
+	protocolFlags:	/* Ci.nsIProtocolHandler.URI_NORELATIVE |*/ Ci.nsIProtocolHandler.URI_NOAUTH | Ci.nsIProtocolHandler.URI_IS_LOCAL_FILE,
 
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/// Returns whether the port is supported

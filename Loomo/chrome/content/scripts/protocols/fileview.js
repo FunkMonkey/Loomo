@@ -21,9 +21,8 @@ Components.utils.import("chrome://fibro/content/modules/Filesystem/LocalFileGrou
 
 Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
 
-
 function errorAlert(e){
-	log(e.name + " " + e.message + "\n\n" + e.stack + "\n\n" + e.fileName + ":" + e.line);
+	alert("We are sorry. There was an error.\n\n" + LogUtils.formatError(e));
 }
 
 //——————————————————————————————————————————————————————————————————————————————————————
@@ -56,7 +55,6 @@ function openURICallback(urispec, event)
 //——————————————————————————————————————————————————————————————————————————————————————
 function initFileView()
 {
-	try {
 		// set the favicon
 		setFavicon(item);
 		
@@ -65,12 +63,19 @@ function initFileView()
 		//var group = new LocalFileGroup(item, {includeHidden: true}); // TODO: make independent from LocalFileGroup, item.getChildren()
 		//loadTimer.stop();
 		//
+		//
+		
+
 		
 		var view = document.getElementById("itemview_simple");
 		view.impl.openURICallback = openURICallback;
 		
+		console.time("entries");
 		item.getDirectoryEntries().then(function(res){
+				console.timeEnd("entries");
+				console.time("entriesRendered");
 				view.impl.loadFromItemGroup(res);
+				console.timeEnd("entriesRendered");
 			}, function(e){
 				errorAlert(e);
 			});
@@ -79,20 +84,6 @@ function initFileView()
 		
 		
 		//viewTimer.stop();
-		
-		/*var filegroup = Filebrowser.fileGroupManager.createFileGroup(item);
-		var fileviewcontainer = document.getElementById("fileview_container");
-		fileviewcontainer.fileGroup = filegroup;
-		
-		fileviewcontainer.view.loadFromFileGroup(filegroup);
-		
-		var event = document.createEvent("Events");
-		event.initEvent("FileviewLoaded", true, true);
-		document.dispatchEvent(event);*/
-	} catch (e) {
-		log(e);
-		alert(e);
-	}
 }
 
 // setup the onload-handler

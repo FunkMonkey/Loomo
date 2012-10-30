@@ -36,7 +36,7 @@ function LocalFile(pathURIFile)
 	if(pathURIFile === undefined) {
 		throw new Error("Constructor needs exactly one parameter that can be a nsIFile, or nsIURI, a string representing a URI spec or native path!");
 	} else if(typeof pathURIFile === "string") {
-		
+
 		if(pathURIFile.startsWith("xfile://")){
 			File.call(this, pathURIFile);
 			this.path = LocalFile.xfileURLToPath(this.URIspec);
@@ -60,12 +60,13 @@ function LocalFile(pathURIFile)
 		this.path = LocalFile.xfileURLToPath(this.URIspec);
 	}
 
+	
 
 }
 
 LocalFile.pathToXFileURL = function pathToXFileURL(path){
 	if(OS.Constants.Win)
-		return "xfile://" + OS.Path.normalize(path).replace(/\\/g, "/");
+		return "xfile:///" + OS.Path.normalize(path).replace(/\\/g, "/");
 	else
 		return "xfile://" + OS.Path.normalize(path);
 };
@@ -99,7 +100,7 @@ LocalFile.prototype = {
 	get parent()
 	{
 		var dirname = OS.Path.dirname(this.path);
-		if(parent !== ".")
+		if(dirname !== ".")
 		{
 			return new LocalFile(dirname);
 		}

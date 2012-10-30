@@ -57,21 +57,15 @@ File.prototype = {
 		// TODO: find a way to provide a working directory for executables
 		// TODO: implement launching of unix-files
 		// 
-		var deferred = Promise.defer();
-
 		var self = this;
 
-		this.isDirectory().then(function(res){
+		return this.isDirectory().then(function(res){
 				if(res) {
-					deferred.resolve(self.URIspec);
+					return self.URIspec;
 				} else {
-					deferred.reject(new Error ("File launching not implemented"));
+					throw new Error ("File launching not implemented");
 				}
-			}, function(e){
-				deferred.reject(e);
 			});
-		
-		return deferred.promise;
 	},
 	
 	
@@ -84,54 +78,57 @@ File.prototype = {
 	 */
 	getIconURIString: function getIconURIString(size)
 	{
-		var deferred = Promise.defer();
-
 		var alternativeIcon = this.getAlternativeIconURIString(size);
 		if(alternativeIcon !== "")
 		{
-			return alternativeIcon;
+			return Promise.resolve(alternativeIcon);
 		}
 		else
 		{
 
 			var self = this;
-			self.exists().then(function(res){
+			var promise = self.exists().then(function successExist(res){
 
 					// existing files
 					if(res) {
 						var iconURIunique = "moz-icon:" + self.URIspec.substring(1) + "?size=" + size; // TODO: make independent from xfile
-						self.isDirectory().then(function(res){
-								
+						return self.isDirectory().then(function successDir(res){
+
 								// folders can have user-set icons, so grab it from the URI
 								if(res) {
-									deferred.resolve(iconURIunique);
+									return iconURIunique;
 								} else {
 									var ext = self.basename;
 									ext = ext.substring(ext.lastIndexOf(".") + 1);
 									
 									// some file types have user-set icons, so grab it from the URI
 									if(ext === "exe" || ext === "lnk" || ext === "ico") {
-										deferred.resolve(iconURIunique);
+										return iconURIunique;
 									}
 									
 									// for everything else, grab it from the file extension
-									deferred.resolve("moz-icon://." + ext + "?size=" + size);
+									return "moz-icon://." + ext + "?size=" + size;
 								}
 							}, function(e){
-								deferred.resolve("chrome://global/skin/icons/warning-16.png");
+								log("fail1 ==========" + e);
+								throw e;
 							});
 					
 					// file does not exist
 					} else {
-						deferred.resolve("chrome://global/skin/icons/warning-16.png");
+						return "chrome://global/skin/icons/warning-16.png";
 					}
 
 				}, function(e){
-					deferred.resolve("chrome://global/skin/icons/warning-16.png");
+					log("fail2: ==========" + e);
+					return Promise.resolve("chrome://global/skin/icons/warning-16.png");
 				});
-		}
 
-		return deferred.promise;
+			return promise.then(null, function(e){
+						LogUtils.logError(e);
+						return Promise.resolve("chrome://global/skin/icons/warning-16.png");
+					});
+		}
 	},
 	
 	/**

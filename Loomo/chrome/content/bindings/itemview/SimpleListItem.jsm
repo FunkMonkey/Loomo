@@ -64,6 +64,8 @@ SimpleListItem.prototype = {
 				self._DOMIcon.setAttribute("src", self.iconURI);
 				self.node.parentNode.removeEventListener("scroll", self.scrollListener, false);
 				self.iconSetup = true;
+			}, function fail(e){
+				LogUtils.logError(e);
 			});
 		}
 	},

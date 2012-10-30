@@ -73,7 +73,6 @@ LocalFileGroup.prototype = {
 		   return self;
 		}, function onError(e) {
 		   iterator.close();
-		   log(e.constructor.name);
 		   throw e; // Propagate error
 		});
 	},

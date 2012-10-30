@@ -107,6 +107,17 @@ var LogUtils = {
 		
 		log(str);
 	},
+
+	formatError: function formatError(e){
+		if(e && typeof(e) === "object" && e.message)
+			return (e.fileName + "(" + e.lineNumber + "): " + e.name + " " + e.message + "\n\n" + e.stack);
+		else
+			return "" + e;
+	},
+
+	logError: function logError(e){
+		log(this.formatError(e));
+	},
 	
 	/**
 	 * Logs the stack of a given error
@@ -120,7 +131,7 @@ var LogUtils = {
 			log(e.stack)
 		else
 		{
-			try{throw new Error()}catch(e){log(e.stack)}
+			log(new Error().stack)
 		}
 	}, 
 	
