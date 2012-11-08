@@ -1,22 +1,24 @@
-var EXPORTED_SYMBOLS = ["LocalFile", "setLocalFileGroup"];
+// ==========================================================================
+// Boilerplate for hacking support JS modules in TypeScript
+///<reference path='../../Moz.d.ts' />
+Components.utils.import("chrome://fibro/content/modules/Utils/CommonJS.jsm");
+initCommonJSModule(eval('this'));
+// ==========================================================================
 
-Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
-Components.utils.import("chrome://fibro/content/modules/Utils/Extension.jsm");
-Components.utils.import("chrome://fibro/content/modules/Filesystem/File.jsm");
-Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
-Components.utils.import("chrome://fibro/content/modules/ItemRegistry.jsm");
+import MFile = module("File");
+import ItemRegistry = module("../ItemRegistry");
 
-
+///<reference path='../../MozOSFile.d.ts' />
 Components.utils.import("resource://gre/modules/osfile.jsm");
+
+///<reference path='../../MozPromise.d.ts' />
 Components.utils.import("resource://gre/modules/commonjs/promise/core.js");
 
-Ci = Components.interfaces;
+var separator = (OS.Constants.Win) ? "\\" : "/";
 
-var separator = (OS.Win) ? "\\" : "/";
-
-
+///<reference path='LocalFileGroup.ts' />
 var LocalFileGroup = null;
-function setLocalFileGroup(lfg){LocalFileGroup = lfg; }
+export function setLocalFileGroup(lfg){LocalFileGroup = lfg; }
 
 /**
  * Represents a local file
@@ -26,79 +28,81 @@ function setLocalFileGroup(lfg){LocalFileGroup = lfg; }
  * @constructor
  * @param   {nsIURI|string}   uriOrFile   nsIFIle, URI or URIspec this file represents
  */
-function LocalFile(pathURIFile)
-{
-	this.path = "";
-	this._nsIFile = null;
-	this.info = null;
-	this.directoryEntry = null;
+export class LocalFile extends MFile.File {
 
-	if(pathURIFile === undefined) {
-		throw new Error("Constructor needs exactly one parameter that can be a nsIFile, or nsIURI, a string representing a URI spec or native path!");
-	} else if(typeof pathURIFile === "string") {
+    path: string;
+    _nsIFile: Components.interfaces.nsIFile;
+    info: OS.IInfo;
+    infoError: any;
+    directoryEntry: OS.IDirectoryEntry;
 
-		if(pathURIFile.startsWith("xfile://")){
-			File.call(this, pathURIFile);
-			this.path = LocalFile.xfileURLToPath(this.URIspec);
-		} else if(pathURIFile.startsWith("file://")){
-			File.call(this, "x" + pathURIFile);
-			this.path = LocalFile.xfileURLToPath(this.URIspec);
-		} else {
-			this.path = pathURIFile;
-			var URIspec = LocalFile.pathToXFileURL(pathURIFile);
-			File.call(this, URIspec);
-		}
 
-	// TODO: use the constructor, when bug was fixed
-	} else if(pathURIFile.name && pathURIFile.path/*pathURIFile instanceof OS.File.DirectoryIterator.Entry*/) {
-		this.directoryEntry = pathURIFile;
-		this.path = this.directoryEntry.path;
-		var URIspec2 = LocalFile.pathToXFileURL(this.path);
-		File.call(this, URIspec2);
-	} else {
-		File.call(this, pathURIFile);
-		this.path = LocalFile.xfileURLToPath(this.URIspec);
-	}
+    constructor (pathURIFile) {
+        super(-1);
+        this.path = "";
+        this._nsIFile = null;
+        this.info = null;
+        this.directoryEntry = null;
 
-	
+        if (pathURIFile === undefined) {
+            throw new Error("Constructor needs exactly one parameter that can be a nsIFile, or nsIURI, a string representing a URI spec or native path!");
+        } else if (typeof pathURIFile === "string") {
 
-}
+            if (pathURIFile.startsWith("xfile://")) {
+                super(pathURIFile);
+                this.path = LocalFile.xfileURLToPath(this.URIspec);
+            } else if (pathURIFile.startsWith("file://")) {
+                super("x" + pathURIFile);
+                this.path = LocalFile.xfileURLToPath(this.URIspec);
+            } else {
+                this.path = pathURIFile;
+                var URIspec = LocalFile.pathToXFileURL(pathURIFile);
+                super(URIspec);
+            }
 
-LocalFile.pathToXFileURL = function pathToXFileURL(path){
-	if(OS.Constants.Win)
-		return "xfile:///" + OS.Path.normalize(path).replace(/\\/g, "/");
-	else
-		return "xfile://" + OS.Path.normalize(path);
-};
+            // TODO: use the constructor, when bug was fixed
+        } else if (pathURIFile.name && pathURIFile.path/*pathURIFile instanceof OS.File.DirectoryIterator.Entry*/) {
+            this.directoryEntry = pathURIFile;
+            this.path = this.directoryEntry.path;
+            var URIspec2 = LocalFile.pathToXFileURL(this.path);
+            super(URIspec2);
+        } else {
+            super(pathURIFile);
+            this.path = LocalFile.xfileURLToPath(this.URIspec);
+        }
 
-LocalFile.xfileURLToPath = function xfileURLToPath(urlSpec){
-	if(OS.Constants.Win) {
-		return urlSpec.substr(9).replace(/\//g, "\\");
-	} else {
-		return urlSpec.substr(8);
-	}
-};
+    }
 
-LocalFile.prototype = {
+    static pathToXFileURL(path: string): string {
+        if (OS.Constants.Win)
+            return "xfile:///" + OS.Path.normalize(path).replace(/\\/g, "/");
+        else
+            return "xfile://" + OS.Path.normalize(path);
+    };
 
-	constructor: LocalFile,
+    static xfileURLToPath(urlSpec:string): string {
+        if (OS.Constants.Win) {
+            return urlSpec.substr(9).replace(/\//g, "\\");
+        } else {
+            return urlSpec.substr(8);
+        }
+    };
 
-	getNsIFile: function getNsIFile(){
+    getNsIFile(): Components.interfaces.nsIFile{
 		// TODO: implement
 		throw new Error("Not Implemented");
-	},
+	}
 
-	get basename() {
+	get basename(): string {
 		return OS.Path.basename(this.path);
-	},
+	}
 
 	/**
 	 * Returns the parent file
 	 * 
 	 * @returns {File}   Parent file
 	 */
-	get parent()
-	{
+	get parent(): LocalFile {
 		var dirname = OS.Path.dirname(this.path);
 		if(dirname !== ".")
 		{
@@ -106,9 +110,9 @@ LocalFile.prototype = {
 		}
 		else
 			return null;
-	},
+	}
 
-	exists: function exists(){
+	exists() : Promise.IPromiseBool {
 		if(this.info || this.directoryEntry) {
 			return Promise.resolve(true);
 		} else if(this.infoError) {
@@ -126,9 +130,9 @@ LocalFile.prototype = {
 				});
 			return deferred.promise;
 		}
-	},
+	}
 
-	updateInfo: function updateInfo(){
+	updateInfo(): OS.IPromiseInfo {
 		var self = this;
 		return OS.File.stat(this.path).then(function(res){
 			self.info = res;
@@ -137,9 +141,9 @@ LocalFile.prototype = {
 			self.infoError = e;
 			throw e;
 		});
-	},
+	}
 
-	isDirectory: function isDirectory(){
+	isDirectory(): Promise.IPromiseBool{
 		if(this.directoryEntry) {
 			return Promise.resolve(this.directoryEntry.isDir);
 		} else if(this.info) {
@@ -149,9 +153,9 @@ LocalFile.prototype = {
 				return res.isDir;
 			});
 		}
-	},
+	}
 
-	isSymLink: function isSymLink(){
+	isSymLink(): Promise.IPromiseBool{
 		if(this.directoryEntry) {
 			return Promise.resolve(this.directoryEntry.isSymLink);
 		} else if(this.info) {
@@ -161,9 +165,9 @@ LocalFile.prototype = {
 				return res.isSymLink;
 			});
 		}
-	},
+	}
 
-	isFile: function isFile(){
+	isFile(): Promise.IPromiseBool{
 		if(this.directoryEntry) {
 			return Promise.resolve(!this.directoryEntry.isDir &&this.directoryEntry.isSymLink);
 		} else if(this.info) {
@@ -173,11 +177,11 @@ LocalFile.prototype = {
 				return (!res.isDir && !res.isSymLink);
 			});
 		}
-	},
+	}
 
-	getDirectoryEntries: function getDirectoryEntries(options){
+	getDirectoryEntries(options?): IPromiseLocalFileGroup {
 		return LocalFileGroup.create(this, options);
-	},
+	}
 	
 	// TODO: move to XPCOMFile
 	// /**
@@ -248,8 +252,7 @@ LocalFile.prototype = {
 	// 	return fileURI.QueryInterface(Ci.nsIFileURL).file;
 	// },
 
-};
+}
 
-Extension.inherit(LocalFile, File);
 
 ItemRegistry.registerItemConstructor("xfile", LocalFile);

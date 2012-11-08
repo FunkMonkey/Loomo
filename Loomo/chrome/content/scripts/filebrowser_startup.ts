@@ -1,3 +1,4 @@
+///<reference path='../Moz.d.ts' />
 
 //window.addEventListener("error", function(errorMsg, url, lineNumber){alert(errorMsg + " " + url + ":" + lineNumber)})
 
@@ -8,7 +9,11 @@
   return false;
 }*/
 
-Components.utils.import("chrome://fibro/content/modules/Fibro.jsm");
+var Fibro = {};
+Components.utils.import("chrome://fibro/content/modules/Fibro.js", Fibro);
+
+
+
 
 //Components.utils.import("chrome://filebrowser/FileGroupItemMenu.jsm");
 //window.addEventListener("load", function(e) { Fibro.onAppStartup(window); }, false); 

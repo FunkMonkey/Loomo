@@ -7,19 +7,28 @@
 //======================================================================================//
 //======================================================================================//
 
+// ==========================================================================
+// Boilerplate for hacking support JS modules in TypeScript
+///<reference path='../../Moz.d.ts' />
+Components.utils.import("chrome://fibro/content/modules/Utils/CommonJS.jsm");
+var require = getRequireForContentScript(document);
+// ==========================================================================
+
 
 // Includes
 //Cu.import("resource://filebrowser/Filebrowser.jsm");
 //Cu.import("resource://filebrowser/Utilities/MozServices.jsm");
 //Cu.import("resource://filebrowser/AccessCountRule.jsm");
 
-Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
-Components.utils.import("chrome://fibro/content/modules/Fibro.jsm");
-Components.utils.import("chrome://fibro/content/modules/ItemRegistry.jsm");
 
-Components.utils.import("chrome://fibro/content/modules/Filesystem/LocalFileGroup.jsm");
+import LogUtils = module("../../modules/Utils/log");
 
-Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
+import MSimpleList = module("../../bindings/itemview/SimpleList");
+
+import ItemRegistry = module("../../modules/ItemRegistry");
+import Fibro = module("../../modules/Fibro");
+
+Components.utils.import("resource://gre/modules/Services.jsm");
 
 function errorAlert(e){
 	alert("We are sorry. There was an error.\n\n" + LogUtils.formatError(e));
@@ -34,7 +43,7 @@ function errorAlert(e){
 function setFavicon(item)
 {
 	var favicon = document.getElementById("favicon");
-	var newFavicon = favicon.cloneNode(true);
+	var newFavicon = <HTMLElement>favicon.cloneNode(true);
 	item.getIconURIString(16).then(function(res){
 			newFavicon.setAttribute('href', res);
 			favicon.parentNode.replaceChild(newFavicon,favicon);
@@ -46,7 +55,7 @@ function setFavicon(item)
 
 function openURICallback(urispec, event)
 {
-	var win = Services.wm.getMostRecentWindow('navigator:browser');
+	var win = <any>Services.wm.getMostRecentWindow('navigator:browser');
 	win.openUILinkIn(urispec, win.whereToOpenLink(event));
 }
 
@@ -67,7 +76,7 @@ function initFileView()
 		
 
 		
-		var view = document.getElementById("itemview_simple");
+		var view = <MSimpleList.ISimpleListElement>document.getElementById("itemview_simple");
 		view.impl.openURICallback = openURICallback;
 		
 		console.time("entries");

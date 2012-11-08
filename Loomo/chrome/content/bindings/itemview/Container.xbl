@@ -15,7 +15,7 @@
 		<implementation>
 			<constructor>
 				if(typeof(Container) === "undefined")
-					Components.utils.import("chrome://fibro/content/bindings/itemview/Container.jsm");
+					Components.utils.import("chrome://fibro/content/bindings/itemview/Container.js");
 					
 				this.impl = new Container(this);
 			</constructor>

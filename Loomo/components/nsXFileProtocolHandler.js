@@ -6,16 +6,19 @@
 // The protocol handler that handles "xfile" URI's										//
 //======================================================================================//
 //======================================================================================//
-
+Components.utils.import("chrome://fibro/content/modules/Utils/log.js");
 
 // Includes
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
-Components.utils.import("chrome://fibro/content/modules/Utils/Services.jsm");
-Components.utils.import("chrome://fibro/content/modules/Utils/MozXPCOM.jsm");
-Components.utils.import("chrome://fibro/content/modules/Fibro.jsm");
-Components.utils.import("chrome://fibro/content/modules/ItemRegistry.jsm");
+Components.utils.import("resource://gre/modules/Services.jsm");
+var MozXPCOM = {};
+Components.utils.import("chrome://fibro/content/modules/Utils/MozXPCOM.js", MozXPCOM);
 
-Components.utils.import("chrome://fibro/content/modules/utils/log.jsm");
+var Fibro = {};
+Components.utils.import("chrome://fibro/content/modules/Fibro.js", Fibro);
+var ItemRegistry = {};
+Components.utils.import("chrome://fibro/content/modules/ItemRegistry.js", ItemRegistry);
+
 
 /* Temporary until Bug XXX was fixed */
 const C = Components;
@@ -88,8 +91,8 @@ nsXFileProtocolHandler.prototype =
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/* nsIURI */ newURI: function newURI(/* in AUTF8String */ aSpec, /* in string */ aOriginCharset, /* in nsIURI */ aBaseURI)
 	{
-		var uri = new MOZ.StandardURL();
-		uri.spec = aSpec;
+	    var uri = new MozXPCOM.StandardURL();
+	    uri.spec = aSpec;
 		return uri;
 	},
 
@@ -103,12 +106,13 @@ nsXFileProtocolHandler.prototype =
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/* nsIChannel */ newChannel: function(/* in nsIURI */ aURI)
 	{
-		// get the file that corresponds to the URI
-		var file = ItemRegistry.createItemFromURI(aURI);
+
+	    // get the file that corresponds to the URI
+	    var file = ItemRegistry.createItemFromURI(aURI);
 		
 		// if file exists, show fileview ...
 		// 
-		
+
 		var URIspec = "";
 
 		try {
@@ -127,7 +131,7 @@ nsXFileProtocolHandler.prototype =
 			URIspec = "chrome://fibro/content/ui/protocols/error_page_file_not_found.xul";
 			Fibro.log(e);
 		}
-		 
+
 		// create a URI from the string and create a channel based on that URI
 		var ext_uri = Services.io.newURI(URIspec, null, null);
 		var ext_channel = Services.io.newChannelFromURI(ext_uri);

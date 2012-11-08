@@ -1,9 +1,20 @@
-var EXPORTED_SYMBOLS = ["SimpleListItem"];
+// ==========================================================================
+// Boilerplate for hacking support JS modules in TypeScript
+///<reference path='../../Moz.d.ts' />
+Components.utils.import("chrome://fibro/content/modules/Utils/CommonJS.jsm");
+initCommonJSModule(eval('this'));
+// ==========================================================================
 
-Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
-Components.utils.import("chrome://fibro/content/modules/Utils/Extension.jsm");
-Components.utils.import("chrome://fibro/content/modules/Utils/XBLUtils.jsm");
-Components.utils.import("chrome://fibro/content/bindings/itemview/ListItemBase.jsm");
+import XBLUtils = module("../../modules/Utils/XBLUtils");
+
+import LogUtils = module("../../modules/Utils/log");
+
+import MListItemBase = module("ListItemBase");
+import MItem = module("../../modules/Item");
+
+export interface ISimpleListItemElement extends MListItemBase.IListItemElement {
+    impl: SimpleListItem;
+}
 
 /**
  * Item for a simple list view
@@ -11,34 +22,42 @@ Components.utils.import("chrome://fibro/content/bindings/itemview/ListItemBase.j
  * @constructor
  * @param   {element}   node   The connected DOM element
  */
-SimpleListItem = function SimpleListItem(node)
-{
-	ListItemBase.call(this, node);
-	
-	this._DOMIcon = XBLUtils.getAnonNode(this.node, "icon");
-	this._DOMLabel = XBLUtils.getAnonNode(this.node, "label");
-	this._DOMSpacer = XBLUtils.getAnonNode(this.node, "spacer");
-	
-	this._DOMIcon.addEventListener("click", this.onClick.bind(this), false);
-	this._DOMIcon.addEventListener("dblclick", this.onDoubleClick.bind(this), false);
-	this._DOMLabel.addEventListener("click", this.onClick.bind(this), false);
-	this._DOMLabel.addEventListener("dblclick", this.onDoubleClick.bind(this), false);
-	
-	this._DOMSpacer.addEventListener("click", this.onSpacerClick.bind(this), false);
-	this._DOMSpacer.addEventListener("dblclick", this.onSpacerDblClick.bind(this), false);
-	
-	this.scrollListener = this.onParentScroll.bind(this);
-	this.node.parentNode.addEventListener("scroll", this.scrollListener, false);
-};
+export class SimpleListItem extends MListItemBase.ListItemBase {
 
-SimpleListItem.prototype = {
+    _DOMIcon: XULElement;
+    _DOMLabel: XULElement;
+    _DOMSpacer: XULElement;
+
+    iconSetup: bool;
+    iconURI: string;
+
+    scrollListener: EventListener;
+
+    constructor(node: ISimpleListItemElement)
+    {
+        super(node);
 	
-	constructor: SimpleListItem,
+	    this._DOMIcon = XBLUtils.getAnonNode(this.node, "icon");
+	    this._DOMLabel = XBLUtils.getAnonNode(this.node, "label");
+	    this._DOMSpacer = XBLUtils.getAnonNode(this.node, "spacer");
+	
+	    this._DOMIcon.addEventListener("click", <EventListener>this.onClick.bind(this), false);
+	    this._DOMIcon.addEventListener("dblclick", <EventListener>this.onDoubleClick.bind(this), false);
+	    this._DOMLabel.addEventListener("click", <EventListener>this.onClick.bind(this), false);
+	    this._DOMLabel.addEventListener("dblclick", <EventListener>this.onDoubleClick.bind(this), false);
+	
+	    this._DOMSpacer.addEventListener("click", <EventListener>this.onSpacerClick.bind(this), false);
+	    this._DOMSpacer.addEventListener("dblclick", <EventListener>this.onSpacerDblClick.bind(this), false);
+	
+	    this.scrollListener = <EventListener>this.onParentScroll.bind(this);
+	    this.node.parentNode.addEventListener("scroll", this.scrollListener, false);
+    };
+
 	
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/// 
 	//——————————————————————————————————————————————————————————————————————————————————————
-	setItem: function setItem(item)
+	setItem(item: MItem.Item)
 	{
 		this.item = item;	
 		
@@ -49,12 +68,12 @@ SimpleListItem.prototype = {
 		this.setupIcon();
 		
 		this._DOMLabel.setAttribute("value", this.item.getDisplayName()); 
-	},
+	}
 	
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/// 
 	//——————————————————————————————————————————————————————————————————————————————————————
-	setupIcon: function setupIcon()
+	setupIcon()
 	{
 		if(!this.iconSetup && this.isVisibleInScroll())
 		{
@@ -68,12 +87,12 @@ SimpleListItem.prototype = {
 				LogUtils.logError(e);
 			});
 		}
-	},
+	}
 	
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/// 
 	//——————————————————————————————————————————————————————————————————————————————————————
-	onClick: function onClick(event)
+	onClick(event: MouseEvent)
 	{
 		// handle middle-mouse-buttons
 		if(event.button == 1)
@@ -104,50 +123,47 @@ SimpleListItem.prototype = {
 			}
 			//control._userSelecting = false;
 		}
-
-	},
+	}
 	
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/// 
 	//——————————————————————————————————————————————————————————————————————————————————————
-	onParentScroll: function onParentScroll(event)
+	onParentScroll(event: MouseWheelEvent)
 	{
 		this.setupIcon();
-	},
+	}
 	
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/// 
 	//——————————————————————————————————————————————————————————————————————————————————————
-	isVisibleInScroll: function isVisibleInScroll()
+	isVisibleInScroll()
 	{
 		//logI("offset: " + this.boxObject.y + " " + this.parentNode.scrollTop + " " + this.parentNode.scrollHeight + " " + this.parentNode.boxObject.height);
-		return (this.node.boxObject.y > this.node.parentNode.scrollTop && (this.node.boxObject.y < (this.node.parentNode.scrollTop + this.node.parentNode.boxObject.height)));
-	},
+		return (this.node.boxObject.y > (<XULElement>this.node.parentNode).scrollTop && (this.node.boxObject.y < ((<XULElement>this.node.parentNode).scrollTop + (<XULElement>this.node.parentNode).boxObject.height)));
+	}
 	
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/// 
 	//——————————————————————————————————————————————————————————————————————————————————————
-	onDoubleClick: function onDoubleClick(event)
+	onDoubleClick(event: MouseEvent)
 	{
 		this.list.openListItem(this, event);
-	},
+	}
 	
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/// 
 	//——————————————————————————————————————————————————————————————————————————————————————
-	onSpacerClick: function onSpacerClick(event)
+	onSpacerClick(event: MouseEvent)
 	{
 		this.list.clearSelection();
-	},
+	}
 	
 	//——————————————————————————————————————————————————————————————————————————————————————
 	/// 
 	//——————————————————————————————————————————————————————————————————————————————————————
-	onSpacerDblClick: function onSpacerDblClick(event)
+	onSpacerDblClick(event: MouseEvent)
 	{
 		this.list.openGroupParent(event);
-	},
+	}
 	
 };
-
-Extension.inherit(SimpleListItem, ListItemBase);

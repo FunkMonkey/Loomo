@@ -1,6 +1,7 @@
 const EXPORTED_SYMBOLS = ["FileOperations"];
 
-Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
+var LogUtils = {};
+Components.utils.import("chrome://fibro/content/modules/Utils/log.js", LogUtils);
 
 //Components.utils.import("chrome://fibro/content/modules/Utils/COM/IFileOperation.jsm");
 //IFileOperationModule.initialize();
@@ -26,7 +27,7 @@ var FileOperations = {
 		{
 			worker = new ChromeWorker("FileOperations_Worker.js");  
 			worker.onmessage = function(event) {  
-				log("Message from worker: " + event.data);  
+				LogUtils.log("Message from worker: " + event.data);  
 			};
 		}
 		
