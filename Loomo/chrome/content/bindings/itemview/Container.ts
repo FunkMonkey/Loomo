@@ -5,7 +5,14 @@ Components.utils.import("chrome://fibro/content/modules/Utils/CommonJS.jsm");
 initCommonJSModule(eval('this'));
 // ==========================================================================
 
-export interface IContainerElement extends Element {
+/**
+ * Represents the DOM element that holds a reference to a Container
+ */
+export interface IContainerElement extends XULElement {
+
+    /**
+     * References the connected Container
+     */
     impl: Container;
 }
 
@@ -14,17 +21,18 @@ export interface IContainerElement extends Element {
  */
 export class Container {
 
+    /**
+     * References the connected DOM element
+     */
     node: IContainerElement;
 
     /**
      * Represents a container for views
      *
      * @constructor
-     * @param   {element}   node   The connected DOM element
+     * @param   node   The connected DOM element
      */
     constructor(node: IContainerElement) {
         this.node = node;
     }
 }
-
-export declare function initFoo(global: any): void;

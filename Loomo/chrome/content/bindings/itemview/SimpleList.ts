@@ -12,33 +12,53 @@ import MSimpleListItem = module("SimpleListItem");
 import MSimpleListColumn = module("SimpleListColumn");
 import MItem = module("../../modules/Item");
 
+/**
+ * Represents the DOM element that holds a reference to a SimpleList
+ */
 export interface ISimpleListElement extends MListBase.IListElement {
+	/**
+     * References the connected SimpleList
+     */
     impl: SimpleList;
 }
 
 /**
- * A simple list view
- *
- * @constructor
- * @param   {element}   node   The connected DOM element
+ * Represents a simple list view
  */
 export class SimpleList extends MListBase.ListBase {
+    
+	/**
+	 * Represents a simple list view
+	 *
+	 * @constructor
+	 * @param   node   The connected DOM element
+	 */
     constructor(node: ISimpleListElement)
     {
         super(node);
-    };
+    }
 
-	_appendItem(item: MItem.Item, list: MSimpleListColumn.ISimpleListColumnElement): MSimpleListItem.SimpleListItem
+    /**
+	 * Creates a SimpleListItem for the given Item (File or whatever) and appends it to the list
+	 *
+	 * @param   item   Item to create SimpleListItem for
+	 * @param   column   Column to append new item to
+	 *
+	 * @returns   The newly created SimpleListItem
+	 */
+	_appendItem(item: MItem.Item, column: MSimpleListColumn.ISimpleListColumnElement): MSimpleListItem.SimpleListItem
 	{
 		var cell = <MSimpleListItem.ISimpleListItemElement>(this.node.ownerDocument.createElement("simple_list_item"));
-		list.appendChild(cell);
+		column.appendChild(cell);
 		this.items.push(cell.impl);
 		cell.impl.setItem(item);
 		
 		return cell.impl; 
 	}
 	
-
+	/**
+	 * Loads all the items
+	 */
 	_loadItems()
 	{
 		// AccessCount
@@ -53,7 +73,13 @@ export class SimpleList extends MListBase.ListBase {
 		}
 	}
 
-	_selectListItemRange(startListItem: MSimpleListItem.ISimpleListItemElement, endListItem: MSimpleListItem.ISimpleListItemElement)
+	/**
+	 * Selects all the items in the given range
+	 *
+	 * @param   startListItem   SimpleListItem to start
+	 * @param   endListItem     SimpleListItem to end
+	 */
+	_selectListItemRange(startListItem: MSimpleListItem.SimpleListItem, endListItem: MSimpleListItem.SimpleListItem)
 	{
 		if(!startListItem && !endListItem)
 			this.clearSelection();

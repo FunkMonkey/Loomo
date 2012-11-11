@@ -11,29 +11,58 @@ import MListItemBase = module("ListItemBase");
 import MItem = module("../../modules/Item");
 import MGroup = module("../../modules/Group");
 
+/**
+ * Represents the DOM element that holds a reference to a ListBase
+ */
 export interface IListElement extends XULElement {
+	/**
+     * References the connected ListBase
+     */
     impl: ListBase;
 }
 
 /**
- * Base for list views
+ * Base class for list views
  *
- * @property {Group}           itemGroup       Group the view is connected to
- * @property {ListItemBase[]}  items           Items of the view
- * @property {ListItemBase[]}  selectedItems   Selected items
- * @property {Function}        openURICallback Called when item is opened
- *
- * @constructor
- * @param   {element}   node   The connected DOM element
  */
 export class ListBase {
 
+	/**
+     * References the connected DOM element
+     */
     node: IListElement;
+
+    /**
+     * Group the view is connected to
+     */
     itemGroup: MGroup.Group;
+
+    /**
+     * Items of the view
+     */
     items: MListItemBase.ListItemBase[];
+
+    /**
+     * Selected items of the view
+     */
     selectedItems: MListItemBase.ListItemBase[];
+
+    /**
+     * Callback to call when URI should be opened
+     *  - allows opening the item in the view or outside (f. ex. other browser tab)
+     *
+     * @param   url   URL that should be opened
+     * @param   e     Event used to open (f. ex. MouseEvent)
+     */
     openURICallback: (url: string, e: Event) => void;
 
+
+    /**
+	 * Base class for list views
+	 *
+	 * @constructor
+	 * @param   node   The connected DOM element
+	 */
     constructor(node: IListElement)
     {
 	    this.node = node;
@@ -46,7 +75,7 @@ export class ListBase {
 	/**
 	 * Loads the view from the given group
 	 * 
-	 * @param   {Group}   group   Group to load from
+	 * @param   group   Group to load from
 	 */
 	loadFromItemGroup(group: MGroup.Group)
 	{
@@ -54,15 +83,22 @@ export class ListBase {
 		this._loadItems();
 	}
 
+	/**
+	 * Loads the view
+	 *    - implemented by subclass
+	 */
     _loadItems() { throw new Error("Not implemented!"); }
 	
 	
 	/**
 	 * Adds the given item to the selection
 	 * 
-	 * @param   {ListItemBase|Item|nsIURI|string}   item   Item to add
+	 * @param   item   Item to add
 	 */
-	addItemToSelection(item: MListItemBase.ListItemBase)
+	addItemToSelection(item: string);
+	addItemToSelection(item: MItem.Item);
+	addItemToSelection(item: MListItemBase.ListItemBase);
+	addItemToSelection(item: any)
 	{
 		var listItem = this.getListItem(item);
 		if(!listItem)
@@ -74,7 +110,7 @@ export class ListBase {
 	/**
 	 * Adds the given item to the selection
 	 * 
-	 * @param   {ListItemBase}   listItem   Item to add
+	 * @param   listItem   Item to add
 	 */
 	addListItemToSelection(listItem: MListItemBase.ListItemBase)
 	{
@@ -90,9 +126,12 @@ export class ListBase {
 	/**
 	 * Removes the given item from the selection
 	 * 
-	 * @param   {ListItemBase|Item|nsIURI|string}   item   Item to remove
+	 * @param   item   Item to remove
 	 */
-	removeItemFromSelection(item: MListItemBase.ListItemBase)
+	removeItemFromSelection(item: string);
+	removeItemFromSelection(item: MItem.Item);
+	removeItemFromSelection(item: MListItemBase.ListItemBase);
+	removeItemFromSelection(item: any)
 	{
 		var listItem = this.getListItem(item);
 		if(!listItem)
@@ -104,7 +143,7 @@ export class ListBase {
 	/**
 	 * Removes the given item from the selection
 	 * 
-	 * @param   {ListItemBase}   listItem   Item to remove
+	 * @param   listItem   Item to remove
 	 */
 	removeListItemFromSelection(listItem: MListItemBase.ListItemBase)
 	{
@@ -130,9 +169,12 @@ export class ListBase {
 	/**
 	 * Toggles the selection of the given item
 	 * 
-	 * @param   {ListItemBase|Item|nsIURI|string}   item   Item to toggle selection
+	 * @param   item   Item to toggle selection
 	 */
-	toggleItemSelection(item: MListItemBase.ListItemBase)
+	toggleItemSelection(item: string);
+	toggleItemSelection(item: MItem.Item);
+	toggleItemSelection(item: MListItemBase.ListItemBase);
+	toggleItemSelection(item: any)
 	{
 		var listItem = this.getListItem(item);
 		if(!listItem)
@@ -144,7 +186,7 @@ export class ListBase {
 	/**
 	 * Toggles the selection of the given item
 	 * 
-	 * @param   {ListItemBase}   listItem   Item to toggle selection
+	 * @param   listItem   Item to toggle selection
 	 */
 	toggleListItemSelection(listItem: MListItemBase.ListItemBase)
 	{
@@ -168,10 +210,10 @@ export class ListBase {
 	/**
 	 * Returns the according ListItemBase node for the given input in the given array
 	 * 
-	 * @param   {ListItemBase|Item|nsIURI|string}   itemOrURIorSpecIn   Input to search for
-	 * @param   {Array}                             array               Array to search in
+	 * @param   itemOrURIorSpecIn   Input to search for
+	 * @param   array               Array to search in
 	 * 
-	 * @returns {ListItemBase}   Found node or null
+	 * @returns    Found node or null
 	 */
     getListItemIn(itemOrURIorSpecIn: string, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase;
 	getListItemIn(itemOrURIorSpecIn: MItem.Item, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase;
@@ -222,9 +264,9 @@ export class ListBase {
 	 * Returns the according ListItemBase node for the given input
 	 *    - searches in the items of the list
 	 * 
-	 * @param   {ListItemBase|Item|nsIURI|string}   itemOrURIorSpecIn   Input to search for
+	 * @param   itemOrURIorSpecIn   Input to search for
 	 * 
-	 * @returns {ListItemBase}   Found node or null
+	 * @returns   Found node or null
 	 */
     getListItem(itemOrURIorSpecIn: string): MListItemBase.ListItemBase;
 	getListItem(itemOrURIorSpecIn: MItem.Item): MListItemBase.ListItemBase;
@@ -237,9 +279,9 @@ export class ListBase {
 	/**
 	 * Returns the according ListItemBase node for the given input in the selected items
 	 * 
-	 * @param   {ListItemBase|Item|nsIURI|string}   itemOrURIorSpecIn   Input to search for
+	 * @param   itemOrURIorSpecIn   Input to search for
 	 * 
-	 * @returns {ListItemBase}   Found node or null
+	 * @returns   Found node or null
 	 */
     getListItemInSelection(itemOrURIorSpecIn: string): MListItemBase.ListItemBase;
 	getListItemInSelection(itemOrURIorSpecIn: MItem.Item): MListItemBase.ListItemBase;
@@ -252,8 +294,8 @@ export class ListBase {
 	/**
 	 * Opens the given item with the given event
 	 * 
-	 * @param   {ListItemBase}   item    Item to open
-	 * @param   {event}          event   Event
+	 * @param   item    Item to open
+	 * @param   event   Event
 	 */
 	openListItem(item: MListItemBase.ListItemBase, event: Event)
 	{
@@ -269,9 +311,9 @@ export class ListBase {
 	/**
 	 * Opens the parent of the group
 	 * 
-	 * @param   {event}          event   Event
+	 * @param   event   Event
 	 */
-	openGroupParent(event)
+	openGroupParent(event: Event)
 	{
 		var parent = this.itemGroup.contextItem.parent;
 		if(parent)

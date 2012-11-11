@@ -8,21 +8,38 @@ initCommonJSModule(eval('this'));
 import XBLUtils = module("../../modules/Utils/XBLUtils");
 import MSimpleList = module("SimpleList");
 
+/**
+ * Represents the DOM element that holds a reference to a SimpleListColumn
+ */
 export interface ISimpleListColumnElement extends XULElement {
+
+	/**
+     * References the connected SimpleListColumn
+     */
     impl: SimpleListColumn;
 }
 
 /**
  * Column for a simple list view
- *
- * @constructor
- * @param   {element}   node   The connected DOM element
  */
 export class SimpleListColumn {
     
+    /**
+     * References the connected DOM element
+     */
     node: ISimpleListColumnElement;
+
+    /**
+     * Reference to parent list
+     */
     _list: MSimpleList.SimpleList;
 
+    /**
+	 * Column for a simple list view
+	 *
+	 * @constructor
+	 * @param   node   The connected DOM element
+	 */
     constructor(node: ISimpleListColumnElement)
     {
 	    this.node = node;
@@ -34,9 +51,10 @@ export class SimpleListColumn {
     }
 	
 	
-	//——————————————————————————————————————————————————————————————————————————————————————
-	/// 
-	//——————————————————————————————————————————————————————————————————————————————————————
+	/**
+     * Reference to parent list
+     *   - will search for the list, when called the first time
+     */
 	get list() : MSimpleList.SimpleList
 	{
 		// if we already found our control, then return it (save some performance)
@@ -59,19 +77,25 @@ export class SimpleListColumn {
 		return null;
 	}
 	
-	//——————————————————————————————————————————————————————————————————————————————————————
-	/// 
-	//——————————————————————————————————————————————————————————————————————————————————————
+	/**
+	 * Called when the column's white space was clicked
+	 *    - clears the list's selection
+	 *
+	 * @param   event   Click event
+	 */
 	onClick(event: MouseEvent)
 	{
 		if(event.target === this.node)
 			this.list.clearSelection();
 	}
 	
-	//——————————————————————————————————————————————————————————————————————————————————————
-	/// 
-	//——————————————————————————————————————————————————————————————————————————————————————
-	onDblClick(event)
+	/**
+	 * Called when the column's white space was double-clicked
+	 *    - opens the Group's parent 
+	 *
+	 * @param   event   Click event
+	 */
+	onDblClick(event: MouseEvent)
 	{
 		if(event.target === this.node)
 			this.list.openGroupParent(event);
