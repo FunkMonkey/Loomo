@@ -8,21 +8,21 @@ initCommonJSModule(eval('this'));
 
 // TODO: remove as FF only
 /**
-	* Inherits from a given class by setting the prototype
-	* 
-	* @param   {Object}   child   Child class
-	* @param   {Object}   base    Base class
-	*/
+ * Inherits from a given class by setting the prototype
+ * 
+ * @param   child   Child class
+ * @param   base    Base class
+ */
 export function inherit(child: Function, supertype: Function) {
 	child.prototype.__proto__ = supertype.prototype;
 }
 	
 /**
-	* Inherits from a given class by setting the prototype
-	* 
-	* @param   {Object}   child   Child class
-	* @param   {Object}   base    Base class
-	*/
+ * Inherits from a given class by setting the prototype
+ * 
+ * @param   child   Child class
+ * @param   base    Base class
+ */
 export function inheritNew(child: Function, base: Function) {
 	var oldProto = child.prototype;
 	child.prototype = Object.create(base);
@@ -33,6 +33,9 @@ export function inheritNew(child: Function, base: Function) {
 		Object.defineProperty(child.prototype, propNames[i], Object.getOwnPropertyDescriptor(oldProto, propNames[i]));
 }
 
+/**
+ * Represents options used for borrowing
+ */
 export interface IBorrowOptions {
     ownPropsOnly?: bool;
     overwriteExisting?: bool;
@@ -48,6 +51,9 @@ export interface IBorrowOptions {
     borrowNonWritable?: bool;
 }
 
+/**
+ * Standard options used for borrowing
+ */
 export var BorrowStdOptions: IBorrowOptions = {
 	ownPropsOnly: false,
 	overwriteExisting: false,
@@ -64,13 +70,13 @@ export var BorrowStdOptions: IBorrowOptions = {
 };
 
 /**
-	* Borrows properties from the given object
-	* 
-	* @param   {Object} to      Object to add properties to
-	* @param   {Object} from    Object to get properties from
-	* @param   {Object} options Options to set
-	*/
-export function borrow(to: Object, from: Object, options: IBorrowOptions) {
+ * Borrows properties from the given object (useful for Mixins)
+ * 
+ * @param   to        Object to add properties to
+ * @param   from      Object to get properties from
+ * @param   options   Options to use for borrowing
+ */
+export function borrow(to: Object, from: Object, options?: IBorrowOptions) {
 	if(!options)
 		options = BorrowStdOptions;
 		
@@ -152,15 +158,15 @@ export function borrow(to: Object, from: Object, options: IBorrowOptions) {
 }
 	
 /**
-	* Creates an instance of the given class with arguments given as an array
-	*    see http://www.bennadel.com/blog/2291-Invoking-A-Native-JavaScript-Constructor-Using-Call-Or-Apply-.htm
-	* 
-	* @param   {Function}   constructorFunc   Constructor function
-	* @param   {Array}      arguments         Array of arguments
-	* 
-	* @returns {Object}   Newly created object
-	*/
-export function createInstance(constructorFunc: Function, args: Array) {
+ * Creates an instance of the given class with arguments given as an array
+ *    see http://www.bennadel.com/blog/2291-Invoking-A-Native-JavaScript-Constructor-Using-Call-Or-Apply-.htm
+ * 
+ * @param   constructorFunc   Constructor function
+ * @param   arguments         Array of arguments
+ * 
+ * @returns Newly created object
+ */
+export function createInstance(constructorFunc: Function, args: Array): Object {
 	// Create an object that extends the target prototype
 	var newInstance = Object.create(constructorFunc.prototype);
 		
@@ -173,14 +179,14 @@ export function createInstance(constructorFunc: Function, args: Array) {
 }
 	
 /**
-	* Checks if the given object is an instance of the given constructor function
-	*    uses obj._classList internally
-	* 
-	* @param   {Object}     obj               Object to check
-	* @param   {Function}   constructorFunc   Constructor function
-	*
-	* @returns {boolean}   True if instance of, otherwise false
-	*/
+ * Checks if the given object is an instance of the given constructor function
+ *    uses obj._classList internally
+ * 
+ * @param   obj               Object to check
+ * @param   constructorFunc   Constructor function
+ *
+ * @returns   True if instance of, otherwise false
+ */
 export function isInstanceOf(obj: Object, constructorFunc: Function): bool {
 	if(obj instanceof constructorFunc)
 		return true;
@@ -199,14 +205,14 @@ export function isInstanceOf(obj: Object, constructorFunc: Function): bool {
 	
 // TODO: TSBUG: fix Function.name
 /**
-	* Checks if the given object is an instance of the given constructor function
-	*    uses obj._classList internally
-	* 
-	* @param   {Object}     obj               Object to check
-	* @param   {Function}   constructorFunc   Constructor function
-	*
-	* @returns {boolean}   True if instance of, otherwise false
-	*/
+ * Checks if the given object is an instance of the given constructor function
+ *    uses obj._classList internally
+ * 
+ * @param   obj               Object to check
+ * @param   constructorFunc   Constructor function
+ *
+ * @returns   True if instance of, otherwise false
+ */
 export function isInstanceOfByString(obj: Object, constructorFunc: Function): bool {
 	if(obj instanceof constructorFunc)
         return true;

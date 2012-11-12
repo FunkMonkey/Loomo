@@ -10,28 +10,47 @@ Components.utils.import("resource://gre/modules/commonjs/promise/core.js");
 
 
 import MGroup = module("Group");
+
+// TODO: move to Group.ts
+/**
+ * Represents a Promise that returns a Group
+ */
 export interface IPromiseGroup extends Promise.IPromise {
     then(onSuccess: (val: MGroup.Group) => any, onFail?: Function): Promise.IPromise;
 }
 
 /**
- * Represents a container for views
+ * Represents an Item
  */
 export class Item {
 
+	/**
+	 * URI specification of this Item (f.ex. xfile:///C:/Windows)
+	 */
     URIspec: string;
+
+    // TODO: remove???
+    /**
+     * XPCOM URI
+     */
     _URI: Components.interfaces.nsIURI;
 
+    /**
+     * Alternative name for displaying
+     */
     alternativeDisplayName: string;
 
     // TODO: use interface
+    /**
+     * Alternative icons for displaying
+     */
     alternativeIconURIs: any;
 
     /**
      * Represents a container for views
      *
      * @constructor
-     * @param   {element}   node   The connected DOM element
+     * @param   URIorSpec   URI or URIspec for this item
      */
     constructor (URIorSpec: number);
     constructor (URIorSpec: string);
@@ -50,7 +69,7 @@ export class Item {
 	    // the param should only be undefined if another Constructor already handles it
 	    if(URIorSpec === undefined) {
 			throw new Error("Constructor needs exactly one parameter that can be a nsIURI or a string representing a URI spec!");
-	    } else if(typeof(URIorSpec) === "string") {
+	    } else if(typeof(URIorSpec) === "string") { // TODO: perform URI check?
 		    this.URIspec = URIorSpec;
 	    } else if(URIorSpec instanceof Components.interfaces.nsIURI) {
 		    this._URI = URIorSpec;
@@ -60,6 +79,11 @@ export class Item {
 	    }
     }
 
+    // TODO: remove?
+    /**
+     * XPCOM URI
+     *    - created based on URIspec when needed the first time
+     */
     get URI()
 	{
 		if(!this._URI)
@@ -69,45 +93,96 @@ export class Item {
 	}
 		
 
+	// TODO: implement
 	/**
-		* Returns the alternative URI for the icon
-		* 
-		* @param   {number}   size   The size of the icon
-		* 
-		* @returns {string}   URI-String
-		*/
+	 * Returns the alternative URI for the icon
+	 * 
+	 * @param   size   The size of the icon
+	 * 
+	 * @returns    URI-String
+	 */
 	getAlternativeIconURIString(size: number)
 	{
 		return "";
 	}
 		
 	/**
-		* Sets an alternative URI for the icon
-		* 
-		* @param   {string}   URISpec   The URI specification
-		* @param   {number}   size      The size of the icon
-		*/
+	 * Sets an alternative URI for the icon
+	 * 
+	 * @param   URISpec   The URI specification of the icon
+	 * @param   size      The size of the icon
+	 */
 	setAlternativeIconURIString(URISpec: string, size: number)
 	{
 		this.alternativeIconURIs[size] = URISpec;
 	}
 
-        isDirectory(): Promise.IPromiseBool {
+	/**
+	 * Checks if the local file is a directory
+	 *    - may resolve instantly or trigger an IO request
+	 *
+	 * @returns   Promise: true if file is directory
+	 */
+    isDirectory(): Promise.IPromiseBool {
         throw new Error("Not Implemented");
     }
 
+	/**
+	 * Checks if the local file is a symlink
+	 *    - may resolve instantly or trigger an IO request
+	 *
+	 * @returns   Promise: true if file is symlink
+	 */
+	isSymLink(): Promise.IPromiseBool{
+		throw new Error("Not Implemented");
+	}
+
+	/**
+	 * Checks if the local file is a file
+	 *    - may resolve instantly or trigger an IO request
+	 *
+	 * @returns   Promise: true if file is a file
+	 */
+	isFile(): Promise.IPromiseBool{
+		throw new Error("Not Implemented");
+	}
+
+    /**
+     * Checks if the local file exists
+     *    - may resolve instantly or trigger an IO request
+     *
+     * @returns   Promise: true if file exists
+     */
     exists(): Promise.IPromiseBool {
         throw new Error("Not Implemented");
     }
 
+    /**
+	 * Returns the string representation of the file as a moz-icon URI
+	 * 
+	 * @param   size   Size of the image
+	 * 
+	 * @returns    Promise: String representation as moz-icon URI
+	 */
     getIconURIString(size): Promise.IPromiseString {
         throw new Error("Not Implemented");
     }
 
+    /**
+	 * Returns the display name
+	 * 
+	 * @returns    Display name
+	 */
     getDisplayName(): string {
          throw new Error("Not Implemented");
     }
 
+    /**
+     * Returns a Group representing the directory entries
+     *    - may trigger IO requests
+     *
+     * @returns   Promise: Group representing the directory contents
+     */
     getDirectoryEntries(options?): IPromiseGroup {
 		throw new Error("Not Implemented");
 	}
@@ -116,12 +191,17 @@ export class Item {
 	 * Opens the given file
 	 *   - returns URISpec to open for directories, launches files
 	 * 
-	 * @returns {string}   URISpec for directory to open, empty string for files
+	 * @returns   URISpec for directory to open, empty string for files
 	 */
     open(): Promise.IPromiseString {
         throw new Error("Not Implemented");
     }
 
+    /**
+	 * Returns the parent item
+	 * 
+	 * @returns   Parent item
+	 */
     get parent(): Item {
         throw new Error("Not Implemented");
     }

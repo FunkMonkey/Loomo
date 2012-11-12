@@ -16,7 +16,7 @@ initCommonJSModule(eval('this'));
 
 
 //======================================================================================//
-// Some standard constants																//
+// Some standard constants
 //======================================================================================//
 var C = Components;
 var Cc = Components.classes;
@@ -28,7 +28,7 @@ var CCtor = Components.Constructor;
 
 
 //======================================================================================//
-// Constants for CID's, contract ID's, etc												//
+// Constants for CID's, contract ID's, etc
 //======================================================================================//
 
 export var CON = {
@@ -40,4 +40,7 @@ export var CON = {
 
 //MOZ.CID_STR.nsChromeProtocolHandler			= "{61ba33c0-3031-11d3-8cd0-0060b0fc14a3}";			
 
+//======================================================================================//
+// Constructors
+//======================================================================================//
 export var StandardURL = CCtor(CON.nsStandardURL, Ci.nsIURI);

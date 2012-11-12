@@ -12,15 +12,21 @@ import MItem = module("Item");
 // TODO: extend Array, once it is not an interface anymore in lib.d.ts
 /**
  * Represents a group of items
- *
- * @property {Item}   contextItem   Creation context of this group
- *
- * @constructor
- * @param   {Item|nsIURI|string}   itemOrURIOrSpec   Item, URI or URIspec that will be set as the contextItem
  */
 export class Group {
+
+	/**
+	 * Context this group was created from
+	 */
     contextItem: MItem.Item;
 
+    // TODO: think about possible parameters
+    /**
+     * Represents a group of items
+     *
+     * @constructor
+     * @param   item   Context of this Group
+     */
     constructor(itemOrURIOrSpec: any) {
 
         // added to ignore super as first constructor statement
@@ -73,4 +79,5 @@ export class Group {
 // remove, once Array is not an interface anymore in lib.d.ts
 delete Group.prototype.length;
 
+// remove, once Array is not an interface anymore in lib.d.ts
 Extension.inherit(Group, Array);

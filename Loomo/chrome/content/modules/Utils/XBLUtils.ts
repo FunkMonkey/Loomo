@@ -8,13 +8,13 @@ initCommonJSModule(eval('this'));
 	
 
 /**
-	* Returns the anonymous node of the given element with the given id
-	* 
-	* @param   {element}   elem     Element to search through
-	* @param   {string}    anonID   Id to find
-	* 
-	* @returns {element}   Found anonymous node
-	*/
+ * Returns the anonymous node of the given element with the given id
+ * 
+ * @param   elem     Element to search through
+ * @param   anonID   Id to find
+ * 
+ * @returns   Found anonymous node
+ */
 // TODO: update types
 export function getAnonNode(elem, anonID: string)
 {
@@ -22,14 +22,14 @@ export function getAnonNode(elem, anonID: string)
 }
 	
 /**
-	* Returns the parent node with the given local name
-	* 
-	* @param   {element}   elem        Given node to find parent for
-	* @param   {string}    localName   Local name
-	* 
-	* @returns {element}   Parent node with local name
-	*/
-export function getParentNodeByLocalName(elem: Element, localName: string)
+ * Returns the parent node with the given local name
+ * 
+ * @param   elem        Given node to find parent for
+ * @param   localName   Local name
+ * 
+ * @returns    Parent node with local name
+ */
+export function getParentNodeByLocalName(elem: Element, localName: string): Node
 {
 	var parent = elem.parentNode;
 	while (parent)

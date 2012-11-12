@@ -16,15 +16,15 @@ export var logOptions = {
 /**
  * Logs a string message
  * 
- * @param   {string} str Message to log
+ * @param   str Message to log
  */
 export function log(str)
 {
 	if(logOptions.useJSConsole)
 	{
-		if(str == null)
+		if(str == null) // null or undefined
 			str = "" + str;
-		else if(str === "")
+		else if(str === "") // fix nasty console bug
 			str = " ";
 		consoleService.logStringMessage(str);
 	}
@@ -38,8 +38,8 @@ export function log(str)
 /**
 * Logs the given object
 * 
-* @param   {Object}    object      Object to log
-* @param   {boolean}   recursive   Log recursively
+* @param   object      Object to log
+* @param   recursive   Log recursively
 */
 export function logObject(object: Object, recursive: bool) {
 	// TODO: recursive
@@ -54,6 +54,11 @@ export function logObject(object: Object, recursive: bool) {
 	log(str);
 }
 	
+/**
+ * Logs all properties of the given Object
+ *
+ * @param   Object   Object to log properties of
+ */
 export function logAllProperties(object: Object) {
 	var chain = [];
 		
@@ -108,6 +113,11 @@ export function logAllProperties(object: Object) {
 	log(str);
 }
 
+/**
+ * Formats the given error (could be Error, but also string or whatever)
+ *
+ * @param   e   Error to format
+ */
 export function formatError(e) {
 	if(e && typeof(e) === "object" && e.message)
 		return (e.fileName + "(" + e.lineNumber + "): " + e.name + " " + e.message + "\n\n" + e.stack);
@@ -115,6 +125,11 @@ export function formatError(e) {
 		return "" + e;
 }
 
+/**
+ * Logs the given error (could be Error, but also string or whatever)
+ *
+ * @param    e   Error to log
+ */
 export function logError(e) {
 	log(this.formatError(e));
 }
@@ -125,7 +140,7 @@ export function logError(e) {
 * Logs the stack of a given error
 *    - if no error is given, it will log the stack of the call to logStack
 *
-* @param   {Error}    [e]      Exception to log
+* @param   [e]      Error to log
 */
 export function logStack(e: Error) {
 	if(e)

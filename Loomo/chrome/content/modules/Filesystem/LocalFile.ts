@@ -22,23 +22,51 @@ export function setLocalFileGroup(lfg){LocalFileGroup = lfg; }
 
 /**
  * Represents a local file
- *
- * @property {nsIFIle}  xpcomFile  Underlying nsIFile
- *
- * @constructor
- * @param   {nsIURI|string}   uriOrFile   nsIFIle, URI or URIspec this file represents
  */
 export class LocalFile extends MFile.File {
 
+	/**
+	 * Native path of the local file
+	 */
     path: string;
+
+    /**
+     * XPCOM file
+     */
     _nsIFile: Components.interfaces.nsIFile;
+
+    // TODO: refactor to _info
+    /**
+     * Native file information (stats)
+     */
     info: OS.IInfo;
+
+    // TODO: refactor to _infoError
+    /**
+     * Error object thrown when file stats could not be retrieved
+     */
     infoError: any;
+
+    // TODO: refactor to _directoryEntry
+    /**
+     * Directory entry (when retrieved from iterator)
+     */
     directoryEntry: OS.IDirectoryEntry;
 
-
-    constructor (pathURIFile) {
+    // TODO: add constructor that takes LocalFile
+    // TODO: add constructor that takes nsIFile
+    /**
+     * Represents a local file
+     *
+     * @constructor
+     * @param     uriOrFile   URI or URIspec that represents file or xfile, OS.File.DirectoryIterator.Entry
+     */
+    constructor(uriOrFile: string);
+    constructor(uriOrFile: Components.interfaces.nsIURI);
+    constructor(uriOrFile: OS.IDirectoryEntry);
+    constructor (pathURIFile: any) {
         super(-1);
+
         this.path = "";
         this._nsIFile = null;
         this.info = null;
@@ -53,7 +81,7 @@ export class LocalFile extends MFile.File {
                 this.path = LocalFile.xfileURLToPath(this.URIspec);
             } else if (pathURIFile.startsWith("file://")) {
                 super("x" + pathURIFile);
-                this.path = LocalFile.xfileURLToPath(this.URIspec);
+                this.path = LocalFile.xfileURLToPath("x" + this.URIspec);
             } else {
                 this.path = pathURIFile;
                 var URIspec = LocalFile.pathToXFileURL(pathURIFile);
@@ -72,7 +100,14 @@ export class LocalFile extends MFile.File {
         }
 
     }
-
+    
+    /**
+     * Converts a given native path to a xfile URL
+     *
+     * @param   path   Path to convert
+     *
+     * @returns   According xfile URL
+     */
     static pathToXFileURL(path: string): string {
         if (OS.Constants.Win)
             return "xfile:///" + OS.Path.normalize(path).replace(/\\/g, "/");
@@ -80,6 +115,13 @@ export class LocalFile extends MFile.File {
             return "xfile://" + OS.Path.normalize(path);
     };
 
+    /**
+     * Converts a given xfile URL spec to a native path
+     *
+     * @param   urlSpec   URL spec to convert
+     *
+     * @returns   According native path
+     */
     static xfileURLToPath(urlSpec:string): string {
         if (OS.Constants.Win) {
             return urlSpec.substr(9).replace(/\//g, "\\");
@@ -88,11 +130,19 @@ export class LocalFile extends MFile.File {
         }
     };
 
-    getNsIFile(): Components.interfaces.nsIFile{
+    /**
+     * Returns the XPCOM file for this LocalFile
+     *
+     * @returns XPCOM file for LocalFile
+     */
+    getNsIFile(): Components.interfaces.nsIFile {
 		// TODO: implement
 		throw new Error("Not Implemented");
 	}
 
+	/**
+     * Returns base name / leafname / last part of the File
+     */
 	get basename(): string {
 		return OS.Path.basename(this.path);
 	}
@@ -100,7 +150,7 @@ export class LocalFile extends MFile.File {
 	/**
 	 * Returns the parent file
 	 * 
-	 * @returns {File}   Parent file
+	 * @returns   Parent file
 	 */
 	get parent(): LocalFile {
 		var dirname = OS.Path.dirname(this.path);
@@ -112,6 +162,12 @@ export class LocalFile extends MFile.File {
 			return null;
 	}
 
+	/**
+	 * Checks if the local file exists
+	 *    - may resolve instantly or trigger an IO request
+	 *
+	 * @returns   Promise: true if file exists
+	 */
 	exists() : Promise.IPromiseBool {
 		if(this.info || this.directoryEntry) {
 			return Promise.resolve(true);
@@ -132,6 +188,12 @@ export class LocalFile extends MFile.File {
 		}
 	}
 
+	/**
+	 * Updates the file stats
+	 *    - triggers IO request
+	 *
+	 * @returns   Promise: file stats
+	 */
 	updateInfo(): OS.IPromiseInfo {
 		var self = this;
 		return OS.File.stat(this.path).then(function(res){
@@ -143,6 +205,12 @@ export class LocalFile extends MFile.File {
 		});
 	}
 
+	/**
+	 * Checks if the local file is a directory
+	 *    - may resolve instantly or trigger an IO request
+	 *
+	 * @returns   Promise: true if file is directory
+	 */
 	isDirectory(): Promise.IPromiseBool{
 		if(this.directoryEntry) {
 			return Promise.resolve(this.directoryEntry.isDir);
@@ -155,6 +223,12 @@ export class LocalFile extends MFile.File {
 		}
 	}
 
+	/**
+	 * Checks if the local file is a symlink
+	 *    - may resolve instantly or trigger an IO request
+	 *
+	 * @returns   Promise: true if file is symlink
+	 */
 	isSymLink(): Promise.IPromiseBool{
 		if(this.directoryEntry) {
 			return Promise.resolve(this.directoryEntry.isSymLink);
@@ -167,6 +241,12 @@ export class LocalFile extends MFile.File {
 		}
 	}
 
+	/**
+	 * Checks if the local file is a file
+	 *    - may resolve instantly or trigger an IO request
+	 *
+	 * @returns   Promise: true if file is a file
+	 */
 	isFile(): Promise.IPromiseBool{
 		if(this.directoryEntry) {
 			return Promise.resolve(!this.directoryEntry.isDir &&this.directoryEntry.isSymLink);
@@ -179,6 +259,12 @@ export class LocalFile extends MFile.File {
 		}
 	}
 
+	/**
+	 * Returns a LocalFileGroup representing the directory entries
+	 *    - triggers IO requests
+	 *
+	 * @returns   Promise: LocalFileGroup representing the directory contents
+	 */
 	getDirectoryEntries(options?): IPromiseLocalFileGroup {
 		return LocalFileGroup.create(this, options);
 	}
@@ -254,5 +340,5 @@ export class LocalFile extends MFile.File {
 
 }
 
-
+// registering LocalFile to be used for xfile URLs
 ItemRegistry.registerItemConstructor("xfile", LocalFile);

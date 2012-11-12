@@ -6,7 +6,6 @@ initCommonJSModule(eval('this'));
 // ==========================================================================
 
 import LogUtils = module("../Utils/log");
-
 import MItem = module("../Item");
 
 ///<reference path='../../MozPromise.d.ts' />
@@ -15,15 +14,21 @@ Components.utils.import("resource://gre/modules/commonjs/promise/core.js");
 
 /**
  * Represents a file
- *
- * @property {nsIFIle}  xpcomFile  Underlying nsIFile
- *
- * @constructor
- * @param   {nsIURI|string}   uriOrFile   nsIFIle, URI or URIspec this file represents
  */
 export class File extends MItem.Item {
 
-    constructor (uriOrFile) {
+    // TODO: add constructor that takes File
+    // TODO: add constructor that takes nsIFile
+    /**
+     * Represents a file
+     *
+     * @constructor
+     * @param   uriOrFile   URI or URIspec representing the file
+     */
+    constructor(uriOrFile: number);
+    constructor(uriOrFile: string);
+    constructor(uriOrFile: Components.interfaces.nsIURI);
+    constructor(uriOrFile: any) {
         super(-1);
 
         // added to ignore super as first constructor statement
@@ -43,7 +48,7 @@ export class File extends MItem.Item {
 	 * Opens the given file
 	 *   - returns URISpec to open for directories, launches files
 	 * 
-	 * @returns {string}   URISpec for directory to open, empty string for files
+	 * @returns   Promise: URISpec for directory to open, empty string for files
 	 */
     open(): Promise.IPromiseString {
         // TODO: find a way to provide a working directory for executables
@@ -56,6 +61,7 @@ export class File extends MItem.Item {
                 return self.URIspec;
             } else {
                 throw new Error("File launching not implemented");
+                return "";
             }
         });
     }
@@ -64,9 +70,9 @@ export class File extends MItem.Item {
     /**
 	 * Returns the string representation of the file as a moz-icon URI
 	 * 
-	 * @param   {number}   size   Size of the image
+	 * @param   size   Size of the image
 	 * 
-	 * @returns {string}   String representation as moz-icon URI
+	 * @returns    Promise: String representation as moz-icon URI
 	 */
     getIconURIString(size): Promise.IPromiseString {
         var alternativeIcon = this.getAlternativeIconURIString(size);
@@ -118,6 +124,10 @@ export class File extends MItem.Item {
         }
     }
 
+    /**
+     * Returns base name / leafname / last part of the File
+     *    - implemented in subclass
+     */
     get basename(): string {
         throw new Error("Not Implemented");
     }
@@ -125,7 +135,7 @@ export class File extends MItem.Item {
     /**
 	 * Returns the display name
 	 * 
-	 * @returns {string}   Display name
+	 * @returns    Display name
 	 */
     getDisplayName(): string {
         if (this.alternativeDisplayName !== "")

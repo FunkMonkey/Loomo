@@ -16,7 +16,12 @@ import Services = module("Utils/Services2");
 // Filebrowser																			//
 //======================================================================================//
 
-export function quitApp(/* in boolean */aForceQuit)
+/**
+ * Shuts down Firefox
+ *
+ * @param    aForceQuit   Force quitting
+ */
+export function quitApp(aForceQuit: bool)
 {
 	// eAttemptQuit will try to close each XUL window, but the XUL window can cancel the quit
 	// process if there is unsaved data. eForceQuit will quit no matter what.
@@ -25,17 +30,16 @@ export function quitApp(/* in boolean */aForceQuit)
 }
 	
 /**
-	* Logs the given message
-	* 
-	* @param   {string}   message   Message to log
-	*/
+ * Logs the given message
+ * 
+ * @param   message   Message to log
+ */
 export function log(message)
 {
 	LogUtils.log(message);
 }
 
 // setting up
-//Components.utils.import("chrome://fibro/content/modules/Filesystem/LocalFile.jsm");
 import LocalFile = module ("Filesystem/LocalFile");
 var __XX = LocalFile; // otherwise the import will get lost
 
