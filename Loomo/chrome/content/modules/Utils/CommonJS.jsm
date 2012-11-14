@@ -1,4 +1,4 @@
-var EXPORTED_SYMBOLS = ["initCommonJSModule", "getRequireForContentScript"];
+var EXPORTED_SYMBOLS = ["initCommonJSModule", "getRequireForContentScript", "emptyRequire"];
 
 /**
  * Initializes the global object of a Mozilla JS Module to be a CommonJS module
@@ -71,4 +71,8 @@ function getRequireForContentScript(doc){
 			Components.utils.import(start + path + ".js", res);
 			return res;
 		};
+}
+
+function emptyRequire(){ 
+	return {}; 
 }

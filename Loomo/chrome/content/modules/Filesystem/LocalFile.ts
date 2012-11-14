@@ -16,7 +16,7 @@ Components.utils.import("resource://gre/modules/commonjs/promise/core.js");
 
 var separator = (OS.Constants.Win) ? "\\" : "/";
 
-///<reference path='LocalFileGroup.ts' />
+import MLocalFileGroup = module("LocalFileGroup");
 var LocalFileGroup = null;
 export function setLocalFileGroup(lfg){LocalFileGroup = lfg; }
 
@@ -265,7 +265,7 @@ export class LocalFile extends MFile.File {
 	 *
 	 * @returns   Promise: LocalFileGroup representing the directory contents
 	 */
-	getDirectoryEntries(options?): IPromiseLocalFileGroup {
+	getDirectoryEntries(options?): MLocalFileGroup.IPromiseLocalFileGroup {
 		return LocalFileGroup.create(this, options);
 	}
 	

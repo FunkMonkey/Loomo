@@ -3,3 +3,4 @@
 
 declare function initCommonJSModule(global: any): void;
 declare function getRequireForContentScript(doc: any): (path: string) => Object;
+declare function emptyRequire(path: string): Object;

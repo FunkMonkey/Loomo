@@ -8,6 +8,13 @@ initCommonJSModule(eval('this'));
 import Extension = module("Utils/Extension");
 import MItem = module("Item");
 
+///<reference path='../MozPromise.d.ts' />
+/**
+ * Represents a Promise that returns a Group
+ */
+export interface IPromiseGroup extends Promise.IPromise {
+    then(onSuccess: (val: Group) => any, onFail?: Function): Promise.IPromise;
+}
 
 // TODO: extend Array, once it is not an interface anymore in lib.d.ts
 /**

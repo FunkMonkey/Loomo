@@ -1,14 +1,7 @@
 ///<reference path='../Moz.d.ts' />
 
-//window.addEventListener("error", function(errorMsg, url, lineNumber){alert(errorMsg + " " + url + ":" + lineNumber)})
 
-/*window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
-  alert(errorMsg + " " + url + ":" + lineNumber)
-
-  // Just let default handler run.
-  return false;
-}*/
-
+// initialize Fibro on the Window
 var Fibro = {};
 Components.utils.import("chrome://fibro/content/modules/Fibro.js", Fibro);
 

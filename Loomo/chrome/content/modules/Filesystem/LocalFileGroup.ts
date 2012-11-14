@@ -22,7 +22,7 @@ export interface IOptions {
 }
 
 ///<reference path='../../MozPromise.d.ts' />
-export interface IPromiseLocalFileGroup extends Promise.IPromise {
+export interface IPromiseLocalFileGroup extends MGroup.IPromiseGroup {
     then(onSuccess: (val: LocalFileGroup) => any, onFail?: Function): Promise.IPromise;
 }
 

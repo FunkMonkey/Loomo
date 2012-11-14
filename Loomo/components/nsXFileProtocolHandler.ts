@@ -6,28 +6,42 @@
 // The protocol handler that handles "xfile" URI's										//
 //======================================================================================//
 //======================================================================================//
+
+// ==========================================================================
+// Boilerplate for hacking support JS modules in TypeScript
+///<reference path='../chrome/content/Moz.d.ts' />
+Components.utils.import("chrome://fibro/content/modules/Utils/CommonJS.jsm");
+var require = emptyRequire;
+// ==========================================================================
+
+
+
 Components.utils.import("chrome://fibro/content/modules/Utils/log.js");
 
 // Includes
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("resource://gre/modules/Services.jsm");
-var MozXPCOM = {};
+
+
+import MozXPCOM = module("../chrome/content/modules/Utils/MozXPCOM");
 Components.utils.import("chrome://fibro/content/modules/Utils/MozXPCOM.js", MozXPCOM);
 
-var Fibro = {};
+import Fibro = module("../chrome/content/modules/Fibro");
 Components.utils.import("chrome://fibro/content/modules/Fibro.js", Fibro);
-var ItemRegistry = {};
+
+import ItemRegistry = module("../chrome/content/modules/ItemRegistry");
 Components.utils.import("chrome://fibro/content/modules/ItemRegistry.js", ItemRegistry);
 
 
 /* Temporary until Bug XXX was fixed */
-const C = Components;
-const Ci = Components.interfaces;
-const nsXFileProtocolHandler_CID_STR			= "{789409b9-2e3b-4682-a5d1-71ca80a76456}";			
-const nsXFileProtocolHandler_CID				= C.ID(nsXFileProtocolHandler_CID_STR);				
-const nsXFileProtocolHandler_CON_ID				= "@mozilla.org/network/protocol;1?name=xfile";	
-const nsXFileProtocolHandler_DESC				= "XFile Protocol Handler";							
-const nsXFileProtocolHandler_URI_PREFIX			= "xfile";		
+var C = Components;
+var Ci = Components.interfaces;
+var nsXFileProtocolHandler_CID_STR			= "{789409b9-2e3b-4682-a5d1-71ca80a76456}";			
+var nsXFileProtocolHandler_CID				= C.ID(nsXFileProtocolHandler_CID_STR);				
+var nsXFileProtocolHandler_CON_ID				= "@mozilla.org/network/protocol;1?name=xfile";	
+var nsXFileProtocolHandler_DESC				= "XFile Protocol Handler";							
+var nsXFileProtocolHandler_URI_PREFIX			= "xfile";		
+
 
 //——————————————————————————————————————————————————————————————————————————————————————
 /// Constructor
@@ -54,7 +68,7 @@ nsXFileProtocolHandler.prototype =
 	classDescription:	nsXFileProtocolHandler_DESC,
 	classID:			nsXFileProtocolHandler_CID,
 	contractID:			nsXFileProtocolHandler_CON_ID,
-	QueryInterface:		XPCOMUtils.generateQI([Ci.nsIProtocolHandler, Ci.nsIXFileProtocolHandler]),
+	QueryInterface:		XPCOMUtils.generateQI([Ci.nsIProtocolHandler, (<any>Ci).nsIXFileProtocolHandler]),
 
 
 	scheme:			nsXFileProtocolHandler_URI_PREFIX,
@@ -147,8 +161,7 @@ nsXFileProtocolHandler.prototype =
 
 };
 
-//——————————————————————————————————————————————————————————————————————————————————————
+
 // XPCOM Registration
-//——————————————————————————————————————————————————————————————————————————————————————
-const NSGetFactory = XPCOMUtils.generateNSGetFactory([nsXFileProtocolHandler]);
+var NSGetFactory = XPCOMUtils.generateNSGetFactory([nsXFileProtocolHandler]);
 

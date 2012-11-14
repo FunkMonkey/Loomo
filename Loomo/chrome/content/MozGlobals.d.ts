@@ -27,19 +27,25 @@ declare module Components {
             height: number;
         }
 
+        export class nsIChannel extends nsISupports {
+        }
+
         export class nsIConsoleService extends nsISupports {
             logStringMessage(val: string);
         }
 
-         export class nsIFile extends nsISupports {
+        export class nsIFile extends nsISupports {
         }
 
         export class nsIIOService extends nsISupports {
             getProtocolHandler(scheme: string): nsIProtocolHandler;
             newURI(spec: string, originCharset: string, baseURI: nsIURI): nsIURI;
+            newChannelFromURI(uri: nsIURI): nsIChannel;
         }
         
         export class nsIProtocolHandler extends nsISupports {
+            static URI_NOAUTH: any;
+            static URI_IS_LOCAL_FILE: any;
         }
 
         export class nsIURI extends nsISupports {
@@ -50,6 +56,7 @@ declare module Components {
         export class nsIWindowMediator extends nsISupports {
             getMostRecentWindow(name: string): Window;
         }
+
 	}
 	export var classes: Array;
 	
@@ -57,7 +64,7 @@ declare module Components {
 	export var classesByID: any;
 	export var results: any;
 
-	
+	export function ID(CID: string);
 	
 }
 interface XULElement extends HTMLElement {

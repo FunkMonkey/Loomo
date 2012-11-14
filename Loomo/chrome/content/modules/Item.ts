@@ -11,14 +11,6 @@ Components.utils.import("resource://gre/modules/commonjs/promise/core.js");
 
 import MGroup = module("Group");
 
-// TODO: move to Group.ts
-/**
- * Represents a Promise that returns a Group
- */
-export interface IPromiseGroup extends Promise.IPromise {
-    then(onSuccess: (val: MGroup.Group) => any, onFail?: Function): Promise.IPromise;
-}
-
 /**
  * Represents an Item
  */
@@ -183,7 +175,7 @@ export class Item {
      *
      * @returns   Promise: Group representing the directory contents
      */
-    getDirectoryEntries(options?): IPromiseGroup {
+    getDirectoryEntries(options?): MGroup.IPromiseGroup {
 		throw new Error("Not Implemented");
 	}
 

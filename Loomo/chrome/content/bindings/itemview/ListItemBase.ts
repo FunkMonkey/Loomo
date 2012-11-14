@@ -9,7 +9,6 @@ import MListBase = module("ListBase");
 import XBLUtils = module("../../modules/Utils/XBLUtils");
 import MItem = module("../../modules/Item");
 
-
 /**
  * Rereference to ListBase
  */

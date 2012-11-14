@@ -16,31 +16,29 @@ var require = getRequireForContentScript(document);
 
 
 // Includes
-//Cu.import("resource://filebrowser/Filebrowser.jsm");
-//Cu.import("resource://filebrowser/Utilities/MozServices.jsm");
-//Cu.import("resource://filebrowser/AccessCountRule.jsm");
-
-
 import LogUtils = module("../../modules/Utils/log");
-
 import MSimpleList = module("../../bindings/itemview/SimpleList");
-
 import ItemRegistry = module("../../modules/ItemRegistry");
 import Fibro = module("../../modules/Fibro");
+import MItem = module("../../modules/Item");
 
 Components.utils.import("resource://gre/modules/Services.jsm");
 
+/**
+ * Alerts a caught Error/Exception
+ *
+ * @param  e   Error to alert
+ */
 function errorAlert(e){
 	alert("We are sorry. There was an error.\n\n" + LogUtils.formatError(e));
 }
 
-//——————————————————————————————————————————————————————————————————————————————————————
-/// Sets the favicon using the given FileGroupItem
-///
-/// @param	aItem
-///			FileGroupItem to retrieve the favicon from
-//——————————————————————————————————————————————————————————————————————————————————————
-function setFavicon(item)
+/**
+ * Sets the favicon
+ *
+ * @param    item    Item to get favicon from
+ */
+function setFavicon(item: MItem.Item)
 {
 	var favicon = document.getElementById("favicon");
 	var newFavicon = <HTMLElement>favicon.cloneNode(true);
@@ -52,33 +50,33 @@ function setFavicon(item)
 		});
 }
 
-
-function openURICallback(urispec, event)
+/**
+ * Called when the fileview wants to open a URI
+ *    - depending on event, the URI will be opened in a new browser tab
+ *
+ * @param   urispec   URIspec to open
+ * @param   event     Event that lead to opening
+ */
+function openURICallback(urispec:string, event: Event)
 {
+	// get the current browser window and open the link
 	var win = <any>Services.wm.getMostRecentWindow('navigator:browser');
 	win.openUILinkIn(urispec, win.whereToOpenLink(event));
 }
 
-//——————————————————————————————————————————————————————————————————————————————————————
-/// Called, when the page has finished loading
-//——————————————————————————————————————————————————————————————————————————————————————
+/**
+ * Initializes the fileview
+ */
 function initFileView()
 {
 		// set the favicon
 		setFavicon(item);
 		
-		// create a filegroup and load it
-		//var loadTimer = new Timer("loadGroup");
-		//var group = new LocalFileGroup(item, {includeHidden: true}); // TODO: make independent from LocalFileGroup, item.getChildren()
-		//loadTimer.stop();
-		//
-		//
-		
-
-		
+		// create a simple list
 		var view = <MSimpleList.ISimpleListElement>document.getElementById("itemview_simple");
 		view.impl.openURICallback = openURICallback;
 		
+		// get the directory entries
 		console.time("entries");
 		item.getDirectoryEntries().then(function(res){
 				console.timeEnd("entries");
@@ -88,20 +86,17 @@ function initFileView()
 			}, function(e){
 				errorAlert(e);
 			});
-		
-		//var viewTimer = new Timer("loadView");
-		
-		
-		//viewTimer.stop();
 }
 
-// setup the onload-handler
-window.addEventListener("load", function(e) { initFileView(); }, false); 
-
+// create an item based on the window location
 var item = ItemRegistry.createItemFromURISpec(window.location.href);
 
 // set the title
 document.title = item.getDisplayName();
+
+// setup the onload-handler
+window.addEventListener("load", function(e) { initFileView(); }, false); 
+
 
 
 
