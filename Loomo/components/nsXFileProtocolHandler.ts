@@ -43,28 +43,16 @@ var nsXFileProtocolHandler_DESC				= "XFile Protocol Handler";
 var nsXFileProtocolHandler_URI_PREFIX			= "xfile";		
 
 
-//——————————————————————————————————————————————————————————————————————————————————————
-/// Constructor
-//——————————————————————————————————————————————————————————————————————————————————————
 function nsXFileProtocolHandler()
 {
-	// Due to a bug that analyzes the chrome.manifest after initializing xpcom, whe have
-	// to import the modules here
-	/*Components.utils.import("resource://filebrowser/identifiers.jsm");
-	Components.utils.import("resource://filebrowser/ProtocolUtilities.jsm");
-	Components.utils.import("resource://filebrowser/Filebrowser.jsm");*/
 
 }
 
-//——————————————————————————————————————————————————————————————————————————————————————
-/// Prototype
-//——————————————————————————————————————————————————————————————————————————————————————
+
 nsXFileProtocolHandler.prototype =
 {
 	
-	//——————————————————————————————————————————————————————————————————————————————————————
 	// XPCOM Stuff
-	//——————————————————————————————————————————————————————————————————————————————————————
 	classDescription:	nsXFileProtocolHandler_DESC,
 	classID:			nsXFileProtocolHandler_CID,
 	contractID:			nsXFileProtocolHandler_CON_ID,
@@ -75,50 +63,46 @@ nsXFileProtocolHandler.prototype =
 	defaultPort:	-1,
 	protocolFlags:	/* Ci.nsIProtocolHandler.URI_NORELATIVE |*/ Ci.nsIProtocolHandler.URI_NOAUTH | Ci.nsIProtocolHandler.URI_IS_LOCAL_FILE,
 
-	//——————————————————————————————————————————————————————————————————————————————————————
-	/// Returns whether the port is supported
-	///
-	/// @param		port
-	///				The port
-	///
-	/// @param		scheme
-	///				The URI scheme
-	///
-	/// @return		True if port is supported, otherwise false
-	//——————————————————————————————————————————————————————————————————————————————————————
-	/* boolean */ allowPort: function allowPort(/* in long */ port, /* in string */ scheme)
+
+	/**
+	 * Returns whether the port is supported
+	 *
+	 * @param   port     Tha port
+	 * @param   scheme   Da scheme
+	 *
+	 * @return   True if port is supported, otherwise false
+	 */
+	allowPort: function allowPort(port: number, scheme: string): bool
 	{
 		return false;
 	},
 	
-	//——————————————————————————————————————————————————————————————————————————————————————
-	/// Creates a new URI for this protocol
-	///
-	/// @param		aSpec
-	///				The URI specification
-	///
-	/// @param		aOriginCharset
-	///
-	/// @param		aBaseURI
-	///
-	/// @return		
-	//——————————————————————————————————————————————————————————————————————————————————————
-	/* nsIURI */ newURI: function newURI(/* in AUTF8String */ aSpec, /* in string */ aOriginCharset, /* in nsIURI */ aBaseURI)
+
+	/**
+	 * Creates a new URI for this protocol
+	 *
+	 * @param   aSpec            URI specification
+	 * @param   aOriginCharset   
+	 * @param   aBaseURI         
+	 *
+	 * @return    The new URI
+	 */
+	newURI: function newURI(aSpec: string, aOriginCharset: string, aBaseURI: Components.interfaces.nsIURI)
 	{
 	    var uri = new MozXPCOM.StandardURL();
 	    uri.spec = aSpec;
 		return uri;
 	},
 
-	//——————————————————————————————————————————————————————————————————————————————————————
-	/// Creates a new channel
-	///
-	/// @param		aURI
-	///				The URI to create the channel for
-	///
-	/// @return		The newly created channel
-	//——————————————————————————————————————————————————————————————————————————————————————
-	/* nsIChannel */ newChannel: function(/* in nsIURI */ aURI)
+	/**
+	 * Creates a new channel
+	 *    - simply forwards a chrome channel
+	 *
+	 * @param   aURI   URI to load
+	 *
+	 * @return   Newly created channel
+	 */
+	newChannel: function(aURI: Components.interfaces.nsIURI): Components.interfaces.nsIChannel
 	{
 
 	    // get the file that corresponds to the URI
