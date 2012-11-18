@@ -20,7 +20,7 @@ Try it:
 ### Coming next
 
 * file selection
-* file operations
+* file operations (copy, move, paste, rename)
 * * File operations will be implemented using the native dialogs. COM will be used for Windows using js-ctypes.
 
 ## Loomo Classic
