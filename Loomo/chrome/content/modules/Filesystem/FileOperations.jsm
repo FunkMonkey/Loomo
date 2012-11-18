@@ -21,10 +21,8 @@ var FileOperations = {
 	 * 
 	 * @returns {Worker}   Description
 	 */
-	getIdleWorker: function getIdleWorker()
-	{
-		if(!worker)
-		{
+	getIdleWorker: function getIdleWorker() {
+		if(!worker) {
 			worker = new ChromeWorker("FileOperations_Worker.js");  
 			worker.onmessage = function(event) {  
 				LogUtils.log("Message from worker: " + event.data);  
@@ -42,14 +40,10 @@ var FileOperations = {
 	 * @param   {LocalFile}   destination      Destination folder to copy to
 	 * @param   {string}      [newName]        New name
 	 */
-	copyItem: function copyItem(sourceFile, destinationDir, newName)
-	{
+	copyItem: function copyItem(sourceFile, destinationDir, newName) {
 		var worker = this.getIdleWorker();
 		
 		// TODO: use osFile instead of xpcom
 		worker.postMessage({operation: "copy", sourceFile: sourceFile.xpcomFile.path, destinationDir: destinationDir.xpcomFile.path, newName: newName}); // start the worker.
 	}
-}
-
-
-
+};

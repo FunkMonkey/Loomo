@@ -49,4 +49,3 @@ function getXFileProtocolHandler(): Components.interfaces.nsIProtocolHandler {
 
 export var XFileProtocolHandler: Components.interfaces.nsIProtocolHandler = getXFileProtocolHandler();
 //Object.defineProperty(Services, "XFileProtocolHandler", { get: Services.getXFileProtocolHandler, configurable: true, enumerable: true });
-

@@ -21,8 +21,7 @@ import Services = module("Utils/Services2");
  *
  * @param    aForceQuit   Force quitting
  */
-export function quitApp(aForceQuit: bool)
-{
+export function quitApp(aForceQuit: bool) {
 	// eAttemptQuit will try to close each XUL window, but the XUL window can cancel the quit
 	// process if there is unsaved data. eForceQuit will quit no matter what.
 	var quitSeverity = aForceQuit ? Components.interfaces.nsIAppStartup.eForceQuit : Components.interfaces.nsIAppStartup.eAttemptQuit;
@@ -34,8 +33,7 @@ export function quitApp(aForceQuit: bool)
  * 
  * @param   message   Message to log
  */
-export function log(message)
-{
+export function log(message) {
 	LogUtils.log(message);
 }
 

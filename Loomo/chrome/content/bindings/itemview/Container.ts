@@ -2,7 +2,7 @@
 // Boilerplate for hacking support JS modules in TypeScript
 ///<reference path='../../Moz.d.ts' />
 Components.utils.import("chrome://fibro/content/modules/Utils/CommonJS.jsm");
-initCommonJSModule(eval('this'));
+initCommonJSModule(eval('this')); 
 // ==========================================================================
 
 /**

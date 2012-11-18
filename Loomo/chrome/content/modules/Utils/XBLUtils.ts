@@ -16,8 +16,7 @@ initCommonJSModule(eval('this'));
  * @returns   Found anonymous node
  */
 // TODO: update types
-export function getAnonNode(elem, anonID: string)
-{
+export function getAnonNode(elem, anonID: string) {
 	return elem.ownerDocument.getAnonymousElementByAttribute(elem, "anonid", anonID);
 }
 	
@@ -29,11 +28,9 @@ export function getAnonNode(elem, anonID: string)
  * 
  * @returns    Parent node with local name
  */
-export function getParentNodeByLocalName(elem: Element, localName: string): Node
-{
+export function getParentNodeByLocalName(elem: Element, localName: string): Node {
 	var parent = elem.parentNode;
-	while (parent)
-	{
+	while (parent) {
 		if (parent.localName === localName)
 			return parent;
 			
@@ -41,4 +38,3 @@ export function getParentNodeByLocalName(elem: Element, localName: string): Node
 	}
 	return null; 
 }
-	

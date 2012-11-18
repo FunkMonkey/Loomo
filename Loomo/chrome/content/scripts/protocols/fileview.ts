@@ -29,7 +29,7 @@ Components.utils.import("resource://gre/modules/Services.jsm");
  *
  * @param  e   Error to alert
  */
-function errorAlert(e){
+function errorAlert(e) {
 	alert("We are sorry. There was an error.\n\n" + LogUtils.formatError(e));
 }
 
@@ -38,14 +38,13 @@ function errorAlert(e){
  *
  * @param    item    Item to get favicon from
  */
-function setFavicon(item: MItem.Item)
-{
+function setFavicon(item: MItem.Item) {
 	var favicon = document.getElementById("favicon");
 	var newFavicon = <HTMLElement>favicon.cloneNode(true);
-	item.getIconURIString(16).then(function(res){
+	item.getIconURIString(16).then(function(res) {
 			newFavicon.setAttribute('href', res);
 			favicon.parentNode.replaceChild(newFavicon,favicon);
-		}, function(e){
+		}, function(e) {
 			errorAlert(e);
 		});
 }
@@ -57,8 +56,7 @@ function setFavicon(item: MItem.Item)
  * @param   urispec   URIspec to open
  * @param   event     Event that lead to opening
  */
-function openURICallback(urispec:string, event: Event)
-{
+function openURICallback(urispec:string, event: Event) {
 	// get the current browser window and open the link
 	var win = <any>Services.wm.getMostRecentWindow('navigator:browser');
 	win.openUILinkIn(urispec, win.whereToOpenLink(event));
@@ -67,8 +65,7 @@ function openURICallback(urispec:string, event: Event)
 /**
  * Initializes the fileview
  */
-function initFileView()
-{
+function initFileView() {
 		// set the favicon
 		setFavicon(item);
 		
@@ -78,12 +75,12 @@ function initFileView()
 		
 		// get the directory entries
 		console.time("entries");
-		item.getDirectoryEntries().then(function(res){
+		item.getDirectoryEntries().then(function(res) {
 				console.timeEnd("entries");
 				console.time("entriesRendered");
 				view.impl.loadFromItemGroup(res);
 				console.timeEnd("entriesRendered");
-			}, function(e){
+			}, function(e) {
 				errorAlert(e);
 			});
 }
@@ -95,9 +92,4 @@ var item = ItemRegistry.createItemFromURISpec(window.location.href);
 document.title = item.getDisplayName();
 
 // setup the onload-handler
-window.addEventListener("load", function(e) { initFileView(); }, false); 
-
-
-
-
-
+window.addEventListener("load", function(e) { initFileView(); }, false);

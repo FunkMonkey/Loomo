@@ -45,8 +45,7 @@ export class Group {
 		if(itemOrURIOrSpec === undefined)
 			throw new Error("Constructor needs exactly one parameter that can be an Item or nsIURI or a string representing a URI spec!");
 	
-		if(itemOrURIOrSpec instanceof MItem.Item)
-		{
+		if(itemOrURIOrSpec instanceof MItem.Item) {
 			this.contextItem = itemOrURIOrSpec;
 		}
 		/*else if(itemOrURIOrSpec instanceof Components.interfaces.nsIURI)

@@ -82,16 +82,12 @@ export function borrow(to: Object, from: Object, options?: IBorrowOptions) {
 		
 	var chain = [];
 		
-	if(options.ownPropsOnly)
-	{
+	if(options.ownPropsOnly) {
 		chain.push(from);
-	}
-	else
-	{
+	} else {
 		// creating the inheritence chain
 		var currObj = from;
-		while(currObj)
-		{
+		while(currObj) {
 			chain.push(currObj);
 				
 			// go down further in the inheritence chain
@@ -107,13 +103,11 @@ export function borrow(to: Object, from: Object, options?: IBorrowOptions) {
 	var borrowedProps = {};
 		
 	// go through the inheritence chain
-	for(var i = 0; i < chain.length; ++i)
-	{
+	for(var i = 0; i < chain.length; ++i) {
 		var propNames = Object.getOwnPropertyNames(chain[i]);
 			
 		// copy all property descriptors over to "to"
-		for(var j = 0; j < propNames.length; ++j)
-		{
+		for(var j = 0; j < propNames.length; ++j) {
 			// don't copy, if prop has already been borrowed from up in the chain
 			if(borrowedProps[propNames[j]])
 				continue;
@@ -126,26 +120,20 @@ export function borrow(to: Object, from: Object, options?: IBorrowOptions) {
 			var prop = Object.getOwnPropertyDescriptor(chain[i], propNames[j]);
 				
 			// TODO: filter for different types of properties
-			if(options.usePropFilters)
-			{
+			if(options.usePropFilters) {
 				if( (!prop.writable && !options.borrowNonWritable) ||
 					(!prop.configurable && !options.borrowNonConfigurable) ||
 					(!prop.enumerable && !options.borrowNonEnumerable))
 					continue;
 					
 				// is an accessor
-				if(prop.get || prop.set)
-				{
+				if(prop.get || prop.set) {
 					if(!options.borrowAccessors)
 						continue;
-				}
-				else if(typeof(prop.value) === "function")
-				{
+				} else if(typeof(prop.value) === "function") {
 					if(!options.borrowFunctions)
 						continue;
-				}
-				else
-				{
+				} else {
 					if(!options.borrowNonFunctionValues)
 						continue;
 				}
@@ -191,10 +179,8 @@ export function isInstanceOf(obj: Object, constructorFunc: Function): bool {
 	if(obj instanceof constructorFunc)
 		return true;
 		
-	if((<any>obj)._classList)
-	{
-		for(var i = 0, len = (<any>obj)._classList.length; i < len; ++i)
-		{
+	if((<any>obj)._classList) {
+		for(var i = 0, len = (<any>obj)._classList.length; i < len; ++i) {
 			if(constructorFunc === (<any>obj)._classList[i])
 				return true;
 		}
@@ -222,8 +208,7 @@ export function isInstanceOfByString(obj: Object, constructorFunc: Function): bo
 			return true;
 	}
 		
-	if((<any>obj)._classList)
-	{
+	if((<any>obj)._classList) {
 		for(var i = 0, len = (<any>obj)._classList.length; i < len; ++i)
 		{
 			if((<any>constructorFunc).name === (<any>obj)._classList[i].name)
@@ -233,6 +218,3 @@ export function isInstanceOfByString(obj: Object, constructorFunc: Function): bo
 		
 	return false;
 }
-
-
-

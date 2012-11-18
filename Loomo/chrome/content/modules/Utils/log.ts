@@ -20,8 +20,7 @@ export var logOptions = {
  */
 export function log(str)
 {
-	if(logOptions.useJSConsole)
-	{
+	if(logOptions.useJSConsole) {
 		if(str == null) // null or undefined
 			str = "" + str;
 		else if(str === "") // fix nasty console bug
@@ -44,8 +43,7 @@ export function log(str)
 export function logObject(object: Object, recursive: bool) {
 	// TODO: recursive
 	var str = "";
-	for(var member in object)
-	{
+	for(var member in object) {
 		var sub = (object[member].toString == null) ? "[Object]" : ""+ object[member];
 			
 		str += member + ": " + sub + "\n";
@@ -70,8 +68,7 @@ export function logAllProperties(object: Object) {
 	{
 		// creating the inheritence chain
 		var currObj = object;
-		while(currObj)
-		{
+		while(currObj) {
 			chain.push(currObj);
 				
 			// go down further in the inheritence chain
@@ -87,13 +84,11 @@ export function logAllProperties(object: Object) {
 	var allProps = {};
 		
 	// go through the inheritence chain
-	for(var i = 0; i < chain.length; ++i)
-	{
+	for(var i = 0; i < chain.length; ++i) {
 		var propNames = Object.getOwnPropertyNames(chain[i]);
 			
 		// copy all property descriptors over to "to"
-		for(var j = 0; j < propNames.length; ++j)
-		{
+		for(var j = 0; j < propNames.length; ++j) {
 			// don't copy, if prop has already been borrowed from up in the chain
 			if(allProps[propNames[j]])
 				continue;
@@ -103,8 +98,7 @@ export function logAllProperties(object: Object) {
 	}
 		
 	var str = "";
-	for(var propName in allProps)
-	{
+	for(var propName in allProps) {
 		var sub = (object[propName].toString == null) ? "[Object]" : ""+ object[propName];
 			
 		str += propName + ": " + sub + "\n";
@@ -143,10 +137,9 @@ export function logError(e) {
 * @param   [e]      Error to log
 */
 export function logStack(e: Error) {
-	if(e)
+	if(e) {
 		log((<any>e).stack)
-	else
-	{
+	} else {
 		log((<any>(new Error())).stack)
 	}
 }

@@ -176,9 +176,9 @@ export class LocalFile extends MFile.File {
 		} else {
 			// TODO: use OS.File.exists
 			var deferred = Promise.defer();
-			this.updateInfo().then(function(res){
+			this.updateInfo().then(function(res) {
 					deferred.resolve(true);
-				}, function(e){
+				}, function(e) {
 					if(e.becauseNoSuchFile)
 						deferred.resolve(false);
 					else
@@ -196,10 +196,10 @@ export class LocalFile extends MFile.File {
 	 */
 	updateInfo(): OS.IPromiseInfo {
 		var self = this;
-		return OS.File.stat(this.path).then(function(res){
+		return OS.File.stat(this.path).then(function(res) {
 			self.info = res;
 			return res;
-		}, function(e){
+		}, function(e) {
 			self.infoError = e;
 			throw e;
 		});
@@ -211,7 +211,7 @@ export class LocalFile extends MFile.File {
 	 *
 	 * @returns   Promise: true if file is directory
 	 */
-	isDirectory(): Promise.IPromiseBool{
+	isDirectory(): Promise.IPromiseBool {
 		if(this.directoryEntry) {
 			return Promise.resolve(this.directoryEntry.isDir);
 		} else if(this.info) {
@@ -229,13 +229,13 @@ export class LocalFile extends MFile.File {
 	 *
 	 * @returns   Promise: true if file is symlink
 	 */
-	isSymLink(): Promise.IPromiseBool{
+	isSymLink(): Promise.IPromiseBool {
 		if(this.directoryEntry) {
 			return Promise.resolve(this.directoryEntry.isSymLink);
 		} else if(this.info) {
 			return Promise.resolve(this.info.isSymLink);
 		} else {
-			this.updateInfo().then(function(res){
+			this.updateInfo().then(function(res) {
 				return res.isSymLink;
 			});
 		}
@@ -247,13 +247,13 @@ export class LocalFile extends MFile.File {
 	 *
 	 * @returns   Promise: true if file is a file
 	 */
-	isFile(): Promise.IPromiseBool{
+	isFile(): Promise.IPromiseBool {
 		if(this.directoryEntry) {
 			return Promise.resolve(!this.directoryEntry.isDir &&this.directoryEntry.isSymLink);
 		} else if(this.info) {
 			return Promise.resolve(!this.info.isDir && !this.info.isSymLink);
 		} else {
-			return this.updateInfo().then(function(res){
+			return this.updateInfo().then(function(res) {
 				return (!res.isDir && !res.isSymLink);
 			});
 		}

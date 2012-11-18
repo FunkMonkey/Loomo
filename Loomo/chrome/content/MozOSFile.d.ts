@@ -21,7 +21,6 @@ declare module OS {
 	}
 
 	
-
 	export class File {
 		static stat(path: string): Promise.IPromise;
 		static DirectoryIterator: {

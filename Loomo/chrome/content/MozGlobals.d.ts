@@ -74,7 +74,7 @@ interface XULElement extends HTMLElement {
 }
 /*interface Error {
 	stack: any;
-}*/
+}*/ 
 
 interface Console {
 	time(context: string);

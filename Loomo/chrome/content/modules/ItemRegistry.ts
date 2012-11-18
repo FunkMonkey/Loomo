@@ -18,8 +18,7 @@ var _constructorFuncsByScheme = {};
  * @param   scheme            URI scheme
  * @param   constructorFunc   Constructor to save
  */
-export function registerItemConstructor(scheme: string, constructorFunc: Function)
-{
+export function registerItemConstructor(scheme: string, constructorFunc: Function) {
 	_constructorFuncsByScheme[scheme] = constructorFunc;
 }
 	
@@ -30,8 +29,7 @@ export function registerItemConstructor(scheme: string, constructorFunc: Functio
  * 
  * @returns   Constructor function
  */
-export function getItemConstructor(scheme: string) : Function
-{
+export function getItemConstructor(scheme: string) : Function {
 	return _constructorFuncsByScheme[scheme];
 }
 
@@ -42,8 +40,7 @@ export function getItemConstructor(scheme: string) : Function
  *
  * @return   Newly created Item
  */
-export function createItemFromURI(URI: Components.interfaces.nsIURI): MItem.Item
-{
+export function createItemFromURI(URI: Components.interfaces.nsIURI): MItem.Item {
 	return new (_constructorFuncsByScheme[URI.scheme])(URI);
 }
 
@@ -54,8 +51,7 @@ export function createItemFromURI(URI: Components.interfaces.nsIURI): MItem.Item
  *
  * @return   Newly created Item
  */
-export function createItemFromURISpec(URIspec: string): MItem.Item
-{
+export function createItemFromURISpec(URIspec: string): MItem.Item {
 	// TODO: extract scheme on our own
 	return createItemFromURI(Services.io.newURI(URIspec, null, null));
 }

@@ -40,14 +40,12 @@ export class SimpleListColumn {
 	 * @constructor
 	 * @param   node   The connected DOM element
 	 */
-	constructor(node: ISimpleListColumnElement)
-	{
+	constructor(node: ISimpleListColumnElement) {
 		this.node = node;
 		this._list = null;
 	
 		this.node.addEventListener("click", <(e: Event) => void>(this.onClick.bind(this)), false);
 		this.node.addEventListener("dblclick", <(e: Event) => void>(this.onDblClick.bind(this)), false);
-	
 	}
 	
 	
@@ -55,8 +53,7 @@ export class SimpleListColumn {
 	 * Reference to parent list
 	 *   - will search for the list, when called the first time
 	 */
-	get list() : MSimpleList.SimpleList
-	{
+	get list() : MSimpleList.SimpleList {
 		// if we already found our control, then return it (save some performance)
 		if(this._list)
 			return this._list;
@@ -64,10 +61,8 @@ export class SimpleListColumn {
 		// otherwise look for the control
 		// TODO: make it MListBase.IListElement, when http://typescript.codeplex.com/workitem/386 is fixed
 		var parent = <any>this.node.parentNode;
-		while (parent)
-		{
-			if (parent.impl && parent.impl instanceof MSimpleList.SimpleList)
-			{
+		while (parent) {
+			if (parent.impl && parent.impl instanceof MSimpleList.SimpleList) {
 				this._list = parent.impl;
 				return this._list;
 			}
@@ -83,8 +78,7 @@ export class SimpleListColumn {
 	 *
 	 * @param   event   Click event
 	 */
-	onClick(event: MouseEvent)
-	{
+	onClick(event: MouseEvent) {
 		if(event.target === this.node)
 			this.list.clearSelection();
 	}
@@ -95,11 +89,9 @@ export class SimpleListColumn {
 	 *
 	 * @param   event   Click event
 	 */
-	onDblClick(event: MouseEvent)
-	{
+	onDblClick(event: MouseEvent) {
 		if(event.target === this.node)
 			this.list.openGroupParent(event);
 	}
 	
 };
-

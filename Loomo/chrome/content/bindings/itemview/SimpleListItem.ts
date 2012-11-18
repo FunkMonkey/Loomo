@@ -65,8 +65,7 @@ export class SimpleListItem extends MListItemBase.ListItemBase {
 	 * @constructor
 	 * @param   node   The connected DOM element
 	 */
-	constructor(node: ISimpleListItemElement)
-	{
+	constructor(node: ISimpleListItemElement) {
 		super(node);
 	
 		this._DOMIcon = XBLUtils.getAnonNode(this.node, "icon");
@@ -92,8 +91,7 @@ export class SimpleListItem extends MListItemBase.ListItemBase {
 	 *
 	 * @param   item   Item to set
 	 */
-	setItem(item: MItem.Item)
-	{
+	setItem(item: MItem.Item) {
 		this.item = item;	
 		
 		// set some attributes
@@ -108,18 +106,16 @@ export class SimpleListItem extends MListItemBase.ListItemBase {
 	/**
 	 * Sets up the icon
 	 */
-	setupIcon()
-	{
+	setupIcon() {
 		// only setup icons that are visible
-		if(!this.iconSetup && this.isVisibleInScroll())
-		{
+		if(!this.iconSetup && this.isVisibleInScroll()) {
 			var self = this;
-			this.item.getIconURIString(16).then(function(res){
+			this.item.getIconURIString(16).then(function(res) {
 				self.iconURI = res;
 				self._DOMIcon.setAttribute("src", self.iconURI);
 				self.node.parentNode.removeEventListener("scroll", self.scrollListener, false);
 				self.iconSetup = true;
-			}, function fail(e){
+			}, function fail(e) {
 				LogUtils.logError(e);
 			});
 		}
@@ -131,31 +127,22 @@ export class SimpleListItem extends MListItemBase.ListItemBase {
 	 *
 	 * @param   event   Click event
 	 */
-	onClick(event: MouseEvent)
-	{
+	onClick(event: MouseEvent) {
 		// handle middle-mouse-buttons
-		if(event.button == 1)
-		{
+		if(event.button == 1) {
 			this.onDoubleClick(event);
-		}
-		else
-		{
+		} else {
 			// TODO: handle disabled controls
 			
-			if (event.ctrlKey || event.metaKey)
-			{
+			if (event.ctrlKey || event.metaKey) {
 				this.list.toggleListItemSelection(this);
 				//control.currentItem = this;
-			}
-			else if (event.shiftKey)
-			{
+			} else if (event.shiftKey) {
 				// TODO: implement
 				//control.selectItemRange(null, this);
 				//control.currentItem = this;
-			}
-			else {
-				if(!this.isSelected)
-				{
+			} else {
+				if(!this.isSelected) {
 					this.list.clearSelection();
 					this.list.addListItemToSelection(this);
 				}
@@ -169,8 +156,7 @@ export class SimpleListItem extends MListItemBase.ListItemBase {
 	 *
 	 * @param   event   Scroll event
 	 */
-	onParentScroll(event: MouseWheelEvent)
-	{
+	onParentScroll(event: MouseWheelEvent) {
 		this.setupIcon();
 	}
 	
@@ -179,8 +165,7 @@ export class SimpleListItem extends MListItemBase.ListItemBase {
 	 *
 	 * @returns   True if visible, otherwise false
 	 */
-	isVisibleInScroll()
-	{
+	isVisibleInScroll() {
 		//logI("offset: " + this.boxObject.y + " " + this.parentNode.scrollTop + " " + this.parentNode.scrollHeight + " " + this.parentNode.boxObject.height);
 		return (this.node.boxObject.y > (<XULElement>this.node.parentNode).scrollTop && (this.node.boxObject.y < ((<XULElement>this.node.parentNode).scrollTop + (<XULElement>this.node.parentNode).boxObject.height)));
 	}
@@ -191,8 +176,7 @@ export class SimpleListItem extends MListItemBase.ListItemBase {
 	 *
 	 * @param   event   Click event
 	 */
-	onDoubleClick(event: MouseEvent)
-	{
+	onDoubleClick(event: MouseEvent) {
 		this.list.openListItem(this, event);
 	}
 	
@@ -202,8 +186,7 @@ export class SimpleListItem extends MListItemBase.ListItemBase {
 	 *
 	 * @param   event   Click event
 	 */
-	onSpacerClick(event: MouseEvent)
-	{
+	onSpacerClick(event: MouseEvent) {
 		this.list.clearSelection();
 	}
 	
@@ -213,8 +196,7 @@ export class SimpleListItem extends MListItemBase.ListItemBase {
 	 *
 	 * @param   event   Click event
 	 */
-	onSpacerDblClick(event: MouseEvent)
-	{
+	onSpacerDblClick(event: MouseEvent) {
 		this.list.openGroupParent(event);
 	}
 	

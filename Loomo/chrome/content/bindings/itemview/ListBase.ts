@@ -63,8 +63,7 @@ export class ListBase {
 	 * @constructor
 	 * @param   node   The connected DOM element
 	 */
-	constructor(node: IListElement)
-	{
+	constructor(node: IListElement) {
 		this.node = node;
 		this.itemGroup = null;
 		this.items = [];
@@ -77,8 +76,7 @@ export class ListBase {
 	 * 
 	 * @param   group   Group to load from
 	 */
-	loadFromItemGroup(group: MGroup.Group)
-	{
+	loadFromItemGroup(group: MGroup.Group) {
 		this.itemGroup = group;
 		this._loadItems();
 	}
@@ -98,8 +96,7 @@ export class ListBase {
 	addItemToSelection(item: string);
 	addItemToSelection(item: MItem.Item);
 	addItemToSelection(item: MListItemBase.ListItemBase);
-	addItemToSelection(item: any)
-	{
+	addItemToSelection(item: any) {
 		var listItem = this.getListItem(item);
 		if(!listItem)
 			throw new Error("Passed item does not belong to this view or maybe even unsupported argument (take care when passing URI's as strings)");
@@ -112,14 +109,11 @@ export class ListBase {
 	 * 
 	 * @param   listItem   Item to add
 	 */
-	addListItemToSelection(listItem: MListItemBase.ListItemBase)
-	{
-		if(!listItem.isSelected)
-		{
+	addListItemToSelection(listItem: MListItemBase.ListItemBase) {
+		if(!listItem.isSelected) {
 			listItem._isSelected = true;
 			this.selectedItems.push(listItem);
-		}
-		else
+		} else
 			throw new Error("Tried to add already selected item to selection");
 	}
 	
@@ -131,8 +125,7 @@ export class ListBase {
 	removeItemFromSelection(item: string);
 	removeItemFromSelection(item: MItem.Item);
 	removeItemFromSelection(item: MListItemBase.ListItemBase);
-	removeItemFromSelection(item: any)
-	{
+	removeItemFromSelection(item: any) {
 		var listItem = this.getListItem(item);
 		if(!listItem)
 			throw new Error("Passed item does not belong to this view or maybe even unsupported argument (take care when passing URI's as strings)");
@@ -145,14 +138,10 @@ export class ListBase {
 	 * 
 	 * @param   listItem   Item to remove
 	 */
-	removeListItemFromSelection(listItem: MListItemBase.ListItemBase)
-	{
-		if(listItem.isSelected)
-		{
-			for (var i = 0; i < this.selectedItems.length; ++i)
-			{
-				if(this.selectedItems[i] === listItem)
-				{
+	removeListItemFromSelection(listItem: MListItemBase.ListItemBase) {
+		if(listItem.isSelected) {
+			for (var i = 0; i < this.selectedItems.length; ++i) {
+				if(this.selectedItems[i] === listItem) {
 					this.selectedItems.splice(i, 1);
 					listItem._isSelected = false;
 					return;
@@ -161,8 +150,7 @@ export class ListBase {
 			
 			// shouldn't reach this
 			throw new Error("Given item was not in selection! Well, this shouldn't have happened!");
-		}
-		else
+		} else
 			throw new Error("Tried to remove unselected item from selection");
 	}
 	
@@ -174,8 +162,7 @@ export class ListBase {
 	toggleItemSelection(item: string);
 	toggleItemSelection(item: MItem.Item);
 	toggleItemSelection(item: MListItemBase.ListItemBase);
-	toggleItemSelection(item: any)
-	{
+	toggleItemSelection(item: any) {
 		var listItem = this.getListItem(item);
 		if(!listItem)
 			throw new Error("Passed item does not belong to this view or maybe even unsupported argument (take care when passing URI's as strings)");
@@ -188,8 +175,7 @@ export class ListBase {
 	 * 
 	 * @param   listItem   Item to toggle selection
 	 */
-	toggleListItemSelection(listItem: MListItemBase.ListItemBase)
-	{
+	toggleListItemSelection(listItem: MListItemBase.ListItemBase) {
 		if(listItem.isSelected)
 			this.removeListItemFromSelection(listItem);
 		else
@@ -199,8 +185,7 @@ export class ListBase {
 	/**
 	 * Clears the selection
 	 */
-	clearSelection()
-	{
+	clearSelection() {
 		for(var i = 0, len = this.selectedItems.length; i < len; ++i)
 			this.selectedItems[i]._isSelected = false;
 
@@ -218,39 +203,27 @@ export class ListBase {
 	getListItemIn(itemOrURIorSpecIn: string, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase;
 	getListItemIn(itemOrURIorSpecIn: MItem.Item, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase;
 	getListItemIn(itemOrURIorSpecIn: MListItemBase.ListItemBase, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase;
-	getListItemIn(itemOrURIorSpecIn: any, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase
-	{
-		if(itemOrURIorSpecIn instanceof MListItemBase.ListItemBase)
-		{
-			for(var i = 0, len = array.length; i < len; ++i)
-			{
+	getListItemIn(itemOrURIorSpecIn: any, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase {
+		if(itemOrURIorSpecIn instanceof MListItemBase.ListItemBase) {
+			for(var i = 0, len = array.length; i < len; ++i) {
 				var listItem = array[i];
 				if(listItem === itemOrURIorSpecIn || listItem.item === itemOrURIorSpecIn.item || listItem.item.URIspec === itemOrURIorSpecIn.item.URIspec)
 					return listItem;
 			}
-		}
-		else if(itemOrURIorSpecIn instanceof MItem.Item)
-		{
-			for(var i = 0, len = array.length; i < len; ++i)
-			{
+		} else if(itemOrURIorSpecIn instanceof MItem.Item) {
+			for(var i = 0, len = array.length; i < len; ++i) {
 				var listItem = array[i];
 				if(listItem.item === itemOrURIorSpecIn || listItem.item.URIspec === itemOrURIorSpecIn.URIspec)
 					return listItem;
 			}
-		}
-		else if(itemOrURIorSpecIn instanceof Components.interfaces.nsIURI)
-		{
-			for(var i = 0, len = array.length; i < len; ++i)
-			{
+		} else if(itemOrURIorSpecIn instanceof Components.interfaces.nsIURI) {
+			for(var i = 0, len = array.length; i < len; ++i) {
 				var listItem = array[i];
 				if(listItem.item.URIspec === itemOrURIorSpecIn.spec)
 					return listItem;
 			}
-		}
-		else if(typeof(itemOrURIorSpecIn) === "string")
-		{
-			for(var i = 0, len = array.length; i < len; ++i)
-			{
+		} else if(typeof(itemOrURIorSpecIn) === "string") {
+			for(var i = 0, len = array.length; i < len; ++i) {
 				var listItem = array[i];
 				if(listItem.item.URIspec === itemOrURIorSpecIn)
 					return listItem;
@@ -271,8 +244,7 @@ export class ListBase {
 	getListItem(itemOrURIorSpecIn: string): MListItemBase.ListItemBase;
 	getListItem(itemOrURIorSpecIn: MItem.Item): MListItemBase.ListItemBase;
 	getListItem(itemOrURIorSpecIn: MListItemBase.ListItemBase): MListItemBase.ListItemBase;
-	getListItem(itemOrURIorSpecIn: any): MListItemBase.ListItemBase
-	{
+	getListItem(itemOrURIorSpecIn: any): MListItemBase.ListItemBase {
 		return this.getListItemIn(itemOrURIorSpecIn, this.items);
 	}
 	
@@ -286,8 +258,7 @@ export class ListBase {
 	getListItemInSelection(itemOrURIorSpecIn: string): MListItemBase.ListItemBase;
 	getListItemInSelection(itemOrURIorSpecIn: MItem.Item): MListItemBase.ListItemBase;
 	getListItemInSelection(itemOrURIorSpecIn: MListItemBase.ListItemBase): MListItemBase.ListItemBase;
-	getListItemInSelection(itemOrURIorSpecIn: any): MListItemBase.ListItemBase
-	{
+	getListItemInSelection(itemOrURIorSpecIn: any): MListItemBase.ListItemBase {
 		return this.getListItemIn(itemOrURIorSpecIn, this.selectedItems);
 	}
 	
@@ -297,13 +268,12 @@ export class ListBase {
 	 * @param   item    Item to open
 	 * @param   event   Event
 	 */
-	openListItem(item: MListItemBase.ListItemBase, event: Event)
-	{
+	openListItem(item: MListItemBase.ListItemBase, event: Event) {
 		var self = this;
-		item.item.open().then(function(res){
+		item.item.open().then(function(res) {
 				if(res !== ".")
 					self.openURICallback(res, event);
-			}, function(e){
+			}, function(e) {
 				LogUtils.log(e);
 			});
 	}
@@ -313,8 +283,7 @@ export class ListBase {
 	 * 
 	 * @param   event   Event
 	 */
-	openGroupParent(event: Event)
-	{
+	openGroupParent(event: Event) {
 		var parent = this.itemGroup.contextItem.parent;
 		if(parent)
 			this.openURICallback(parent.URIspec, event);

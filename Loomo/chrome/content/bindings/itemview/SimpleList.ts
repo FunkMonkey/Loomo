@@ -33,8 +33,7 @@ export class SimpleList extends MListBase.ListBase {
 	 * @constructor
 	 * @param   node   The connected DOM element
 	 */
-	constructor(node: ISimpleListElement)
-	{
+	constructor(node: ISimpleListElement) {
 		super(node);
 	}
 
@@ -46,8 +45,7 @@ export class SimpleList extends MListBase.ListBase {
 	 *
 	 * @returns   The newly created SimpleListItem
 	 */
-	_appendItem(item: MItem.Item, column: MSimpleListColumn.ISimpleListColumnElement): MSimpleListItem.SimpleListItem
-	{
+	_appendItem(item: MItem.Item, column: MSimpleListColumn.ISimpleListColumnElement): MSimpleListItem.SimpleListItem {
 		var cell = <MSimpleListItem.ISimpleListItemElement>(this.node.ownerDocument.createElement("simple_list_item"));
 		column.appendChild(cell);
 		this.items.push(cell.impl);
@@ -59,16 +57,14 @@ export class SimpleList extends MListBase.ListBase {
 	/**
 	 * Loads all the items
 	 */
-	_loadItems()
-	{
+	_loadItems() {
 		// AccessCount
 		
 		//var list = this.ownerDocument.getAnonymousNodes(this)[0].childNodes[0];
 		var list = <MSimpleListColumn.ISimpleListColumnElement>XBLUtils.getAnonNode(this.node, "column");
 		
 		// TODO: clear the list at the beginning or something like that
-		for(var i = 0, len = this.itemGroup.length; i < len; ++i)
-		{
+		for(var i = 0, len = this.itemGroup.length; i < len; ++i) {
 			this._appendItem(this.itemGroup[i], list);
 		}
 	}
@@ -79,8 +75,7 @@ export class SimpleList extends MListBase.ListBase {
 	 * @param   startListItem   SimpleListItem to start
 	 * @param   endListItem     SimpleListItem to end
 	 */
-	_selectListItemRange(startListItem: MSimpleListItem.SimpleListItem, endListItem: MSimpleListItem.SimpleListItem)
-	{
+	_selectListItemRange(startListItem: MSimpleListItem.SimpleListItem, endListItem: MSimpleListItem.SimpleListItem) {
 		if(!startListItem && !endListItem)
 			this.clearSelection();
 			
@@ -88,4 +83,3 @@ export class SimpleList extends MListBase.ListBase {
 	}
 	
 };
-

@@ -29,7 +29,7 @@ declare module Promise {
 		then(onSuccess: (val: Array) => any, onFail?: Function): IPromise;
 	}
 }
-
+ 
 /*interface Error {
 	stack: any;
 }*/

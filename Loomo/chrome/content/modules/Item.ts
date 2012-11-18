@@ -76,8 +76,7 @@ export class Item {
 	 * XPCOM URI
 	 *    - created based on URIspec when needed the first time
 	 */
-	get URI()
-	{
+	get URI() {
 		if(!this._URI)
 			this._URI = Services.io.newURI(this.URIspec, null, null);
 				
@@ -93,8 +92,7 @@ export class Item {
 	 * 
 	 * @returns    URI-String
 	 */
-	getAlternativeIconURIString(size: number)
-	{
+	getAlternativeIconURIString(size: number) {
 		return "";
 	}
 		
@@ -104,8 +102,7 @@ export class Item {
 	 * @param   URISpec   The URI specification of the icon
 	 * @param   size      The size of the icon
 	 */
-	setAlternativeIconURIString(URISpec: string, size: number)
-	{
+	setAlternativeIconURIString(URISpec: string, size: number) {
 		this.alternativeIconURIs[size] = URISpec;
 	}
 

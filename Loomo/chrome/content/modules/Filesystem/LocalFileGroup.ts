@@ -95,12 +95,9 @@ export class LocalFileGroup extends MGroup.Group {
 	 */
 	setOptions(options?: IOptions) {
 		this.options = {};
-		if(options !== undefined)
-		{
+		if(options !== undefined) {
 			this.options.includeHidden = (options.includeHidden === undefined || options.includeHidden === true) ? true : false;
-		}
-		else
-		{
+		} else {
 			this.options.includeHidden = true;
 		}
 	}
@@ -110,8 +107,7 @@ export class LocalFileGroup extends MGroup.Group {
 	 *
 	 * @retuns   Promise: The loaded LocalFileGroup
 	 */
-	_loadFiles(): IPromiseLocalFileGroup
-	{
+	_loadFiles(): IPromiseLocalFileGroup {
 
 		var self = this;
 

@@ -22,4 +22,4 @@ item.QueryInterface(Ci.nsIFileGroupItemFile);
 // set the title
 document.title = item.getDisplayName();*/
 
-// TODO: fix this file
+// TODO: fix this file 

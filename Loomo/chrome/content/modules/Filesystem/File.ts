@@ -78,8 +78,7 @@ export class File extends MItem.Item {
 		var alternativeIcon = this.getAlternativeIconURIString(size);
 		if (alternativeIcon !== "") {
 			return Promise.resolve(alternativeIcon);
-		}
-		else {
+		} else {
 
 			var self = this;
 			var promise = self.exists().then(function successExist(res): any {
@@ -145,5 +144,3 @@ export class File extends MItem.Item {
 	}
 
 }
-
-

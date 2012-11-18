@@ -104,10 +104,11 @@ export class ListItemBase {
 	 *    - for internal use only
 	 */
 	set _isSelected(value: bool) {
-		if (value)
+		if (value) {
 			this.node.setAttribute("isSelected", "");
-		else
+		} else {
 			this.node.removeAttribute("isSelected");
+		}
 	}
 
 }
@@ -118,4 +119,3 @@ export class ListItemBase {
  * @param  listBase      ListBase constructor
  */
 export function setupListBase(listBase: Function){ ListBaseFunc = listBase; };
-

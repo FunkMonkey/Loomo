@@ -43,14 +43,11 @@ var nsXFileProtocolHandler_DESC         = "XFile Protocol Handler";
 var nsXFileProtocolHandler_URI_PREFIX   = "xfile";		
 
 
-function nsXFileProtocolHandler()
-{
+function nsXFileProtocolHandler() {
 
 }
 
-
-nsXFileProtocolHandler.prototype =
-{
+nsXFileProtocolHandler.prototype = {
 	
 	// XPCOM Stuff
 	classDescription:	nsXFileProtocolHandler_DESC,
@@ -72,8 +69,7 @@ nsXFileProtocolHandler.prototype =
 	 *
 	 * @return   True if port is supported, otherwise false
 	 */
-	allowPort: function allowPort(port: number, scheme: string): bool
-	{
+	allowPort: function allowPort(port: number, scheme: string): bool {
 		return false;
 	},
 	
@@ -87,8 +83,7 @@ nsXFileProtocolHandler.prototype =
 	 *
 	 * @return    The new URI
 	 */
-	newURI: function newURI(aSpec: string, aOriginCharset: string, aBaseURI: Components.interfaces.nsIURI)
-	{
+	newURI: function newURI(aSpec: string, aOriginCharset: string, aBaseURI: Components.interfaces.nsIURI) {
 		var uri = new MozXPCOM.StandardURL();
 		uri.spec = aSpec;
 		return uri;
@@ -102,8 +97,7 @@ nsXFileProtocolHandler.prototype =
 	 *
 	 * @return   Newly created channel
 	 */
-	newChannel: function(aURI: Components.interfaces.nsIURI): Components.interfaces.nsIChannel
-	{
+	newChannel: function(aURI: Components.interfaces.nsIURI): Components.interfaces.nsIChannel {
 
 		// get the file that corresponds to the URI
 		var file = ItemRegistry.createItemFromURI(aURI);
@@ -148,4 +142,3 @@ nsXFileProtocolHandler.prototype =
 
 // XPCOM Registration
 var NSGetFactory = XPCOMUtils.generateNSGetFactory([nsXFileProtocolHandler]);
-
