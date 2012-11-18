@@ -10,8 +10,8 @@ Using the `xfile` URL scheme makes it possible to bookmark and tag files and dir
 
 Try it: 
 
-* Unix: xfile:///home/
-* Windows: xfile:///c:/Windows/
+* Unix: [xfile:///home/](xfile:///home/)
+* Windows: [xfile:///c:/Windows/](xfile:///c:/Windows/)
 
 ### Current Status
 
@@ -21,7 +21,7 @@ Try it:
 
 * file selection
 * file operations
-** File operations will be implemented using the native dialogs. COM will be used for Windows using js-ctypes.
+* * File operations will be implemented using the native dialogs. COM will be used for Windows using js-ctypes.
 
 ## Loomo Classic
 
