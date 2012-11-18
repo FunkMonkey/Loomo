@@ -32,9 +32,9 @@ var CCtor = Components.Constructor;
 //======================================================================================//
 
 export var CON = {
-    nsAppStartup		: "@mozilla.org/toolkit/app-startup;1",
-    nsClipboard			: "@mozilla.org/widget/clipboard;1",
-    nsStandardURL		: "@mozilla.org/network/standard-url;1"
+	nsAppStartup		: "@mozilla.org/toolkit/app-startup;1",
+	nsClipboard			: "@mozilla.org/widget/clipboard;1",
+	nsStandardURL		: "@mozilla.org/network/standard-url;1"
 }
 
 

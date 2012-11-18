@@ -17,28 +17,28 @@ import MItem = module("../../modules/Item");
  */
 export interface ISimpleListElement extends MListBase.IListElement {
 	/**
-     * References the connected SimpleList
-     */
-    impl: SimpleList;
+	 * References the connected SimpleList
+	 */
+	impl: SimpleList;
 }
 
 /**
  * Represents a simple list view
  */
 export class SimpleList extends MListBase.ListBase {
-    
+	
 	/**
 	 * Represents a simple list view
 	 *
 	 * @constructor
 	 * @param   node   The connected DOM element
 	 */
-    constructor(node: ISimpleListElement)
-    {
-        super(node);
-    }
+	constructor(node: ISimpleListElement)
+	{
+		super(node);
+	}
 
-    /**
+	/**
 	 * Creates a SimpleListItem for the given Item (File or whatever) and appends it to the list
 	 *
 	 * @param   item   Item to create SimpleListItem for

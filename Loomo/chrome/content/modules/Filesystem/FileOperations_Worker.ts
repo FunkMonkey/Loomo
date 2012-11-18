@@ -21,4 +21,4 @@ self.onmessage = function(event) {
 	
 	
 	self.postMessage("" + "file copied");  
-};  
+};

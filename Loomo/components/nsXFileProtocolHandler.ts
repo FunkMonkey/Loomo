@@ -36,11 +36,11 @@ Components.utils.import("chrome://fibro/content/modules/ItemRegistry.js", ItemRe
 /* Temporary until Bug XXX was fixed */
 var C = Components;
 var Ci = Components.interfaces;
-var nsXFileProtocolHandler_CID_STR			= "{789409b9-2e3b-4682-a5d1-71ca80a76456}";			
-var nsXFileProtocolHandler_CID				= C.ID(nsXFileProtocolHandler_CID_STR);				
-var nsXFileProtocolHandler_CON_ID				= "@mozilla.org/network/protocol;1?name=xfile";	
-var nsXFileProtocolHandler_DESC				= "XFile Protocol Handler";							
-var nsXFileProtocolHandler_URI_PREFIX			= "xfile";		
+var nsXFileProtocolHandler_CID_STR      = "{789409b9-2e3b-4682-a5d1-71ca80a76456}";			
+var nsXFileProtocolHandler_CID          = C.ID(nsXFileProtocolHandler_CID_STR);				
+var nsXFileProtocolHandler_CON_ID       = "@mozilla.org/network/protocol;1?name=xfile";	
+var nsXFileProtocolHandler_DESC         = "XFile Protocol Handler";							
+var nsXFileProtocolHandler_URI_PREFIX   = "xfile";		
 
 
 function nsXFileProtocolHandler()
@@ -89,8 +89,8 @@ nsXFileProtocolHandler.prototype =
 	 */
 	newURI: function newURI(aSpec: string, aOriginCharset: string, aBaseURI: Components.interfaces.nsIURI)
 	{
-	    var uri = new MozXPCOM.StandardURL();
-	    uri.spec = aSpec;
+		var uri = new MozXPCOM.StandardURL();
+		uri.spec = aSpec;
 		return uri;
 	},
 
@@ -105,8 +105,8 @@ nsXFileProtocolHandler.prototype =
 	newChannel: function(aURI: Components.interfaces.nsIURI): Components.interfaces.nsIChannel
 	{
 
-	    // get the file that corresponds to the URI
-	    var file = ItemRegistry.createItemFromURI(aURI);
+		// get the file that corresponds to the URI
+		var file = ItemRegistry.createItemFromURI(aURI);
 		
 		// if file exists, show fileview ...
 		// 

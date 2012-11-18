@@ -16,9 +16,9 @@ import MGroup = module("../../modules/Group");
  */
 export interface IListElement extends XULElement {
 	/**
-     * References the connected ListBase
-     */
-    impl: ListBase;
+	 * References the connected ListBase
+	 */
+	impl: ListBase;
 }
 
 /**
@@ -28,49 +28,49 @@ export interface IListElement extends XULElement {
 export class ListBase {
 
 	/**
-     * References the connected DOM element
-     */
-    node: IListElement;
+	 * References the connected DOM element
+	 */
+	node: IListElement;
 
-    /**
-     * Group the view is connected to
-     */
-    itemGroup: MGroup.Group;
+	/**
+	 * Group the view is connected to
+	 */
+	itemGroup: MGroup.Group;
 
-    /**
-     * Items of the view
-     */
-    items: MListItemBase.ListItemBase[];
+	/**
+	 * Items of the view
+	 */
+	items: MListItemBase.ListItemBase[];
 
-    /**
-     * Selected items of the view
-     */
-    selectedItems: MListItemBase.ListItemBase[];
+	/**
+	 * Selected items of the view
+	 */
+	selectedItems: MListItemBase.ListItemBase[];
 
-    /**
-     * Callback to call when URI should be opened
-     *  - allows opening the item in the view or outside (f. ex. other browser tab)
-     *
-     * @param   url   URL that should be opened
-     * @param   e     Event used to open (f. ex. MouseEvent)
-     */
-    openURICallback: (url: string, e: Event) => void;
+	/**
+	 * Callback to call when URI should be opened
+	 *  - allows opening the item in the view or outside (f. ex. other browser tab)
+	 *
+	 * @param   url   URL that should be opened
+	 * @param   e     Event used to open (f. ex. MouseEvent)
+	 */
+	openURICallback: (url: string, e: Event) => void;
 
 
-    /**
+	/**
 	 * Base class for list views
 	 *
 	 * @constructor
 	 * @param   node   The connected DOM element
 	 */
-    constructor(node: IListElement)
-    {
-	    this.node = node;
-	    this.itemGroup = null;
-	    this.items = [];
-	    this.selectedItems = [];
-	    this.openURICallback = null;
-    };
+	constructor(node: IListElement)
+	{
+		this.node = node;
+		this.itemGroup = null;
+		this.items = [];
+		this.selectedItems = [];
+		this.openURICallback = null;
+	};
 
 	/**
 	 * Loads the view from the given group
@@ -87,7 +87,7 @@ export class ListBase {
 	 * Loads the view
 	 *    - implemented by subclass
 	 */
-    _loadItems() { throw new Error("Not implemented!"); }
+	_loadItems() { throw new Error("Not implemented!"); }
 	
 	
 	/**
@@ -215,10 +215,10 @@ export class ListBase {
 	 * 
 	 * @returns    Found node or null
 	 */
-    getListItemIn(itemOrURIorSpecIn: string, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase;
+	getListItemIn(itemOrURIorSpecIn: string, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase;
 	getListItemIn(itemOrURIorSpecIn: MItem.Item, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase;
 	getListItemIn(itemOrURIorSpecIn: MListItemBase.ListItemBase, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase;
-    getListItemIn(itemOrURIorSpecIn: any, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase
+	getListItemIn(itemOrURIorSpecIn: any, array: MListItemBase.ListItemBase[]): MListItemBase.ListItemBase
 	{
 		if(itemOrURIorSpecIn instanceof MListItemBase.ListItemBase)
 		{
@@ -268,10 +268,10 @@ export class ListBase {
 	 * 
 	 * @returns   Found node or null
 	 */
-    getListItem(itemOrURIorSpecIn: string): MListItemBase.ListItemBase;
+	getListItem(itemOrURIorSpecIn: string): MListItemBase.ListItemBase;
 	getListItem(itemOrURIorSpecIn: MItem.Item): MListItemBase.ListItemBase;
 	getListItem(itemOrURIorSpecIn: MListItemBase.ListItemBase): MListItemBase.ListItemBase;
-    getListItem(itemOrURIorSpecIn: any): MListItemBase.ListItemBase
+	getListItem(itemOrURIorSpecIn: any): MListItemBase.ListItemBase
 	{
 		return this.getListItemIn(itemOrURIorSpecIn, this.items);
 	}
@@ -283,10 +283,10 @@ export class ListBase {
 	 * 
 	 * @returns   Found node or null
 	 */
-    getListItemInSelection(itemOrURIorSpecIn: string): MListItemBase.ListItemBase;
+	getListItemInSelection(itemOrURIorSpecIn: string): MListItemBase.ListItemBase;
 	getListItemInSelection(itemOrURIorSpecIn: MItem.Item): MListItemBase.ListItemBase;
 	getListItemInSelection(itemOrURIorSpecIn: MListItemBase.ListItemBase): MListItemBase.ListItemBase;
-    getListItemInSelection(itemOrURIorSpecIn: any): MListItemBase.ListItemBase
+	getListItemInSelection(itemOrURIorSpecIn: any): MListItemBase.ListItemBase
 	{
 		return this.getListItemIn(itemOrURIorSpecIn, this.selectedItems);
 	}

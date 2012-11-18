@@ -41,10 +41,10 @@ export var FileProtocolHandler = Services.io.getProtocolHandler("file").QueryInt
 // for xfile this is a little more complicated. wrapping it in a function, so the xfile protocol handler will only be created when needed
 var _XFileProtocolHandler = null;
 function getXFileProtocolHandler(): Components.interfaces.nsIProtocolHandler {
-    if (!this._XFileProtocolHandler)
-        this._XFileProtocolHandler = Services.io.getProtocolHandler("xfile").QueryInterface(Ci.nsIProtocolHandler);
+	if (!this._XFileProtocolHandler)
+		this._XFileProtocolHandler = Services.io.getProtocolHandler("xfile").QueryInterface(Ci.nsIProtocolHandler);
 
-    return this._XFileProtocolHandler;
+	return this._XFileProtocolHandler;
 }
 
 export var XFileProtocolHandler: Components.interfaces.nsIProtocolHandler = getXFileProtocolHandler();

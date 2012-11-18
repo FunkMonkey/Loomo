@@ -18,11 +18,11 @@ var ListBaseFunc: Function = null;
  * Represents the DOM element that holds a reference to a ListItemBase
  */
 export interface IListItemElement extends XULElement {
-    
-    /**
-     * References the connected ListItemBase
-     */
-    impl: ListItemBase;
+	
+	/**
+	 * References the connected ListItemBase
+	 */
+	impl: ListItemBase;
 }
 
 
@@ -31,84 +31,84 @@ export interface IListItemElement extends XULElement {
  */
 export class ListItemBase {
 
-    /**
-     * References the connected DOM element
-     */
-    node: IListItemElement;
+	/**
+	 * References the connected DOM element
+	 */
+	node: IListItemElement;
 
-    /**
-     * Reference to the connected Item (file, etc.)
-     */
-    item: MItem.Item;
+	/**
+	 * Reference to the connected Item (file, etc.)
+	 */
+	item: MItem.Item;
 
-    /**
-     * Reference to parent list
-     */
-    _list: MListBase.ListBase;
+	/**
+	 * Reference to parent list
+	 */
+	_list: MListBase.ListBase;
 
-    /**
-     * Base for list view items
-     * 
-     * @constructor
-     * @param   node   The connected DOM element
-     */
-    constructor (node: IListItemElement) {
-        this.node = node;
-        this.item = null;
-        this._list = null;
-    }
+	/**
+	 * Base for list view items
+	 * 
+	 * @constructor
+	 * @param   node   The connected DOM element
+	 */
+	constructor (node: IListItemElement) {
+		this.node = node;
+		this.item = null;
+		this._list = null;
+	}
 
-    /**
-     * Reference to parent list
-     *   - will search for the list, when called the first time
-     */
-    get list(): MListBase.ListBase {
-        // if we already found our control, then return it (save some performance)
-        if (this._list)
-            return this._list;
+	/**
+	 * Reference to parent list
+	 *   - will search for the list, when called the first time
+	 */
+	get list(): MListBase.ListBase {
+		// if we already found our control, then return it (save some performance)
+		if (this._list)
+			return this._list;
 
-        // otherwise look for the control
-        // TODO: make it MListBase.IListElement, when http://typescript.codeplex.com/workitem/386 is fixed
-        var parent = <any>(this.node.parentNode);
-        while (parent) {
-            if (parent.impl && parent.impl instanceof ListBaseFunc) {
-                this._list = parent.impl;
-                return this._list;
-            }
-            parent = <any>parent.parentNode;
-        }
+		// otherwise look for the control
+		// TODO: make it MListBase.IListElement, when http://typescript.codeplex.com/workitem/386 is fixed
+		var parent = <any>(this.node.parentNode);
+		while (parent) {
+			if (parent.impl && parent.impl instanceof ListBaseFunc) {
+				this._list = parent.impl;
+				return this._list;
+			}
+			parent = <any>parent.parentNode;
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    /**
-     * Tells, whether the listitem is selected or not
-     *
-     * @returns True if selected, otherwise false
-     */
+	/**
+	 * Tells, whether the listitem is selected or not
+	 *
+	 * @returns True if selected, otherwise false
+	 */
 	get isSelected(): bool {
-        return this.node.hasAttribute("isSelected");
-    }
+		return this.node.hasAttribute("isSelected");
+	}
 
-    /**
-     * Tells, whether the listitem is selected or not
-     *
-     * @returns True if selected, otherwise false
-     */
+	/**
+	 * Tells, whether the listitem is selected or not
+	 *
+	 * @returns True if selected, otherwise false
+	 */
 	get _isSelected(): bool {
-        return this.node.hasAttribute("isSelected");
-    }
+		return this.node.hasAttribute("isSelected");
+	}
 
-    /**
-     * Sets the selected state of the listitem
-     *    - for internal use only
-     */
-    set _isSelected(value: bool) {
-        if (value)
-            this.node.setAttribute("isSelected", "");
-        else
-            this.node.removeAttribute("isSelected");
-    }
+	/**
+	 * Sets the selected state of the listitem
+	 *    - for internal use only
+	 */
+	set _isSelected(value: bool) {
+		if (value)
+			this.node.setAttribute("isSelected", "");
+		else
+			this.node.removeAttribute("isSelected");
+	}
 
 }
 

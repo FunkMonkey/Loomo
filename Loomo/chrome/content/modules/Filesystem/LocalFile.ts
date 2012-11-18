@@ -28,121 +28,121 @@ export class LocalFile extends MFile.File {
 	/**
 	 * Native path of the local file
 	 */
-    path: string;
+	path: string;
 
-    /**
-     * XPCOM file
-     */
-    _nsIFile: Components.interfaces.nsIFile;
+	/**
+	 * XPCOM file
+	 */
+	_nsIFile: Components.interfaces.nsIFile;
 
-    // TODO: refactor to _info
-    /**
-     * Native file information (stats)
-     */
-    info: OS.IInfo;
+	// TODO: refactor to _info
+	/**
+	 * Native file information (stats)
+	 */
+	info: OS.IInfo;
 
-    // TODO: refactor to _infoError
-    /**
-     * Error object thrown when file stats could not be retrieved
-     */
-    infoError: any;
+	// TODO: refactor to _infoError
+	/**
+	 * Error object thrown when file stats could not be retrieved
+	 */
+	infoError: any;
 
-    // TODO: refactor to _directoryEntry
-    /**
-     * Directory entry (when retrieved from iterator)
-     */
-    directoryEntry: OS.IDirectoryEntry;
+	// TODO: refactor to _directoryEntry
+	/**
+	 * Directory entry (when retrieved from iterator)
+	 */
+	directoryEntry: OS.IDirectoryEntry;
 
-    // TODO: add constructor that takes LocalFile
-    // TODO: add constructor that takes nsIFile
-    /**
-     * Represents a local file
-     *
-     * @constructor
-     * @param     uriOrFile   URI or URIspec that represents file or xfile, OS.File.DirectoryIterator.Entry
-     */
-    constructor(uriOrFile: string);
-    constructor(uriOrFile: Components.interfaces.nsIURI);
-    constructor(uriOrFile: OS.IDirectoryEntry);
-    constructor (pathURIFile: any) {
-        super(-1);
+	// TODO: add constructor that takes LocalFile
+	// TODO: add constructor that takes nsIFile
+	/**
+	 * Represents a local file
+	 *
+	 * @constructor
+	 * @param     uriOrFile   URI or URIspec that represents file or xfile, OS.File.DirectoryIterator.Entry
+	 */
+	constructor(uriOrFile: string);
+	constructor(uriOrFile: Components.interfaces.nsIURI);
+	constructor(uriOrFile: OS.IDirectoryEntry);
+	constructor (pathURIFile: any) {
+		super(-1);
 
-        this.path = "";
-        this._nsIFile = null;
-        this.info = null;
-        this.directoryEntry = null;
+		this.path = "";
+		this._nsIFile = null;
+		this.info = null;
+		this.directoryEntry = null;
 
-        if (pathURIFile === undefined) {
-            throw new Error("Constructor needs exactly one parameter that can be a nsIFile, or nsIURI, a string representing a URI spec or native path!");
-        } else if (typeof pathURIFile === "string") {
+		if (pathURIFile === undefined) {
+			throw new Error("Constructor needs exactly one parameter that can be a nsIFile, or nsIURI, a string representing a URI spec or native path!");
+		} else if (typeof pathURIFile === "string") {
 
-            if (pathURIFile.startsWith("xfile://")) {
-                super(pathURIFile);
-                this.path = LocalFile.xfileURLToPath(this.URIspec);
-            } else if (pathURIFile.startsWith("file://")) {
-                super("x" + pathURIFile);
-                this.path = LocalFile.xfileURLToPath("x" + this.URIspec);
-            } else {
-                this.path = pathURIFile;
-                var URIspec = LocalFile.pathToXFileURL(pathURIFile);
-                super(URIspec);
-            }
+			if (pathURIFile.startsWith("xfile://")) {
+				super(pathURIFile);
+				this.path = LocalFile.xfileURLToPath(this.URIspec);
+			} else if (pathURIFile.startsWith("file://")) {
+				super("x" + pathURIFile);
+				this.path = LocalFile.xfileURLToPath("x" + this.URIspec);
+			} else {
+				this.path = pathURIFile;
+				var URIspec = LocalFile.pathToXFileURL(pathURIFile);
+				super(URIspec);
+			}
 
-            // TODO: use the constructor, when bug was fixed
-        } else if (pathURIFile.name && pathURIFile.path/*pathURIFile instanceof OS.File.DirectoryIterator.Entry*/) {
-            this.directoryEntry = pathURIFile;
-            this.path = this.directoryEntry.path;
-            var URIspec2 = LocalFile.pathToXFileURL(this.path);
-            super(URIspec2);
-        } else {
-            super(pathURIFile);
-            this.path = LocalFile.xfileURLToPath(this.URIspec);
-        }
+			// TODO: use the constructor, when bug was fixed
+		} else if (pathURIFile.name && pathURIFile.path/*pathURIFile instanceof OS.File.DirectoryIterator.Entry*/) {
+			this.directoryEntry = pathURIFile;
+			this.path = this.directoryEntry.path;
+			var URIspec2 = LocalFile.pathToXFileURL(this.path);
+			super(URIspec2);
+		} else {
+			super(pathURIFile);
+			this.path = LocalFile.xfileURLToPath(this.URIspec);
+		}
 
-    }
-    
-    /**
-     * Converts a given native path to a xfile URL
-     *
-     * @param   path   Path to convert
-     *
-     * @returns   According xfile URL
-     */
-    static pathToXFileURL(path: string): string {
-        if (OS.Constants.Win)
-            return "xfile:///" + OS.Path.normalize(path).replace(/\\/g, "/");
-        else
-            return "xfile://" + OS.Path.normalize(path);
-    };
+	}
+	
+	/**
+	 * Converts a given native path to a xfile URL
+	 *
+	 * @param   path   Path to convert
+	 *
+	 * @returns   According xfile URL
+	 */
+	static pathToXFileURL(path: string): string {
+		if (OS.Constants.Win)
+			return "xfile:///" + OS.Path.normalize(path).replace(/\\/g, "/");
+		else
+			return "xfile://" + OS.Path.normalize(path);
+	};
 
-    /**
-     * Converts a given xfile URL spec to a native path
-     *
-     * @param   urlSpec   URL spec to convert
-     *
-     * @returns   According native path
-     */
-    static xfileURLToPath(urlSpec:string): string {
-        if (OS.Constants.Win) {
-            return urlSpec.substr(9).replace(/\//g, "\\");
-        } else {
-            return urlSpec.substr(8);
-        }
-    };
+	/**
+	 * Converts a given xfile URL spec to a native path
+	 *
+	 * @param   urlSpec   URL spec to convert
+	 *
+	 * @returns   According native path
+	 */
+	static xfileURLToPath(urlSpec:string): string {
+		if (OS.Constants.Win) {
+			return urlSpec.substr(9).replace(/\//g, "\\");
+		} else {
+			return urlSpec.substr(8);
+		}
+	};
 
-    /**
-     * Returns the XPCOM file for this LocalFile
-     *
-     * @returns XPCOM file for LocalFile
-     */
-    getNsIFile(): Components.interfaces.nsIFile {
+	/**
+	 * Returns the XPCOM file for this LocalFile
+	 *
+	 * @returns XPCOM file for LocalFile
+	 */
+	getNsIFile(): Components.interfaces.nsIFile {
 		// TODO: implement
 		throw new Error("Not Implemented");
 	}
 
 	/**
-     * Returns base name / leafname / last part of the File
-     */
+	 * Returns base name / leafname / last part of the File
+	 */
 	get basename(): string {
 		return OS.Path.basename(this.path);
 	}

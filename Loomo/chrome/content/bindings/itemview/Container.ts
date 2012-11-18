@@ -10,10 +10,10 @@ initCommonJSModule(eval('this'));
  */
 export interface IContainerElement extends XULElement {
 
-    /**
-     * References the connected Container
-     */
-    impl: Container;
+	/**
+	 * References the connected Container
+	 */
+	impl: Container;
 }
 
 /**
@@ -21,18 +21,18 @@ export interface IContainerElement extends XULElement {
  */
 export class Container {
 
-    /**
-     * References the connected DOM element
-     */
-    node: IContainerElement;
+	/**
+	 * References the connected DOM element
+	 */
+	node: IContainerElement;
 
-    /**
-     * Represents a container for views
-     *
-     * @constructor
-     * @param   node   The connected DOM element
-     */
-    constructor(node: IContainerElement) {
-        this.node = node;
-    }
+	/**
+	 * Represents a container for views
+	 *
+	 * @constructor
+	 * @param   node   The connected DOM element
+	 */
+	constructor(node: IContainerElement) {
+		this.node = node;
+	}
 }

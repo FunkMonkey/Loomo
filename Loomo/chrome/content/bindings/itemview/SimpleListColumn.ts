@@ -14,47 +14,47 @@ import MSimpleList = module("SimpleList");
 export interface ISimpleListColumnElement extends XULElement {
 
 	/**
-     * References the connected SimpleListColumn
-     */
-    impl: SimpleListColumn;
+	 * References the connected SimpleListColumn
+	 */
+	impl: SimpleListColumn;
 }
 
 /**
  * Column for a simple list view
  */
 export class SimpleListColumn {
-    
-    /**
-     * References the connected DOM element
-     */
-    node: ISimpleListColumnElement;
+	
+	/**
+	 * References the connected DOM element
+	 */
+	node: ISimpleListColumnElement;
 
-    /**
-     * Reference to parent list
-     */
-    _list: MSimpleList.SimpleList;
+	/**
+	 * Reference to parent list
+	 */
+	_list: MSimpleList.SimpleList;
 
-    /**
+	/**
 	 * Column for a simple list view
 	 *
 	 * @constructor
 	 * @param   node   The connected DOM element
 	 */
-    constructor(node: ISimpleListColumnElement)
-    {
-	    this.node = node;
-	    this._list = null;
+	constructor(node: ISimpleListColumnElement)
+	{
+		this.node = node;
+		this._list = null;
 	
-	    this.node.addEventListener("click", <(e: Event) => void>(this.onClick.bind(this)), false);
-	    this.node.addEventListener("dblclick", <(e: Event) => void>(this.onDblClick.bind(this)), false);
+		this.node.addEventListener("click", <(e: Event) => void>(this.onClick.bind(this)), false);
+		this.node.addEventListener("dblclick", <(e: Event) => void>(this.onDblClick.bind(this)), false);
 	
-    }
+	}
 	
 	
 	/**
-     * Reference to parent list
-     *   - will search for the list, when called the first time
-     */
+	 * Reference to parent list
+	 *   - will search for the list, when called the first time
+	 */
 	get list() : MSimpleList.SimpleList
 	{
 		// if we already found our control, then return it (save some performance)
@@ -62,7 +62,7 @@ export class SimpleListColumn {
 			return this._list;
 		
 		// otherwise look for the control
-        // TODO: make it MListBase.IListElement, when http://typescript.codeplex.com/workitem/386 is fixed
+		// TODO: make it MListBase.IListElement, when http://typescript.codeplex.com/workitem/386 is fixed
 		var parent = <any>this.node.parentNode;
 		while (parent)
 		{

@@ -37,18 +37,18 @@ export function inheritNew(child: Function, base: Function) {
  * Represents options used for borrowing
  */
 export interface IBorrowOptions {
-    ownPropsOnly?: bool;
-    overwriteExisting?: bool;
+	ownPropsOnly?: bool;
+	overwriteExisting?: bool;
 
 	// filters
-    usePropFilters?: bool;
+	usePropFilters?: bool;
 
-    borrowAccessors?: bool;
-    borrowFunctions?: bool;
-    borrowNonFunctionValues?: bool;
-    borrowNonEnumerable?: bool;
-    borrowNonConfigurable?: bool;
-    borrowNonWritable?: bool;
+	borrowAccessors?: bool;
+	borrowFunctions?: bool;
+	borrowNonFunctionValues?: bool;
+	borrowNonEnumerable?: bool;
+	borrowNonConfigurable?: bool;
+	borrowNonWritable?: bool;
 }
 
 /**
@@ -215,12 +215,12 @@ export function isInstanceOf(obj: Object, constructorFunc: Function): bool {
  */
 export function isInstanceOfByString(obj: Object, constructorFunc: Function): bool {
 	if(obj instanceof constructorFunc)
-        return true;
-    else {
-	    var proto = Object.getPrototypeOf(obj);
-	    if (proto.constructor && proto.constructor.name === (<any>constructorFunc).name)
-	        return true;
-    }
+		return true;
+	else {
+		var proto = Object.getPrototypeOf(obj);
+		if (proto.constructor && proto.constructor.name === (<any>constructorFunc).name)
+			return true;
+	}
 		
 	if((<any>obj)._classList)
 	{

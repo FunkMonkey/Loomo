@@ -16,9 +16,9 @@ import MItem = module("../../modules/Item");
 export interface ISimpleListItemElement extends MListItemBase.IListItemElement {
 
 	/**
-     * References the connected SimpleListItem
-     */
-    impl: SimpleListItem;
+	 * References the connected SimpleListItem
+	 */
+	impl: SimpleListItem;
 }
 
 /**
@@ -32,59 +32,59 @@ export class SimpleListItem extends MListItemBase.ListItemBase {
 	/**
 	 * Reference to the DOMElement for the icon
 	 */
-    _DOMIcon: XULElement;
+	_DOMIcon: XULElement;
 
-    /**
+	/**
 	 * Reference to the DOMElement for the label
 	 */
-    _DOMLabel: XULElement;
+	_DOMLabel: XULElement;
 
-    /**
+	/**
 	 * Reference to the DOMElement for the spacer
 	 */
-    _DOMSpacer: XULElement;
+	_DOMSpacer: XULElement;
 
-    /**
-     * State of the icon (is it already set up or not?)
-     */
-    iconSetup: bool;
+	/**
+	 * State of the icon (is it already set up or not?)
+	 */
+	iconSetup: bool;
 
-    /**
-     * URI spec of the icon
-     */
-    iconURI: string;
+	/**
+	 * URI spec of the icon
+	 */
+	iconURI: string;
 
-    /**
-     * EventListener used for scrolling
-     */
-    scrollListener: EventListener;
+	/**
+	 * EventListener used for scrolling
+	 */
+	scrollListener: EventListener;
 
-    /**
+	/**
 	 * ListItem for a simple list view
 	 *
 	 * @constructor
 	 * @param   node   The connected DOM element
 	 */
-    constructor(node: ISimpleListItemElement)
-    {
-        super(node);
+	constructor(node: ISimpleListItemElement)
+	{
+		super(node);
 	
-	    this._DOMIcon = XBLUtils.getAnonNode(this.node, "icon");
-	    this._DOMLabel = XBLUtils.getAnonNode(this.node, "label");
-	    this._DOMSpacer = XBLUtils.getAnonNode(this.node, "spacer");
+		this._DOMIcon = XBLUtils.getAnonNode(this.node, "icon");
+		this._DOMLabel = XBLUtils.getAnonNode(this.node, "label");
+		this._DOMSpacer = XBLUtils.getAnonNode(this.node, "spacer");
 	
 		// TODO: remove eventListeners when appropriate
-	    this._DOMIcon.addEventListener("click", <EventListener>this.onClick.bind(this), false);
-	    this._DOMIcon.addEventListener("dblclick", <EventListener>this.onDoubleClick.bind(this), false);
-	    this._DOMLabel.addEventListener("click", <EventListener>this.onClick.bind(this), false);
-	    this._DOMLabel.addEventListener("dblclick", <EventListener>this.onDoubleClick.bind(this), false);
+		this._DOMIcon.addEventListener("click", <EventListener>this.onClick.bind(this), false);
+		this._DOMIcon.addEventListener("dblclick", <EventListener>this.onDoubleClick.bind(this), false);
+		this._DOMLabel.addEventListener("click", <EventListener>this.onClick.bind(this), false);
+		this._DOMLabel.addEventListener("dblclick", <EventListener>this.onDoubleClick.bind(this), false);
 	
-	    this._DOMSpacer.addEventListener("click", <EventListener>this.onSpacerClick.bind(this), false);
-	    this._DOMSpacer.addEventListener("dblclick", <EventListener>this.onSpacerDblClick.bind(this), false);
+		this._DOMSpacer.addEventListener("click", <EventListener>this.onSpacerClick.bind(this), false);
+		this._DOMSpacer.addEventListener("dblclick", <EventListener>this.onSpacerDblClick.bind(this), false);
 	
-	    this.scrollListener = <EventListener>this.onParentScroll.bind(this);
-	    this.node.parentNode.addEventListener("scroll", this.scrollListener, false);
-    };
+		this.scrollListener = <EventListener>this.onParentScroll.bind(this);
+		this.node.parentNode.addEventListener("scroll", this.scrollListener, false);
+	};
 
 	
 	/**

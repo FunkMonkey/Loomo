@@ -19,64 +19,64 @@ export class Item {
 	/**
 	 * URI specification of this Item (f.ex. xfile:///C:/Windows)
 	 */
-    URIspec: string;
+	URIspec: string;
 
-    // TODO: remove???
-    /**
-     * XPCOM URI
-     */
-    _URI: Components.interfaces.nsIURI;
+	// TODO: remove???
+	/**
+	 * XPCOM URI
+	 */
+	_URI: Components.interfaces.nsIURI;
 
-    /**
-     * Alternative name for displaying
-     */
-    alternativeDisplayName: string;
+	/**
+	 * Alternative name for displaying
+	 */
+	alternativeDisplayName: string;
 
-    // TODO: use interface
-    /**
-     * Alternative icons for displaying
-     */
-    alternativeIconURIs: any;
+	// TODO: use interface
+	/**
+	 * Alternative icons for displaying
+	 */
+	alternativeIconURIs: any;
 
-    /**
-     * Represents a container for views
-     *
-     * @constructor
-     * @param   URIorSpec   URI or URIspec for this item
-     */
-    constructor (URIorSpec: number);
-    constructor (URIorSpec: string);
-    constructor (URIorSpec: Components.interfaces.nsIURI);
-    constructor (URIorSpec: any) {
-        
-        // added to ignore super as first constructor statement
-        if(URIorSpec === -1)
-            return null;
+	/**
+	 * Represents a container for views
+	 *
+	 * @constructor
+	 * @param   URIorSpec   URI or URIspec for this item
+	 */
+	constructor (URIorSpec: number);
+	constructor (URIorSpec: string);
+	constructor (URIorSpec: Components.interfaces.nsIURI);
+	constructor (URIorSpec: any) {
+		
+		// added to ignore super as first constructor statement
+		if(URIorSpec === -1)
+			return null;
 
-	    this.URIspec = "";
-	    this._URI = null;
-	    this.alternativeDisplayName = "";
-	    this.alternativeIconURIs = {};
+		this.URIspec = "";
+		this._URI = null;
+		this.alternativeDisplayName = "";
+		this.alternativeIconURIs = {};
 	
-	    // the param should only be undefined if another Constructor already handles it
-	    if(URIorSpec === undefined) {
+		// the param should only be undefined if another Constructor already handles it
+		if(URIorSpec === undefined) {
 			throw new Error("Constructor needs exactly one parameter that can be a nsIURI or a string representing a URI spec!");
-	    } else if(typeof(URIorSpec) === "string") { // TODO: perform URI check?
-		    this.URIspec = URIorSpec;
-	    } else if(URIorSpec instanceof Components.interfaces.nsIURI) {
-		    this._URI = URIorSpec;
-		    this.URIspec = this._URI.spec;
-	    } else {
-		    throw new Error("unsupported parameter. Please pass a nsIURI or a string representing a URI spec!");
-	    }
-    }
+		} else if(typeof(URIorSpec) === "string") { // TODO: perform URI check?
+			this.URIspec = URIorSpec;
+		} else if(URIorSpec instanceof Components.interfaces.nsIURI) {
+			this._URI = URIorSpec;
+			this.URIspec = this._URI.spec;
+		} else {
+			throw new Error("unsupported parameter. Please pass a nsIURI or a string representing a URI spec!");
+		}
+	}
 
-    // TODO: remove?
-    /**
-     * XPCOM URI
-     *    - created based on URIspec when needed the first time
-     */
-    get URI()
+	// TODO: remove?
+	/**
+	 * XPCOM URI
+	 *    - created based on URIspec when needed the first time
+	 */
+	get URI()
 	{
 		if(!this._URI)
 			this._URI = Services.io.newURI(this.URIspec, null, null);
@@ -115,9 +115,9 @@ export class Item {
 	 *
 	 * @returns   Promise: true if file is directory
 	 */
-    isDirectory(): Promise.IPromiseBool {
-        throw new Error("Not Implemented");
-    }
+	isDirectory(): Promise.IPromiseBool {
+		throw new Error("Not Implemented");
+	}
 
 	/**
 	 * Checks if the local file is a symlink
@@ -139,63 +139,63 @@ export class Item {
 		throw new Error("Not Implemented");
 	}
 
-    /**
-     * Checks if the local file exists
-     *    - may resolve instantly or trigger an IO request
-     *
-     * @returns   Promise: true if file exists
-     */
-    exists(): Promise.IPromiseBool {
-        throw new Error("Not Implemented");
-    }
+	/**
+	 * Checks if the local file exists
+	 *    - may resolve instantly or trigger an IO request
+	 *
+	 * @returns   Promise: true if file exists
+	 */
+	exists(): Promise.IPromiseBool {
+		throw new Error("Not Implemented");
+	}
 
-    /**
+	/**
 	 * Returns the string representation of the file as a moz-icon URI
 	 * 
 	 * @param   size   Size of the image
 	 * 
 	 * @returns    Promise: String representation as moz-icon URI
 	 */
-    getIconURIString(size): Promise.IPromiseString {
-        throw new Error("Not Implemented");
-    }
+	getIconURIString(size): Promise.IPromiseString {
+		throw new Error("Not Implemented");
+	}
 
-    /**
+	/**
 	 * Returns the display name
 	 * 
 	 * @returns    Display name
 	 */
-    getDisplayName(): string {
-         throw new Error("Not Implemented");
-    }
+	getDisplayName(): string {
+		 throw new Error("Not Implemented");
+	}
 
-    /**
-     * Returns a Group representing the directory entries
-     *    - may trigger IO requests
-     *
-     * @returns   Promise: Group representing the directory contents
-     */
-    getDirectoryEntries(options?): MGroup.IPromiseGroup {
+	/**
+	 * Returns a Group representing the directory entries
+	 *    - may trigger IO requests
+	 *
+	 * @returns   Promise: Group representing the directory contents
+	 */
+	getDirectoryEntries(options?): MGroup.IPromiseGroup {
 		throw new Error("Not Implemented");
 	}
 
-    /**
+	/**
 	 * Opens the given file
 	 *   - returns URISpec to open for directories, launches files
 	 * 
 	 * @returns   URISpec for directory to open, empty string for files
 	 */
-    open(): Promise.IPromiseString {
-        throw new Error("Not Implemented");
-    }
+	open(): Promise.IPromiseString {
+		throw new Error("Not Implemented");
+	}
 
-    /**
+	/**
 	 * Returns the parent item
 	 * 
 	 * @returns   Parent item
 	 */
-    get parent(): Item {
-        throw new Error("Not Implemented");
-    }
+	get parent(): Item {
+		throw new Error("Not Implemented");
+	}
 
 }

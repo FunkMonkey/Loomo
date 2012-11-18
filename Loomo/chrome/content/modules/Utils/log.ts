@@ -8,9 +8,9 @@ initCommonJSModule(eval('this'));
 var consoleService : Components.interfaces.nsIConsoleService = Components.classes['@mozilla.org/consoleservice;1'].getService(Components.interfaces.nsIConsoleService);
 
 export var logOptions = {
-    useFirebug: true,
-    firebugLog: null,
-    useJSConsole: true
+	useFirebug: true,
+	firebugLog: null,
+	useJSConsole: true
 }
 
 /**
@@ -29,7 +29,7 @@ export function log(str)
 		consoleService.logStringMessage(str);
 	}
 	
-    // TODO: fix
+	// TODO: fix
 	//if(logOptions.useFirebug && logOptions.firebugLog)
 	//	logOptions.firebugLog(str);
 }
