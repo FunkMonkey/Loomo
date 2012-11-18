@@ -12,6 +12,7 @@
 *.md text
 *.properties text
 *.rdf text
+*.ts text
 *.xhtml text
 *.xbl text
 *.xul text
