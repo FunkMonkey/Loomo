@@ -86,7 +86,7 @@ function initFileView() {
 }
 
 // create an item based on the window location
-var item = ItemRegistry.createItemFromURISpec(window.location.href);
+var item = ItemRegistry.createItemFromURISpec(decodeURI(window.location.href));
 
 // set the title
 document.title = item.getDisplayName();

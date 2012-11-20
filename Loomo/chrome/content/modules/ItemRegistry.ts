@@ -52,6 +52,6 @@ export function createItemFromURI(URI: Components.interfaces.nsIURI): MItem.Item
  * @return   Newly created Item
  */
 export function createItemFromURISpec(URIspec: string): MItem.Item {
-	// TODO: extract scheme on our own
-	return createItemFromURI(Services.io.newURI(URIspec, null, null));
+	var scheme = URIspec.substring(0, URIspec.indexOf(":"));
+	return new (_constructorFuncsByScheme[scheme])(URIspec);
 }
