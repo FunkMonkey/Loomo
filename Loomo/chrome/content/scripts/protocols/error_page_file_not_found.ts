@@ -1,4 +1,4 @@
-Components.utils.import("resource://filebrowser/identifiers.jsm");
+/*Components.utils.import("resource://filebrowser/identifiers.jsm");
 Components.utils.import("resource://filebrowser/Filebrowser.jsm");
 
 
@@ -20,4 +20,6 @@ var item = Filebrowser.fileGroupManager.createFileGroupItemFromURISpec(window.lo
 item.QueryInterface(Ci.nsIFileGroupItemFile);
 
 // set the title
-document.title = item.getDisplayName();
+document.title = item.getDisplayName();*/
+
+// TODO: fix this file 

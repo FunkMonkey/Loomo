@@ -20,7 +20,7 @@
 		<implementation>
 			<constructor>
 				if(typeof(SimpleList) === "undefined")
-					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleList.jsm");
+					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleList.js");
 					
 				this.impl = new SimpleList(this);
 			</constructor>
@@ -44,7 +44,7 @@
 		<implementation>
 			<constructor>
 				if(typeof(SimpleListItem) === "undefined")
-					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleListItem.jsm");
+					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleListItem.js");
 					
 				this.impl = new SimpleListItem(this);
 			</constructor>
@@ -61,7 +61,7 @@
 		<implementation>
 			<constructor>
 				if(typeof(SimpleListColumn) === "undefined")
-					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleListColumn.jsm");
+					Components.utils.import("chrome://fibro/content/bindings/itemview/SimpleListColumn.js");
 					
 				this.impl = new SimpleListColumn(this);
 			</constructor>
