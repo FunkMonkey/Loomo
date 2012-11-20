@@ -8,7 +8,7 @@ It implements the `xfile` protocol, which allows browsing the local filesystem f
 
 Using the `xfile` URL scheme makes it possible to bookmark and tag files and directories. The "awesomebar" can be used to open directories from the history. All Firefox extensions that enhance bookmarking and the-like can now be used for file-system related access!
 
-Try it (copy into address bar): 
+[Download the newest version](https://github.com/FunkMonkey/Loomo/downloads) and try it (copy the URL into address bar): 
 
 * Unix: xfile:///home/
 * Windows: xfile:///c:/Windows/
