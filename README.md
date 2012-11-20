@@ -1,16 +1,27 @@
 #Loomo
 
-**INFO:** Development is currently mostly paused until Mozilla's new faster asynchronous file IO, [OS.File](https://developer.mozilla.org/en-US/docs/JavaScript_OS.File), is implemented to a certain degree. Currently waiting for OS.File to be usable from main-thread (using IO workers) tracked by the bugs [729057](https://bugzilla.mozilla.org/show_bug.cgi?id=729057) and [777711](https://bugzilla.mozilla.org/show_bug.cgi?id=777711). Shouldn't be too long though ...
-
 Loomo is a filebrowser extension for Mozilla Firefox.
 
 ![Loomo screenshot](https://raw.github.com/wiki/FunkMonkey/Loomo/images/loomo.jpg)
 
-It implements the `xfile` protocol, with which it is possible to browse the local filesystem from within the Firefox tabs. 
+It implements the `xfile` protocol, which allows browsing the local filesystem from within the Firefox tabs. 
 
-Using the `xfile` URL scheme makes it possible to bookmark and tag files and directories. The awesomebar can be used to open directories from the history. All Firefox extensions that enhance bookmarking and the-like can now be used for file-system related access!
+Using the `xfile` URL scheme makes it possible to bookmark and tag files and directories. The "awesomebar" can be used to open directories from the history. All Firefox extensions that enhance bookmarking and the-like can now be used for file-system related access!
 
-File operations will be implemented using the native dialogs. COM will be used for Windows using js-ctypes.
+Try it (copy into address bar): 
+
+* Unix: xfile:///home/
+* Windows: xfile:///c:/Windows/
+
+### Current Status
+
+* Browsing the filesystem
+
+### Coming next
+
+* file selection
+* file operations (copy, move, paste, rename)
+ * File operations will be implemented using the native dialogs. COM will be used for Windows using js-ctypes.
 
 ## Loomo Classic
 

@@ -1,6 +1,7 @@
 const EXPORTED_SYMBOLS = ["FileOperations"];
 
-Components.utils.import("chrome://fibro/content/modules/Utils/log.jsm");
+var LogUtils = {};
+Components.utils.import("chrome://fibro/content/modules/Utils/log.js", LogUtils);
 
 //Components.utils.import("chrome://fibro/content/modules/Utils/COM/IFileOperation.jsm");
 //IFileOperationModule.initialize();
@@ -20,13 +21,11 @@ var FileOperations = {
 	 * 
 	 * @returns {Worker}   Description
 	 */
-	getIdleWorker: function getIdleWorker()
-	{
-		if(!worker)
-		{
+	getIdleWorker: function getIdleWorker() {
+		if(!worker) {
 			worker = new ChromeWorker("FileOperations_Worker.js");  
 			worker.onmessage = function(event) {  
-				log("Message from worker: " + event.data);  
+				LogUtils.log("Message from worker: " + event.data);  
 			};
 		}
 		
@@ -41,14 +40,10 @@ var FileOperations = {
 	 * @param   {LocalFile}   destination      Destination folder to copy to
 	 * @param   {string}      [newName]        New name
 	 */
-	copyItem: function copyItem(sourceFile, destinationDir, newName)
-	{
+	copyItem: function copyItem(sourceFile, destinationDir, newName) {
 		var worker = this.getIdleWorker();
 		
 		// TODO: use osFile instead of xpcom
 		worker.postMessage({operation: "copy", sourceFile: sourceFile.xpcomFile.path, destinationDir: destinationDir.xpcomFile.path, newName: newName}); // start the worker.
 	}
-}
-
-
-
+};
