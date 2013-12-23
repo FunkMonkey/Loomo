@@ -2,6 +2,12 @@
 
 Loomo is a filebrowser extension for Mozilla Firefox.
 
+### Update 23.12.2013
+
+Loomo development has been on hold for quite a while. I plan a rewrite, but I am waiting for better web-components, native JS modules support and especially some progress on multi-process Firefox as this will heavily impact Loomo. 
+
+### Info
+
 ![Loomo screenshot](https://raw.github.com/wiki/FunkMonkey/Loomo/images/loomo.jpg)
 
 It implements the `xfile` protocol, which allows browsing the local filesystem from within the Firefox tabs. 
